@@ -10,10 +10,7 @@
     ./locale.nix
     ./nix.nix
     ./openssh.nix
-    ./tailscale.nix
     ./sudo.nix
-    # ./work.nix
-    ./yubikey.nix
   ] ++ (builtins.attrValues outputs.nixosModules);
 
   nixpkgs = {

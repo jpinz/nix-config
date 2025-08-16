@@ -14,8 +14,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    raspberry-pi-nix.url = "github:nix-community/raspberry-pi-nix/v0.4.1";
-
     deploy-rs = {
       url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -84,20 +82,15 @@
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
 
       nixosConfigurations = {
-        alfred = mkSystem "alfred" "x86_64-linux" [ ];
-        jamie-desktop = mkSystem "jamie-desktop" "x86_64-linux" [ ];
-        oci-vm = mkSystem "oci-vm" "aarch64-linux" [ ];
-        rpi5 = mkSystem "rpi5" "aarch64-linux" [ ];
+        nibbler-nuc = mkSystem "nibbler-nuc" "x86_64-linux" [ ];
+        julian-desktop = mkSystem "julian-desktop" "x86_64-linux" [ ];
       };
 
       homeConfigurations = {
-        "jamie@alfred" = mkHome "jamie" "alfred" "x86_64-linux" [ ];
-        "jamie@generic" = mkHome "jamie" "generic" "x86_64-linux" [ ];
-        "jamie@jamagee-desktop" = mkHome "jamie" "wsl" "x86_64-linux" [ ];
-        "jamie@jamagee-surface2" = mkHome "jamie" "wsl" "x86_64-linux" [ ];
-        "jamie@jamie-desktop" = mkHome "jamie" "wsl" "x86_64-linux" [ ];
-        "jamie@oci-vm" = mkHome "jamie" "oci-vm" "aarch64-linux" [ ];
-        "jamie@rpi5" = mkHome "jamie" "rpi5" "aarch64-linux" [ ];
+        "julian@nibbler-nuc" = mkHome "julian" "nibbler-nuc" "x86_64-linux" [ ];
+        "julian@generic" = mkHome "julian" "generic" "x86_64-linux" [ ];
+        "julian@jpinzer-desktop" = mkHome "julian" "wsl" "x86_64-linux" [ ];
+        "julian@jpinzer-surface" = mkHome "julian" "wsl" "x86_64-linux" [ ];
       };
 
       deploy = {
@@ -105,23 +98,6 @@
         magicRollback = false;
         sshOpts = [ "-t" ];
         nodes = {
-          rpi5 = {
-            hostname = "rpi5.tailnet-0b15.ts.net";
-            sshOpts = [
-              "-p"
-              "2222"
-            ];
-            profiles = {
-              system = {
-                user = "root";
-                path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.rpi5;
-              };
-              home = {
-                user = "jamie";
-                path = deploy-rs.lib.aarch64-linux.activate.home-manager self.homeConfigurations."jamie@rpi5";
-              };
-            };
-          };
         };
       };
 

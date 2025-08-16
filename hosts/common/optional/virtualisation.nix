@@ -31,5 +31,5 @@
   };
 
   programs.dconf.enable = true;
-  users.users.jamie.extraGroups = [ "libvirtd" ];
+  users.users.julian.extraGroups = [ "libvirtd" ];
 }
