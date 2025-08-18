@@ -9,7 +9,7 @@ It _should_ be agnostic to which Linux distribution you are using.
 curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
 
 # Clone this repository
-git clone https://github.com/jamiemagee/nix-config.git
+git clone https://github.com/jpinz/nix-config.git
 
 # Open a nix shell
 cd nix-config

@@ -46,12 +46,6 @@ nix-shell -p git
 git clone https://github.com/jpinz/nix-config.git
 ```
 
-Partition the hard drives using disko
-
-```console
-$ nix run github:nix-community/disko -- --mode disko hosts/alfred/disko.nix
-```
-
 Start a nix-shell:
 
 ```bash

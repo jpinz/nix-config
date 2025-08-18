@@ -15,18 +15,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: 'alfred'
-            path: 'nixosConfigurations."alfred".config.system.build.toplevel'
+          - name: 'nibbler-nuc'
+            path: 'nixosConfigurations."nibbler-nuc".config.system.build.toplevel'
             os: ubuntu-24.04
-          - name: 'rpi5'
-            path: 'nixosConfigurations."rpi5".config.system.build.toplevel'
-            os: ubuntu-24.04-arm
-          - name: 'jamie@alfred'
-            path: 'homeConfigurations."jamie@alfred".activationPackage'
+          - name: 'julian@nibbler-nuc'
+            path: 'homeConfigurations."julian@nibbler-nuc".activationPackage'
             os: ubuntu-24.04
-          - name: 'jamie@rpi5'
-            path: 'homeConfigurations."jamie@rpi5".activationPackage'
-            os: ubuntu-24.04-arm
 
     steps:
       - name: Checkout repository
