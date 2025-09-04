@@ -5,7 +5,7 @@
     settings = {
     };
   };
-networking.firewall = {
+  networking.firewall = {
     allowedTCPPorts = [ 7745 ];
     allowedUDPPorts = [ 7745 ];
   };
