@@ -1,4 +1,4 @@
-{ config, ... }:
+{ pkgs, config, ... }:
 {
   imports = [
     # ./abode.nix
@@ -23,45 +23,23 @@
 
   services.home-assistant = {
     enable = true;
+    package = pkgs.home-assistant.override {
+      packageOverrides = self: super: {
+        python-roborock = pkgs.python3Packages.python-roborock;
+      };
+    };
     extraComponents = [
-      # "adguard"
-      # "aladdin_connect"
-      # "androidtv_remote"
-      # "august"
-      # "cast"
-      # "econet"
-      # "google_translate"
-      # "homeassistant_hardware"
-      # "homeassistant_sky_connect"
-      # "homekit_controller"
-      # "isal"
-      # "kegtron" # To avoid "Component not found: kegtron"
-      # "met"
-      # "mqtt"
-      # "notify"
-      # "opower"
-      # "otp"
-      # "plex"
-      # "radarr"
-      # "radio_browser"
-      # "roborock"
-      # "roomba"
-      # "sabnzbd"
-      # "sonarr"
-      # "spotify"
-      # "yalexs_ble"
-      # "zeroconf"
+      "homeassistant_hardware"
+      "homeassistant_sky_connect"
+      "isal"
+      "cast"
+      "androidtv_remote"
+      "adguard"
+      "met"
+      "roborock"
+      "notify"
     ];
-    # customComponents = with pkgs.home-assistant-custom-components; [
-    #   adaptive_lighting
-    #   better_thermostat
-    #   climate_group
-    #   emporia_vue
-    #   fellow
-    #   garmin_connect
-    #   spook
-    #   waste_collection_schedule
-    # ];
+    customComponents = [ ];
     config = {
       http = {
         trusted_proxies = [
@@ -83,11 +61,7 @@
     };
   };
 
-
-  # networking.firewall = {
-  #   allowedTCPPorts = [ 20163 ];
-  #   allowedUDPPorts = [ 5353 ];
-  # };
+  networking.firewall.allowedTCPPorts = [ 8123 ];
 
   systemd.tmpfiles.rules = [
     "f ${config.services.home-assistant.configDir}/automations.yaml 0755 hass hass"
