@@ -4,7 +4,6 @@
     ./fish.nix
     ./git.nix
     ./jujutsu.nix
-    ./micro.nix
     ./nix.nix
     ./ssh.nix
     ./starship.nix

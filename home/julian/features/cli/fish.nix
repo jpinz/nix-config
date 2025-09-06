@@ -5,7 +5,6 @@
       shellAbbrs = {
         cat = "bat";
         ls = "eza";
-        nano = "micro";
 
         n = "nix";
         nd = "nix develop -c $SHELL";
