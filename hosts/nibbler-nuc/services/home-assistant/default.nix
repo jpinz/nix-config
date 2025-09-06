@@ -10,14 +10,14 @@
     # ./leak.nix
     # ./lights.nix
     # ./miele.nix
-    # ./mqtt.nix
-    # ./notify.nix
+    ./mqtt.nix
+    ./notify.nix
     # ./people.nix
     # ./recorder.nix
     # ./sonos.nix
     # ./unifi.nix
     # ./vacation.nix
-    # ./waste-collection.nix
+    ./waste-collection.nix
     # ./weather.nix
   ];
 
@@ -29,17 +29,42 @@
       };
     };
     extraComponents = [
+      "adguard"
+      "androidtv_remote"
+      "august"
+      "cast"
+      "google_translate"
       "homeassistant_hardware"
       "homeassistant_sky_connect"
+      "homekit_controller"
+      "hue"
       "isal"
-      "cast"
-      "androidtv_remote"
-      "adguard"
+      "lg_thinq"
+      "matter"
       "met"
-      "roborock"
+      "mqtt"
       "notify"
+      "otp"
+      "roborock"
+      "spotify"
+      "unifiprotect"
     ];
-    customComponents = [ ];
+    customComponents = with pkgs.home-assistant-custom-components; [
+      adaptive_lighting
+      alarmo
+      better_thermostat
+      climate_group
+      spook
+      waste_collection_schedule
+    ];
+    customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
+      bubble-card
+      button-card
+      card-mod
+      lg-webos-remote-control
+      mushroom
+      universal-remote-card
+    ];
     config = {
       http = {
         trusted_proxies = [
@@ -53,6 +78,9 @@
           { type = "totp"; }
           { type = "notify"; }
         ];
+      };
+      lovelace = {
+        mode = "yaml";
       };
       "automation manual" = [ ];
       "automation ui" = "!include automations.yaml";
