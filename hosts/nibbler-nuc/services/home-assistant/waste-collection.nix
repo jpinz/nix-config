@@ -3,14 +3,27 @@
     waste_collection_schedule = {
       sources = [
         {
-          name = "static";
+          name = "trash";
           args = {
-            type = "waste";
+            type = "trash";
             frequency = "WEEKLY";
-            interval = 2;
-            start = "2025-09-08";
+            interval = 1;
+            start = "2025-09-12";
             weekdays = "FR";
             excludes = [ "2026-06-19" ];
+            dates = [ "2026-06-20" ];
+          };
+        }
+        {
+          name = "recycling";
+          args = {
+            type = "recycling";
+            frequency = "WEEKLY";
+            interval = 2;
+            start = "2025-09-12";
+            weekdays = "FR";
+            excludes = [ "2026-06-19" ];
+            dates = [ "2026-06-20" ];
           };
         }
       ];
@@ -18,7 +31,7 @@
 
     sensor = [
       {
-        platform = "waste_collection_schedule";
+        platform = "trash_collection_schedule";
         name = "Waste collection";
       }
     ];
