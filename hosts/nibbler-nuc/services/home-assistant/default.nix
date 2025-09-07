@@ -2,6 +2,7 @@
 {
   imports = [
     # ./abode.nix
+    ./automations.nix
     # ./blinds.nix
     ./cloud.nix
     ./default-config.nix
@@ -14,6 +15,7 @@
     ./notify.nix
     # ./people.nix
     # ./recorder.nix
+    ./scenes.nix
     # ./sonos.nix
     # ./unifi.nix
     # ./vacation.nix
@@ -79,10 +81,9 @@
       lovelace = {
         mode = "yaml";
       };
-      "automation manual" = [ ];
-      "automation ui" = "!include automations.yaml";
-      "scene manual" = [ ];
-      "scene ui" = "!include scenes.yaml";
+      frontend = {
+        themes = "!include_dir_merge_named themes";
+      };
     };
   };
 
@@ -93,5 +94,6 @@
     "f ${config.services.home-assistant.configDir}/automations.yaml 0755 hass hass"
     "f ${config.services.home-assistant.configDir}/scenes.yaml 0755 hass hass"
     "f ${config.services.home-assistant.configDir}/secrets.yaml 0755 hass hass"
+    "d ${config.services.home-assistant.configDir}/themes 0755 hass hass"
   ];
 }
