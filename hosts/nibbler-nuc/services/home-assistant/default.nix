@@ -36,7 +36,6 @@
       "google_translate"
       "homeassistant_hardware"
       "homeassistant_sky_connect"
-      "homekit_controller"
       "hue"
       "isal"
       "lg_thinq"
@@ -46,7 +45,6 @@
       "notify"
       "otp"
       "roborock"
-      "spotify"
       "unifiprotect"
     ];
     customComponents = with pkgs.home-assistant-custom-components; [
@@ -61,7 +59,6 @@
       bubble-card
       button-card
       card-mod
-      lg-webos-remote-control
       mushroom
       universal-remote-card
     ];
@@ -90,6 +87,7 @@
   };
 
   networking.firewall.allowedTCPPorts = [ 8123 ];
+  networking.firewall.allowedUDPPorts = [ 8123 ];
 
   systemd.tmpfiles.rules = [
     "f ${config.services.home-assistant.configDir}/automations.yaml 0755 hass hass"

@@ -3,23 +3,12 @@
     waste_collection_schedule = {
       sources = [
         {
-          name = "reclycling";
-          args = {
-            type = "recycling";
-            frequency = "WEEKLY";
-            interval = 2;
-            start = "2025-09-12";
-            weekdays = "FR";
-            excludes = [ "2026-06-19" ];
-          };
-        }
-        {
-          name = "waste";
+          name = "static";
           args = {
             type = "waste";
             frequency = "WEEKLY";
-            interval = 1;
-            start = "2025-09-05";
+            interval = 2;
+            start = "2025-09-08";
             weekdays = "FR";
             excludes = [ "2026-06-19" ];
           };

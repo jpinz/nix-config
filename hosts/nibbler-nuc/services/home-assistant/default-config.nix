@@ -21,6 +21,5 @@
     sun = { };
     usb = { };
     webhook = { };
-    zeroconf = { };
   };
 }
