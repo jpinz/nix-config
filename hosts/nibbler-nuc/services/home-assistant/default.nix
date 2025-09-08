@@ -10,6 +10,7 @@
     # ./hvac.nix
     # ./leak.nix
     # ./lights.nix
+    ./lovelace.nix
     # ./miele.nix
     ./mqtt.nix
     ./notify.nix
@@ -33,14 +34,12 @@
     extraComponents = [
       "adguard"
       "androidtv_remote"
-      "august"
       "cast"
-      "google_translate"
       "homeassistant_hardware"
       "homeassistant_sky_connect"
+      "homekit_controller"
       "hue"
       "isal"
-      "lg_thinq"
       "matter"
       "met"
       "mqtt"
@@ -48,6 +47,7 @@
       "otp"
       "roborock"
       "unifiprotect"
+      "zeroconf"
     ];
     customComponents = with pkgs.home-assistant-custom-components; [
       adaptive_lighting
@@ -56,13 +56,6 @@
       climate_group
       spook
       waste_collection_schedule
-    ];
-    customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
-      bubble-card
-      button-card
-      card-mod
-      mushroom
-      universal-remote-card
     ];
     config = {
       http = {
