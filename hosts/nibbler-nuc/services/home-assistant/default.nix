@@ -52,8 +52,8 @@
     customComponents = with pkgs.home-assistant-custom-components; [
       adaptive_lighting
       alarmo
-      better_thermostat
-      climate_group
+      # better_thermostat - Disabled due to not being able to currently add my ecobee3 lite thermostats
+      # climate_group - Disabled due to not being able to currently add my ecobee3 lite thermostats
       spook
       waste_collection_schedule
     ];
