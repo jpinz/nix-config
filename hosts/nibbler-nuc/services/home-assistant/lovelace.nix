@@ -9,17 +9,45 @@
       universal-remote-card
     ];
     lovelaceConfig = {
-      title = "Home";
+      title = "";
       views = [
         {
-          title = "Home";
-          cards = [
+          title = "";
+          path = "home";
+          type = "sections";
+          max_columns = 1;
+          badges = [
             {
-              show_current = true;
-              show_forecast = true;
-              type = "weather-forecast";
+              type = "entity";
               entity = "weather.forecast_home";
-              forecast_type = "daily";
+              show_name = false;
+              show_icon = true;
+              show_state = true;
+              show_entity_picture = false;
+              state_content = "temperature";
+            }
+          ];
+          header = {
+            card = {
+              type = "markdown";
+              text_only = true;
+              content = "# The Pinzers";
+            };
+          };
+          sections = [
+            {
+              name = "";
+              cards = [
+                {
+                  type = "custom:mushroom-light-card";
+                  entity = "light.living_room";
+                  fill_container = false;
+                  use_light_color = true;
+                  show_brightness_control = true;
+                  show_color_control = true;
+                  show_color_temp_control = true;
+                }
+              ];
             }
           ];
         }
