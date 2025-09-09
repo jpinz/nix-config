@@ -19,6 +19,13 @@
           badges = [
             {
               type = "entity";
+              show_name = true;
+              show_state = true;
+              show_icon = true;
+              entity = "person.julian";
+            }
+            {
+              type = "entity";
               entity = "weather.forecast_home";
               show_name = false;
               show_icon = true;

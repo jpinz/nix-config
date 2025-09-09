@@ -15,7 +15,7 @@
     ./mqtt.nix
     ./notify.nix
     # ./people.nix
-    # ./recorder.nix
+    ./recorder.nix
     ./scenes.nix
     # ./sonos.nix
     # ./unifi.nix
