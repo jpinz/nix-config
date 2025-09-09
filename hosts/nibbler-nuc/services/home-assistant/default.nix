@@ -18,6 +18,7 @@
     # ./recorder.nix
     ./scenes.nix
     # ./sonos.nix
+    ./themes.nix
     # ./unifi.nix
     # ./vacation.nix
     ./waste-collection.nix
