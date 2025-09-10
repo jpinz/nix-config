@@ -54,6 +54,24 @@
                   show_color_control = true;
                   show_color_temp_control = true;
                 }
+                {
+                  type = "custom:mushroom-light-card";
+                  entity = "light.kitchen";
+                  fill_container = false;
+                  use_light_color = true;
+                  show_brightness_control = true;
+                  show_color_control = true;
+                  show_color_temp_control = true;
+                }
+                {
+                  type = "custom:mushroom-light-card";
+                  entity = "light.bedroom";
+                  fill_container = false;
+                  use_light_color = true;
+                  show_brightness_control = true;
+                  show_color_control = true;
+                  show_color_temp_control = true;
+                }
               ];
             }
           ];
