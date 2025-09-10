@@ -7,6 +7,7 @@
       card-mod
       mushroom
       universal-remote-card
+      (pkgs.callPackage ./custom_lovelace_components/hass-swipe-navigation.nix {})
     ];
     lovelaceConfig = {
       title = "";
