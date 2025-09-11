@@ -15,7 +15,8 @@
           title = "";
           path = "home";
           type = "sections";
-          max_columns = 1;
+          max_columns = 4;
+          theme = "Rounded";
           badges = [
             {
               type = "entity";
@@ -43,34 +44,112 @@
           };
           sections = [
             {
-              name = "";
+              type = "grid";
               cards = [
                 {
-                  type = "custom:mushroom-light-card";
-                  entity = "light.living_room";
-                  fill_container = false;
-                  use_light_color = true;
-                  show_brightness_control = true;
-                  show_color_control = true;
-                  show_color_temp_control = true;
+                  type = "custom:button-card";
+                  view_layout = {
+                    "grid-area" = "Kitchen";
+                  };
+                  template = "room_card";
+                  variables = {
+                    name = ''[[[ return 'Kitchen']]]'';
+                    icon = "mdi:silverware-variant";
+                    path = "#kitchen";
+                    state = ''
+
+                    '';
+                    background = "var(--red-tint)";
+                    color = "var(--red)";
+                  };
                 }
+              ];
+            }
+            {
+              type = "grid";
+              cards = [
                 {
-                  type = "custom:mushroom-light-card";
-                  entity = "light.kitchen";
-                  fill_container = false;
-                  use_light_color = true;
-                  show_brightness_control = true;
-                  show_color_control = true;
-                  show_color_temp_control = true;
+                  type = "custom:button-card";
+                  view_layout = {
+                    "grid-area" = "Living Room";
+                  };
+                  template = "room_card";
+                  variables = {
+                    name = ''[[[ return 'Living Room']]]'';
+                    icon = "mdi:television";
+                    path = "#living-room";
+                    state = ''
+
+                    '';
+                    background = "var(--blue-tint)";
+                    color = "var(--blue)";
+                  };
                 }
+              ];
+            }
+            {
+              type = "grid";
+              cards = [
                 {
-                  type = "custom:mushroom-light-card";
-                  entity = "light.bedroom";
-                  fill_container = false;
-                  use_light_color = true;
-                  show_brightness_control = true;
-                  show_color_control = true;
-                  show_color_temp_control = true;
+                  type = "custom:button-card";
+                  view_layout = {
+                    "grid-area" = "Julian Office";
+                  };
+                  template = "room_card";
+                  variables = {
+                    name = ''[[[ return 'Julian\'s Office']]]'';
+                    icon = "mdi:chair-rolling";
+                    path = "#julian-office";
+                    state = ''
+
+                    '';
+                    background = "var(--green-tint)";
+                    color = "var(--green)";
+                  };
+                }
+              ];
+            }
+            {
+              type = "grid";
+              cards = [
+                {
+                  type = "custom:button-card";
+                  view_layout = {
+                    "grid-area" = "Lauren Office";
+                  };
+                  template = "room_card";
+                  variables = {
+                    name = ''[[[ return 'Lauren\'s Office']]]'';
+                    icon = "mdi:brush";
+                    path = "#lauren-office";
+                    state = ''
+
+                    '';
+                    background = "var(--purple-tint)";
+                    color = "var(--purple)";
+                  };
+                }
+              ];
+            }
+            {
+              type = "grid";
+              cards = [
+                {
+                  type = "custom:button-card";
+                  view_layout = {
+                    "grid-area" = "Bedroom";
+                  };
+                  template = "room_card";
+                  variables = {
+                    name = ''[[[ return 'Bedroom']]]'';
+                    icon = "mdi:bed";
+                    path = "#bedroom";
+                    state = ''
+
+                    '';
+                    background = "var(--purple-tint)";
+                    color = "var(--purple)";
+                  };
                 }
               ];
             }
