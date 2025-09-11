@@ -1,5 +1,8 @@
 { pkgs, ... }:
 {
+  imports = [
+    ./button-cards.nix
+  ];
   services.home-assistant = {
     customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
       bubble-card
@@ -150,6 +153,45 @@
                     background = "var(--purple-tint)";
                     color = "var(--purple)";
                   };
+                }
+              ];
+            }
+            {
+              type = "grid";
+              cards = [
+                {
+                  type = "vertical-stack";
+                  cards = [
+                    {
+                      type = "custom:bubble-card";
+                      card_type = "pop-up";
+                      hash = "#kitchen";
+                      show_header = true;
+                      button_type = "name";
+                      use_accent_color = false;
+                      name = "Kitchen";
+                      show_name = true;
+                      show_icon = true;
+                      icon = "mdi:silverware-variant";
+                      card_layout = "normal";
+                      margin_top_desktop = "50vh";
+                      margin_top_mobile = "50vh";
+                    }
+                    {
+                      type = "custom:bubble-card";
+                      card_type = "button";
+                      button_type = "slider";
+                      entity = "light.hue_a19_color_003";
+                      show_icon = true;
+                      use_accent_color = false;
+                      tap_action = {
+                        action = "toggle";
+                      };
+                      hold_action = {
+                        action = "more-info";
+                      };
+                    }
+                  ];
                 }
               ];
             }

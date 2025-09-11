@@ -3,7 +3,6 @@
   imports = [
     # ./abode.nix
     ./automations.nix
-    ./button-cards.nix
     # ./blinds.nix
     ./cloud.nix
     ./default-config.nix
