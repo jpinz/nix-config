@@ -5,10 +5,8 @@
       bubble-card
       button-card
       card-mod
-      decluttering-card
       mushroom
       universal-remote-card
-      (pkgs.callPackage ./custom_lovelace_components/hass-swipe-navigation.nix {})
     ];
     lovelaceConfig = {
       title = "";
