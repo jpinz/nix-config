@@ -160,6 +160,28 @@
               type = "grid";
               cards = [
                 {
+                  type = "custom:button-card";
+                  view_layout = {
+                    "grid-area" = "Dining Room";
+                  };
+                  template = "room_card";
+                  variables = {
+                    name = ''[[[ return 'Dining Room']]]'';
+                    icon = "mdi:table-chair";
+                    path = "#dining-room";
+                    state = ''
+
+                    '';
+                    background = "var(--brown-tint)";
+                    color = "var(--brown)";
+                  };
+                }
+              ];
+            }
+            {
+              type = "grid";
+              cards = [
+                {
                   type = "vertical-stack";
                   cards = [
                     {
@@ -301,7 +323,7 @@
                       name = "Dining Room";
                       show_name = true;
                       show_icon = true;
-                      icon = "mdi:brush";
+                      icon = "mdi:table-chair";
                       card_layout = "normal";
                       margin_top_desktop = "50vh";
                       margin_top_mobile = "50vh";
