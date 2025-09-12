@@ -70,7 +70,7 @@
             "0x001788010b6cf321" = defaultLight // {
               friendly_name = "kitchen/table/light";
             };
-            "	0x00158d0009ee273d" = {
+            "0x00158d0009ee273d" = {
               friendly_name = "kitchen/backdoor/sensor";
             };
 
