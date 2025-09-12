@@ -178,18 +178,142 @@
                       margin_top_mobile = "50vh";
                     }
                     {
-                      type = "custom:bubble-card";
-                      card_type = "button";
-                      button_type = "slider";
+                      type = "custom:mushroom-light-card";
                       entity = "light.kitchen_table_light";
-                      show_icon = true;
+                      fill_container = true;
+                      use_light_color = true;
+                      show_brightness_control = true;
+                      show_color_temp_control = true;
+                      show_color_control = true;
+                    }
+                  ];
+                }
+                {
+                  type = "vertical-stack";
+                  cards = [
+                    {
+                      type = "custom:bubble-card";
+                      card_type = "pop-up";
+                      hash = "#living-room";
+                      show_header = true;
+                      button_type = "name";
                       use_accent_color = false;
-                      tap_action = {
-                        action = "toggle";
-                      };
-                      hold_action = {
-                        action = "more-info";
-                      };
+                      name = "Living Room";
+                      show_name = true;
+                      show_icon = true;
+                      icon = "mdi:television";
+                      card_layout = "normal";
+                      margin_top_desktop = "50vh";
+                      margin_top_mobile = "50vh";
+                    }
+                    {
+                      type = "custom:mushroom-light-card";
+                      entity = "light.living_room_ceiling_lights";
+                      fill_container = true;
+                      use_light_color = true;
+                      show_brightness_control = true;
+                      show_color_temp_control = true;
+                      show_color_control = true;
+                    }
+                    {
+                      type = "custom:mushroom-light-card";
+                      entity = "light.living_room_shelf_light";
+                      fill_container = true;
+                      use_light_color = true;
+                      show_brightness_control = true;
+                      show_color_temp_control = true;
+                      show_color_control = true;
+                    }
+                  ];
+                }
+                {
+                  type = "vertical-stack";
+                  cards = [
+                    {
+                      type = "custom:bubble-card";
+                      card_type = "pop-up";
+                      hash = "#bedroom";
+                      show_header = true;
+                      button_type = "name";
+                      use_accent_color = false;
+                      name = "Bedroom";
+                      show_name = true;
+                      show_icon = true;
+                      icon = "mdi:bed";
+                      card_layout = "normal";
+                      margin_top_desktop = "50vh";
+                      margin_top_mobile = "50vh";
+                    }
+                    {
+                      type = "custom:mushroom-light-card";
+                      entity = "light.bedroom_ceiling_light";
+                      primary_info = "none";
+                      secondary_info = "none";
+                      fill_container = true;
+                      use_light_color = true;
+                      show_brightness_control = true;
+                      show_color_temp_control = true;
+                      show_color_control = true;
+                    }
+                  ];
+                }
+                {
+                  type = "vertical-stack";
+                  cards = [
+                    {
+                      type = "custom:bubble-card";
+                      card_type = "pop-up";
+                      hash = "#lauren-office";
+                      show_header = true;
+                      button_type = "name";
+                      use_accent_color = false;
+                      name = "Lauren's Office";
+                      show_name = true;
+                      show_icon = true;
+                      icon = "mdi:brush";
+                      card_layout = "normal";
+                      margin_top_desktop = "50vh";
+                      margin_top_mobile = "50vh";
+                    }
+                    {
+                      type = "custom:mushroom-light-card";
+                      entity = "light.lauren_s_office_ceiling_light";
+                      primary_info = "none";
+                      secondary_info = "none";
+                      fill_container = true;
+                      use_light_color = true;
+                      show_brightness_control = true;
+                      show_color_temp_control = true;
+                      show_color_control = true;
+                    }
+                  ];
+                }
+                {
+                  type = "vertical-stack";
+                  cards = [
+                    {
+                      type = "custom:bubble-card";
+                      card_type = "pop-up";
+                      hash = "#dining-room";
+                      show_header = true;
+                      button_type = "name";
+                      use_accent_color = false;
+                      name = "Dining Room";
+                      show_name = true;
+                      show_icon = true;
+                      icon = "mdi:brush";
+                      card_layout = "normal";
+                      margin_top_desktop = "50vh";
+                      margin_top_mobile = "50vh";
+                    }
+                    {
+                      type = "custom:mushroom-light-card";
+                      entity = "light.dining_room_lamp_lights";
+                      fill_container = true;
+                      use_light_color = true;
+                      show_brightness_control = true;
+                      show_color_temp_control = true;
+                      show_color_control = true;
                     }
                   ];
                 }
