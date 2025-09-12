@@ -43,21 +43,27 @@
            # Living Room
             "0x001788010e9a7656" = defaultLight // {
               friendly_name = "living-room/ceiling/light-1";
+              description = "Closest to the Kitchen";
             };
             "0x001788010e9a725e" = defaultLight // {
               friendly_name = "living-room/ceiling/light-2";
+              description = "Above the right side of the couch (when looking at TV)";
             };
             "0x001788010e9aa14b" = defaultLight // {
               friendly_name = "living-room/ceiling/light-3";
+              description = "In front of the window by the couch";
             };
             "0x001788010e9aa165" = defaultLight // {
               friendly_name = "living-room/ceiling/light-4";
+              description = "In front of the TV";
             };
             "0x001788010e9aa05d" = defaultLight // {
               friendly_name = "living-room/ceiling/light-5";
+              description = "Above the fireplace";
             };
             "0x001788010e9aa1ed" = defaultLight // {
               friendly_name = "living-room/ceiling/light-6";
+              description = "Outside of the bathroom";
             };
             "0x001788010b6cf2f7" = defaultLight // {
               friendly_name = "living-room/shelf/light-1";
