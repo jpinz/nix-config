@@ -149,6 +149,12 @@
                 # name = "Bedroom Ceiling Light";
               };
             };
+            "0x8c8b48fffe24b6fb" = defaultSwitch // {
+              friendly_name = "bedroom/switch";
+              homeassistant = {
+                # name = "Bedroom Switch";
+              };
+            };
 
             # Lauren's Office
             "0x001788010c70529f" = defaultLight // {
