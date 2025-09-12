@@ -44,6 +44,7 @@
             "0x001788010e9a7656" = defaultLight // {
               friendly_name = "living-room/ceiling/light-1";
               description = "Closest to the Kitchen";
+              transition = 0.75;
               homeassistant = {
                 # name = "Living Room Ceiling Light 1";
               };
@@ -51,6 +52,7 @@
             "0x001788010e9a725e" = defaultLight // {
               friendly_name = "living-room/ceiling/light-2";
               description = "Above the right side of the couch (when looking at TV)";
+              transition = 0.75;
               homeassistant = {
                 # name = "Living Room Ceiling Light 2";
               };
@@ -58,6 +60,7 @@
             "0x001788010e9aa14b" = defaultLight // {
               friendly_name = "living-room/ceiling/light-3";
               description = "In front of the window by the couch";
+              transition = 0.75;
               homeassistant = {
                 # name = "Living Room Ceiling Light 3";
               };
@@ -65,6 +68,7 @@
             "0x001788010e9aa165" = defaultLight // {
               friendly_name = "living-room/ceiling/light-4";
               description = "In front of the TV";
+              transition = 0.75;
               homeassistant = {
                 # name = "Living Room Ceiling Light 4";
               };
@@ -72,6 +76,7 @@
             "0x001788010e9aa05d" = defaultLight // {
               friendly_name = "living-room/ceiling/light-5";
               description = "Above the fireplace";
+              transition = 0.75;
               homeassistant = {
                 # name = "Living Room Ceiling Light 5";
               };
@@ -79,12 +84,14 @@
             "0x001788010e9aa1ed" = defaultLight // {
               friendly_name = "living-room/ceiling/light-6";
               description = "Outside of the bathroom";
+              transition = 0.75;
               homeassistant = {
                 # name = "Living Room Ceiling Light 6";
               };
             };
             "0x001788010b6cf2f7" = defaultLight // {
               friendly_name = "living-room/shelf/light-1";
+              transition = 0.75;
               homeassistant = {
                 # name = "Living Room Shelf Light";
               };
@@ -99,6 +106,7 @@
             # Kitchen
             "0x001788010b6cf321" = defaultLight // {
               friendly_name = "kitchen/table/light";
+              transition = 0.75;
               homeassistant = {
                 # name = "Kitchen Table Light";
               };
@@ -113,18 +121,21 @@
             # Dining Room
             "0x0017880108e27628" = defaultLight // {
               friendly_name = "dining-room/floor-lamp/light-top";
+              transition = 0.75;
               homeassistant = {
                 # name = "Dining Room Floor Lamp Top";
               };
             };
             "0x001788010ce828b1" = defaultLight // {
               friendly_name = "dining-room/floor-lamp/light-middle";
+              transition = 0.75;
               homeassistant = {
                 # name = "Dining Room Floor Lamp Middle";
               };
             };
             "0x001788010ce0f8ee" = defaultLight // {
               friendly_name = "dining-room/floor-lamp/light-bottom";
+              transition = 0.75;
               homeassistant = {
                 # name = "Dining Room Floor Lamp Bottom";
               };
@@ -133,6 +144,7 @@
             # Bedroom
             "0x001788010f18f4b6" = defaultLight // {
               friendly_name = "bedroom/ceiling/light";
+              transition = 0.75;
               homeassistant = {
                 # name = "Bedroom Ceiling Light";
               };
@@ -141,6 +153,7 @@
             # Lauren's Office
             "0x001788010c70529f" = defaultLight // {
               friendly_name = "laurens-office/ceiling/light";
+              transition = 0.75;
               homeassistant = {
                 # name = "Lauren's Office Ceiling Light";
               };
