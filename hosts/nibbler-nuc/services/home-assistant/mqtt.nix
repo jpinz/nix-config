@@ -158,6 +158,7 @@
         groups = {
           "1" = {
             friendly_name = "group/living-room/ceiling";
+            transition = 0.75;
             devices = [
               "0x001788010e9a7656/11"
               "0x001788010e9a725e/11"
