@@ -1,11 +1,8 @@
 {
-  services.home-assistant.config =
-  {
-    "scenes manual" = [
-      {
-     
-      }
+  services.home-assistant.config = {
+    "scene manual" = [
+
     ];
-    "scenes ui" = "!include scenes.yaml";
- };
+    "scene ui" = "!include scenes.yaml";
+  };
 }

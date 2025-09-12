@@ -1,13 +1,11 @@
 { pkgs, config, ... }:
 {
   imports = [
-    # ./abode.nix
     ./automations.nix
-    # ./blinds.nix
+    ./blueprints.nix
     ./cloud.nix
     ./default-config.nix
     # ./esphome.nix
-    # ./hvac.nix
     # ./leak.nix
     # ./lights.nix
     ./lovelace.nix
@@ -17,6 +15,7 @@
     # ./people.nix
     ./recorder.nix
     ./scenes.nix
+    ./scripts.nix
     # ./sonos.nix
     # ./unifi.nix
     # ./vacation.nix
@@ -38,7 +37,6 @@
       "homeassistant_hardware"
       "homeassistant_sky_connect"
       "homekit_controller"
-      "hue"
       "isal"
       "matter"
       "met"
