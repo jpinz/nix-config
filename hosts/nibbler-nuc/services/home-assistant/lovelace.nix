@@ -181,7 +181,7 @@
                       type = "custom:bubble-card";
                       card_type = "button";
                       button_type = "slider";
-                      entity = "light.hue_a19_color_003";
+                      entity = "light.kitchen_table_light";
                       show_icon = true;
                       use_accent_color = false;
                       tap_action = {
