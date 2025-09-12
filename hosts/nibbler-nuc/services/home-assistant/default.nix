@@ -9,7 +9,7 @@
     # ./leak.nix
     # ./lights.nix
     ./lovelace.nix
-    # ./miele.nix
+    ./matter.nix
     ./mqtt.nix
     ./notify.nix
     # ./people.nix
