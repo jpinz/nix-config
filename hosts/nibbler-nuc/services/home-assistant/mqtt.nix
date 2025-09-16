@@ -117,6 +117,18 @@
                 # name = "Back Door Sensor";
               };
             };
+            "0x04e3e5fffed141fe" = defaultSwitch // {
+              friendly_name = "kitchen/switch";
+              homeassistant = {
+                # name = "Kitchen Overhead Switch";
+              };
+            };
+            "0x8c8b48fffe4c567b" = defaultSwitch // {
+              friendly_name = "kitchen/back-deck/switch";
+              homeassistant = {
+                # name = "Back Deck Switch";
+              };
+            };
 
             # Dining Room
             "0x0017880108e27628" = defaultLight // {
@@ -170,6 +182,14 @@
               friendly_name = "basement/thermometer";
               homeassistant = {
                 # name = "Basement Thermometer";
+              };
+            };
+
+            # Outside
+            "0x00158d0009ee2557" = {
+              friendly_name = "outside/shed/door-sensor";
+              homeassistant = {
+                # name = "Shed Door Sensor";
               };
             };
           };
