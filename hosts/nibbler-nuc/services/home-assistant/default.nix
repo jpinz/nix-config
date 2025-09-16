@@ -42,8 +42,10 @@
       "met"
       "mqtt"
       "notify"
+      "otbr"
       "otp"
       "roborock"
+      "thread"
       "unifiprotect"
       "zeroconf"
     ];
