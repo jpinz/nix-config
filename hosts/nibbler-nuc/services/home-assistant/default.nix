@@ -46,6 +46,7 @@
       "otp"
       "roborock"
       "thread"
+      "tplink"
       "unifiprotect"
       "zeroconf"
     ];
