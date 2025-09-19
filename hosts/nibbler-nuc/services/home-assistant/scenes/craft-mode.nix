@@ -4,7 +4,7 @@
 {
         name = "Craft Mode";
         entities = {
-          "light.living_room_ceiling_light_2" = {
+          "light.lr_2" = {
             state = "on";
             color_mode = "color_temp";
             brightness = 181;
