@@ -9,9 +9,9 @@
             icon = "mdi:unicorn";
             path = "#path";
             state = null;
-            background = "var(--gray000)";
-            color = "var(--green)";
-            text = "var(--contrast20)";
+            background = "var(--bubble-main-background-color)";
+            color = "var(--bubble-accent-color)";
+            text = "var(--input-ink-color)";
             radius = "36px 36px 36px 6px";
           };
           icon = "[[[ return variables.icon ]]]";

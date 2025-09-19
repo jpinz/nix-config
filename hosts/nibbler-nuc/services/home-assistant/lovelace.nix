@@ -3,11 +3,13 @@
   imports = [
     ./button-cards.nix
   ];
+  
   services.home-assistant = {
     customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
       bubble-card
       button-card
       card-mod
+      material-you-utilities
       mushroom
       universal-remote-card
     ];
@@ -62,8 +64,7 @@
                     state = ''
 
                     '';
-                    background = "var(--red-tint)";
-                    color = "var(--red)";
+                    color = "var(--red-color)";
                   };
                 }
               ];
@@ -84,8 +85,7 @@
                     state = ''
 
                     '';
-                    background = "var(--blue-tint)";
-                    color = "var(--blue)";
+                    color = "var(--blue-color)";
                   };
                 }
               ];
@@ -106,8 +106,7 @@
                     state = ''
 
                     '';
-                    background = "var(--green-tint)";
-                    color = "var(--green)";
+                    color = "var(--green-color)";
                   };
                 }
               ];
@@ -128,8 +127,7 @@
                     state = ''
 
                     '';
-                    background = "var(--purple-tint)";
-                    color = "var(--purple)";
+                    color = "var(--purple-color)";
                   };
                 }
               ];
@@ -150,8 +148,7 @@
                     state = ''
 
                     '';
-                    background = "var(--purple-tint)";
-                    color = "var(--purple)";
+                    color = "var(--indigo-color)";
                   };
                 }
               ];
@@ -172,8 +169,7 @@
                     state = ''
 
                     '';
-                    background = "var(--brown-tint)";
-                    color = "var(--brown)";
+                    color = "var(--brown-color)";
                   };
                 }
               ];
@@ -276,6 +272,30 @@
                       show_brightness_control = true;
                       show_color_temp_control = true;
                       show_color_control = true;
+                    }
+                  ];
+                }
+                {
+                  type = "vertical-stack";
+                  cards = [
+                    {
+                      type = "custom:bubble-card";
+                      card_type = "pop-up";
+                      hash = "#julian-office";
+                      show_header = true;
+                      button_type = "name";
+                      use_accent_color = false;
+                      name = "Julian's Office";
+                      show_name = true;
+                      show_icon = true;
+                      icon = "mdi:rolling-chair";
+                      card_layout = "normal";
+                      margin_top_desktop = "50vh";
+                      margin_top_mobile = "50vh";
+                    }
+                    {
+                      type = "custom:mushroom-entity-card";
+                      entity = "light.julian_s_office_switch";
                     }
                   ];
                 }

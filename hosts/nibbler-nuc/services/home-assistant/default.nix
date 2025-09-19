@@ -38,6 +38,7 @@
       "homeassistant_sky_connect"
       "homekit_controller"
       "isal"
+      "lg_thinq"
       "matter"
       "met"
       "mqtt"
@@ -48,6 +49,7 @@
       "thread"
       "tplink"
       "unifiprotect"
+      "webostv"
       "zeroconf"
     ];
     customComponents = with pkgs.home-assistant-custom-components; [
@@ -75,6 +77,21 @@
       lovelace = {
         mode = "yaml";
       };
+      frontend = {
+        themes = "!include_dir_merge_named themes";
+        extra_module_url = [
+          "/local/nixos-lovelace-modules/material-you-utilities.min.js"
+        ];
+      };
+      panel_custom = [
+        {
+          name = "material-you-panel";
+          url_path = "material-you-configuration";
+          sidebar_title = "Material You Utilities";
+          sidebar_icon = "mdi:material-design";
+          module_url = "/local/nixos-lovelace-modules/material-you-utilities.min.js";
+        }
+      ];
     };
   };
 

@@ -168,6 +168,14 @@
               };
             };
 
+            # Julian's Office
+            "0x8c8b48fffe4c5cfc" = defaultSwitch // {
+              friendly_name = "julians-office/switch";
+              homeassistant = {
+                # name = "Julian's Office Switch";
+              };
+            };
+
             # Lauren's Office
             "0x001788010c70529f" = defaultLight // {
               friendly_name = "laurens-office/ceiling/light";
