@@ -11,6 +11,8 @@
       card-mod
       material-you-utilities
       mushroom
+      navbar-card
+      swipe-navigation
       universal-remote-card
     ];
     lovelaceConfig = {
