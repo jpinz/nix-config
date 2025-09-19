@@ -46,6 +46,7 @@
       "otbr"
       "otp"
       "roborock"
+      "smartthings"
       "thread"
       "tplink"
       "unifiprotect"
