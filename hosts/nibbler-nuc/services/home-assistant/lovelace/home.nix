@@ -208,38 +208,29 @@
                       show_icon = true;
                       icon = "mdi:television";
                       card_layout = "normal";
-                      margin_top_desktop = "100vh";
-                      margin_top_mobile = "100vh";
-                    }
-                    {
-                      type = "custom:mushroom-light-card";
-                      entity = "light.living_room_ceiling_lights";
-                      fill_container = true;
-                      use_light_color = true;
-                      show_brightness_control = true;
-                      show_color_temp_control = true;
-                      show_color_control = true;
-                    }
-                    {
-                      type = "custom:mushroom-light-card";
-                      entity = "light.living_room_shelf";
-                      fill_container = true;
-                      use_light_color = true;
-                      show_brightness_control = true;
-                      show_color_temp_control = true;
-                      show_color_control = true;
+                      margin_top_desktop = "5vh";
+                      margin_top_mobile = "5vh";
                     }
                     {
                       type = "custom:universal-remote-card";
                       rows = [
-                        [ "back" "power" "home" ]
-                        [ "hulu" "netflix" "max" "youtube" ]
+                        [
+                          "back"
+                          "power"
+                          "home"
+                        ]
+                        [
+                          "hulu"
+                          "netflix"
+                          "max"
+                          "youtube"
+                        ]
                         [ "touchpad" ]
                       ];
                       remote_id = "remote.living_room_tv";
-                      custom_actions = [];
+                      custom_actions = [ ];
                       media_player_id = "media_player.living_room_tv";
-                      custom_icons = [];
+                      custom_icons = [ ];
                       platform = "Android TV";
                     }
                     {
@@ -247,10 +238,35 @@
                       rows = [
                         [ "volume_buttons" ]
                       ];
-                      custom_actions = [];
+                      custom_actions = [ ];
                       media_player_id = "media_player.lg_c5";
-                      custom_icons = [];
+                      custom_icons = [ ];
                       platform = "LG webOS";
+                    }
+                    {
+                      type = "grid";
+                      columns = 2;
+                      square = false;
+                      cards = [
+                        {
+                          type = "custom:mushroom-light-card";
+                          entity = "light.living_room_ceiling_lights";
+                          fill_container = true;
+                          use_light_color = true;
+                          show_brightness_control = true;
+                          show_color_temp_control = true;
+                          show_color_control = true;
+                        }
+                        {
+                          type = "custom:mushroom-light-card";
+                          entity = "light.living_room_shelf";
+                          fill_container = true;
+                          use_light_color = true;
+                          show_brightness_control = true;
+                          show_color_temp_control = true;
+                          show_color_control = true;
+                        }
+                      ];
                     }
                   ];
                 }
