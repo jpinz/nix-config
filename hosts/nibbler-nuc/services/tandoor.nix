@@ -1,9 +1,9 @@
 { lib, ... }:
 {
-  services.mealie = {
+  services.tandoor-recipes = {
     enable = true;
-    settings = {
-    };
+    port = 9000;
+    address = "nibbler.local";
   };
   networking.firewall = {
     allowedTCPPorts = [ 9000 ];
