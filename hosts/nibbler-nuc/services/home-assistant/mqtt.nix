@@ -118,7 +118,7 @@
               };
             };
             "0x04e3e5fffed141fe" = defaultSwitch // {
-              friendly_name = "kitchen/switch";
+              friendly_name = "kitchen/ceiling-lights/switch";
               homeassistant = {
                 # name = "Kitchen Overhead Switch";
               };

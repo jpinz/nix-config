@@ -83,48 +83,6 @@
                 {
                   type = "custom:button-card";
                   view_layout = {
-                    "grid-area" = "Julian Office";
-                  };
-                  template = "room_card";
-                  variables = {
-                    name = ''[[[ return 'Julian\'s Office']]]'';
-                    icon = "mdi:chair-rolling";
-                    path = "#julian-office";
-                    state = ''
-
-                    '';
-                    color = "var(--green-color)";
-                  };
-                }
-              ];
-            }
-            {
-              type = "grid";
-              cards = [
-                {
-                  type = "custom:button-card";
-                  view_layout = {
-                    "grid-area" = "Lauren Office";
-                  };
-                  template = "room_card";
-                  variables = {
-                    name = ''[[[ return 'Lauren\'s Office']]]'';
-                    icon = "mdi:brush";
-                    path = "#lauren-office";
-                    state = ''
-
-                    '';
-                    color = "var(--purple-color)";
-                  };
-                }
-              ];
-            }
-            {
-              type = "grid";
-              cards = [
-                {
-                  type = "custom:button-card";
-                  view_layout = {
                     "grid-area" = "Bedroom";
                   };
                   template = "room_card";
@@ -165,6 +123,49 @@
               type = "grid";
               cards = [
                 {
+                  type = "custom:button-card";
+                  view_layout = {
+                    "grid-area" = "Julian Office";
+                  };
+                  template = "room_card";
+                  variables = {
+                    name = ''[[[ return 'Julian\'s Office']]]'';
+                    icon = "mdi:chair-rolling";
+                    path = "#julian-office";
+                    state = ''
+
+                    '';
+                    color = "var(--green-color)";
+                  };
+                }
+              ];
+            }
+            {
+              type = "grid";
+              cards = [
+                {
+                  type = "custom:button-card";
+                  view_layout = {
+                    "grid-area" = "Lauren Office";
+                  };
+                  template = "room_card";
+                  variables = {
+                    name = ''[[[ return 'Lauren\'s Office']]]'';
+                    icon = "mdi:brush";
+                    path = "#lauren-office";
+                    state = ''
+
+                    '';
+                    color = "var(--purple-color)";
+                  };
+                }
+              ];
+            }
+            # Pop-Ups
+            {
+              type = "grid";
+              cards = [
+                {
                   type = "vertical-stack";
                   cards = [
                     {
@@ -190,6 +191,15 @@
                       show_brightness_control = true;
                       show_color_temp_control = true;
                       show_color_control = true;
+                    }
+                    {
+                      type = "custom:mushroom-light-card";
+                      entity = "light.kitchen_ceiling_switch";
+                      fill_container = true;
+                      use_light_color = false;
+                      show_brightness_control = false;
+                      show_color_temp_control = false;
+                      show_color_control = false;
                     }
                   ];
                 }
