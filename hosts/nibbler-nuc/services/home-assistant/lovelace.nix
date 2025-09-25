@@ -2,8 +2,8 @@
 {
   imports = [
     ./button-cards.nix
-    ./lovelace/home.nix
     ./lovelace/security.nix
+    ./lovelace/home.nix
     ./navbar.nix
   ];
   
