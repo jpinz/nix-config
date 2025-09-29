@@ -254,6 +254,15 @@
                       platform = "LG webOS";
                     }
                     {
+                      type = "custom:mushroom-entity-card";
+                      entity = "input_boolean.lg_tv_sd_input";
+                      tap_action = {
+                        action = "toggle";
+                      };
+                      icon = "mdi:steam";
+                      name = "Switch to Steam Deck Input";
+                    }
+                    {
                       type = "grid";
                       columns = 2;
                       square = false;
@@ -300,9 +309,9 @@
                     }
                     {
                       type = "custom:mushroom-light-card";
-                      entity = "light.bedroom_ceiling_light";
-                      primary_info = "none";
-                      secondary_info = "none";
+                      entity = "light.bedroom_switch";
+                      name = "Bedroom";
+                      icon = "mdi:ceiling-light";
                       fill_container = true;
                       use_light_color = true;
                       show_brightness_control = true;
