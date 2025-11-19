@@ -2,6 +2,7 @@
 {
   home.packages = with pkgs; [
     deadnix
+    nh
     nil
     nix-prefetch-github
     nix-update

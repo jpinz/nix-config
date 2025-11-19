@@ -4,7 +4,6 @@
     ./adguard.nix
     ./glance.nix
     ./homebox.nix
-    ./home-assistant
     ./tandoor.nix
   ];
 
