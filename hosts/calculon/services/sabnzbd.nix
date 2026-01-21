@@ -8,7 +8,7 @@
         complete_dir = "/mnt/downloads/complete";
         download_dir = "/mnt/downloads/incomplete";
         permissions = "0770";
-        host = "::1";
+        host = "0.0.0.0"; # listen on all IPv4 interfaces for LAN access
         port = 8080;
         url_base = "/sabnzbd";
         host_whitelist = "calculon.home, calculon, 192.168.1.75";

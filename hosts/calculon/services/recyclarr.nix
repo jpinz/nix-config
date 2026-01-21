@@ -5,7 +5,7 @@
       sonarr = {
         sonarr = {
           base_url = "http://localhost:8989/sonarr";
-          api_key = "xxxx";
+          api_key = "3334f2d003d148108d0084d270c8fcf9";
           delete_old_custom_formats = true;
           replace_existing_custom_formats = true;
           include = [
@@ -171,7 +171,7 @@
       radarr = {
         radarr = {
           base_url = "http://localhost:7878/radarr";
-          api_key = "xxxx";
+          api_key = "9a2534c83b4f492680a95c4d045d9b61";
           delete_old_custom_formats = true;
           replace_existing_custom_formats = true;
           include = [
