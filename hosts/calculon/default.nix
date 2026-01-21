@@ -16,7 +16,7 @@
   ];
 
   networking = {
-    hostName = "nibbler-nuc";
+    hostName = "calculon";
     hostId = "a1b2c3d4";
   };
 

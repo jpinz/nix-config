@@ -9,7 +9,7 @@ This repository contains my personal NixOS and Home Manager configurations, mana
 
 This configuration manages several different machines:
 
-- [**nibbler-nuc**](./hosts/nibbler-nuc/README.md) - x86_64 NUC running Home Assistant
+- [**calculon**](./hosts/calculon/README.md) - x86_64 NUC running my Media Stack
 - **julian-desktop** - Main desktop PC with AMD CPU, Nvidia GPU, gaming setup, development tools
 
 ## Structure
@@ -17,7 +17,7 @@ This configuration manages several different machines:
 ```
 ├── flake.nix           # Main flake configuration
 ├── hosts/              # NixOS system configurations
-│   ├── nibbler-nuc/    # General server
+│   ├── calculon/       # Media Aerver
 │   ├── julian-desktop/ # Main desktop
 │   └── common/         # Shared system modules
 ├── home/               # Home Manager configurations

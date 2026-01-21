@@ -1,6 +1,6 @@
-# Nibbler NUC
+# Calculon NUC
 
-Nibbler NUC is a server using a [12th Gen Intel N100 4C/4T 16G DDR4 500G M.2 PCIE1/SATA SSD G4][1].
+Calculon NUC is a server using a [i5-7260U 16G DDR4 500G M.2 PCIE1/SATA SSD G4][1].
 
 ## Installation
 
@@ -59,5 +59,5 @@ Rebuild the system configuration:
 nixos-rebuild boot --flake .
 ```
 
-[1]: https://www.amazon.com/dp/B0C15DTJMX
+[1]: https://www.amazon.com/Intel-NUC-Mainstream-Kit-NUC7i5BNH/dp/B01N2UMKZ5
 [2]: https://www.raspberrypi.com/software/
