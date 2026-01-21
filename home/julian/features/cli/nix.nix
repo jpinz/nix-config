@@ -6,7 +6,7 @@
     nil
     nix-prefetch-github
     nix-update
-    nixfmt-rfc-style
+    nixfmt
     nixpkgs-hammering
     nixpkgs-review
     statix
