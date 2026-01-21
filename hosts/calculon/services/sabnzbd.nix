@@ -17,13 +17,13 @@
         displayname = "Newshosting";
         name = "news.newshosting.com";
         host = "news.newshosting.com";
-        port = 564;
+        port = 563;
         connections = 50;
         use_ssl = true;
         ssl_verify = "strict";
       };
       servers."newshosting.tweaknews.eu" = {
-        displayname = "Newshosting";
+        displayname = "Tweaknews";
         name = "newshosting.tweaknews.eu";
         host = "newshosting.tweaknews.eu";
         port = 443;
