@@ -30,18 +30,18 @@
         type = "disk";
         device = "/dev/sdb";
         content = {
-        type = "gpt";
-        partitions = {
+          type = "gpt";
+          partitions = {
             zfs = {
-            size = "100%";
-            content = {
+              size = "100%";
+              content = {
                 type = "zfs";
                 pool = "tank";
+              };
             };
-            };
+          };
         };
       };
-  };
     };
     zpool = {
       zroot = {

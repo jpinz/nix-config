@@ -11,7 +11,8 @@
     ./nix.nix
     ./openssh.nix
     ./sudo.nix
-  ] ++ (builtins.attrValues outputs.nixosModules);
+  ]
+  ++ (builtins.attrValues outputs.nixosModules);
 
   nixpkgs = {
     overlays = builtins.attrValues outputs.overlays;
