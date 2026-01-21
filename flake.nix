@@ -30,16 +30,6 @@
       url = "github:nix-community/nixos-vscode-server";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    sops-nix = {
-      url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nixflix = {
-      url = "github:kiriwalawren/nixflix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
@@ -92,7 +82,7 @@
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt);
 
       nixosConfigurations = {
-        calculon = mkSystem "calculon" "x86_64-linux" [ inputs.nixflix.nixosModules.default inputs.sops-nix.nixosModules.sops ];
+        calculon = mkSystem "calculon" "x86_64-linux" [ ];
         julian-desktop = mkSystem "julian-desktop" "x86_64-linux" [ ];
       };
 
