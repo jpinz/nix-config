@@ -26,7 +26,22 @@
           };
         };
       };
-
+      hdd = {
+        type = "disk";
+        device = "/dev/sdb";
+        content = {
+        type = "gpt";
+        partitions = {
+            zfs = {
+            size = "100%";
+            content = {
+                type = "zfs";
+                pool = "tank";
+            };
+            };
+        };
+      };
+  };
     };
     zpool = {
       zroot = {
@@ -51,6 +66,21 @@
             type = "zfs_fs";
             options.mountpoint = "legacy";
             mountpoint = "/home";
+          };
+        };
+      };
+      tank = {
+        type = "zpool";
+        mountpoint = null;
+        rootFsOptions = {
+          atime = "off";
+          compression = "zstd";
+        };
+        datasets = {
+          root = {
+            type = "zfs_fs";
+            options.mountpoint = "legacy";
+            mountpoint = "/mnt/data";
           };
         };
       };
