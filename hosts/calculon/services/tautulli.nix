@@ -1,0 +1,5 @@
+{
+  services.tautulli = {
+    enable = true;
+  };
+}
