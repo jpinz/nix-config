@@ -13,14 +13,9 @@
 
     ../common/optional/dev.nix
     ../common/optional/docker.nix
-    ../common/optional/plasma.nix
-    ../common/optional/openrgb.nix
-    ../common/optional/pipewire.nix
-    ../common/optional/steam.nix
     ../common/optional/systemd-boot.nix
     ../common/optional/quietboot.nix
     ../common/optional/virtualisation.nix
-    ../common/optional/vpn.nix
   ];
 
   networking = {
