@@ -82,12 +82,12 @@
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
 
       nixosConfigurations = {
-        nibbler-nuc = mkSystem "nibbler-nuc" "x86_64-linux" [ ];
+        calculon = mkSystem "calculon" "x86_64-linux" [ ];
         julian-desktop = mkSystem "julian-desktop" "x86_64-linux" [ ];
       };
 
       homeConfigurations = {
-        "julian@nibbler-nuc" = mkHome "julian" "nibbler-nuc" "x86_64-linux" [ ];
+        "julian@calculon" = mkHome "julian" "calculon" "x86_64-linux" [ ];
         "julian@generic" = mkHome "julian" "generic" "x86_64-linux" [ ];
         "julian@jpinzer-desktop" = mkHome "julian" "wsl" "x86_64-linux" [ ];
         "julian@jpinzer-surface" = mkHome "julian" "wsl" "x86_64-linux" [ ];
