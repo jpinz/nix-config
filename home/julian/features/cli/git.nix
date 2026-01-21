@@ -2,7 +2,6 @@
 {
   programs.git = {
     enable = true;
-    package = pkgs.gitAndTools.gitFull;
     userName = "Julian Pinzer";
     userEmail = "julian@jpinzer.me";
     aliases = {
