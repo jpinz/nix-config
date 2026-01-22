@@ -13,6 +13,27 @@
       pages = [
         {
           name = "Home";
+          head-widgets = [
+            {
+              type = "search";
+              # Default to Bing, add bangs for Kagi and Google
+              search-engine = "bing";
+              hide-header = true;
+              placeholder = "Search (use !k for Kagi, !g for Google)";
+              bangs = [
+                {
+                  title = "Kagi";
+                  shortcut = "!k";
+                  url = "https://kagi.com/search?q={QUERY}";
+                }
+                {
+                  title = "Google";
+                  shortcut = "!g";
+                  url = "https://www.google.com/search?q={QUERY}";
+                }
+              ];
+            }
+          ];
           columns = [
             {
               size = "small";
@@ -23,52 +44,17 @@
                 }
                 {
                   type = "calendar";
+                  first-day-of-week = "sunday";
                 }
                 {
                   type = "bookmarks";
                   groups = [
                     {
-                      title = "Media";
                       links = [
                         {
-                          title = "Plex";
-                          url = "http://calculon.home:32400/web";
-                          icon = "si:plex";
-                        }
-                        {
-                          title = "Tautulli";
-                          url = "http://calculon.home:8181";
-                          icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/tautulli.svg";
-                        }
-                      ];
-                    }
-                    {
-                      title = "Downloads";
-                      links = [
-                        {
-                          title = "SABnzbd";
-                          url = "http://calculon.home:8080/sabnzbd";
-                          icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/sabnzbd.svg";
-                        }
-                      ];
-                    }
-                    {
-                      title = "*arr Stack";
-                      links = [
-                        {
-                          title = "Sonarr";
-                          url = "http://calculon.home:8989/sonarr";
-                          icon = "si:sonarr";
-                        }
-                        {
-                          title = "Radarr";
-                          url = "http://calculon.home:7878/radarr";
-                          icon = "si:radarr";
-                        }
-                        {
-                          title = "Prowlarr";
-                          url = "http://calculon.home:9696";
-                          icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/prowlarr.svg";
+                          title = "Home Assistant";
+                          url = "http://homeassistant.local:8123/";
+                          icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/home-assistant.svg";
                         }
                       ];
                     }
@@ -224,17 +210,17 @@
                     {
                       title = "Plex";
                       url = "http://calculon.home:32400/web";
-                      icon = "si:plex";
+                      icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/plex.svg";
                     }
                     {
                       title = "Sonarr";
                       url = "http://calculon.home:8989/sonarr";
-                      icon = "si:sonarr";
+                      icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/sonarr.svg";
                     }
                     {
                       title = "Radarr";
                       url = "http://calculon.home:7878/radarr";
-                      icon = "si:radarr";
+                      icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/radarr.svg";
                     }
                     {
                       title = "Prowlarr";
@@ -258,91 +244,107 @@
             {
               size = "small";
               widgets = [
-                # Sonarr Upcoming Widget
                 {
-                  type = "custom-api";
-                  title = "Upcoming TV";
-                  title-url = "http://calculon.home:8989/sonarr";
-                  cache = "15m";
-                  options = {
-                    base-url = "http://calculon.home:8989/sonarr";
-                    api-key = "\${SONARR_API_KEY}";
-                    collapse-after = 5;
-                  };
-                  template = ''
-                    {{ $baseUrl := .Options.StringOr "base-url" "" }}
-                    {{ $apiKey := .Options.StringOr "api-key" "" }}
-                    {{ $collapseAfter := .Options.IntOr "collapse-after" 5 }}
+                  type = "group";
+                  style = "tabs-static";
+                  widgets = [
+                    # Sonarr Upcoming Widget
+                    {
+                      type = "custom-api";
+                      title = "Upcoming TV";
+                      title-url = "http://calculon.home:8989/sonarr";
+                      cache = "15m";
+                      options = {
+                        base-url = "http://calculon.home:8989/sonarr";
+                        api-key = "\${SONARR_API_KEY}";
+                        collapse-after = 5;
+                      };
+                      template = ''
+                        {{ $baseUrl := .Options.StringOr "base-url" "" }}
+                        {{ $apiKey := .Options.StringOr "api-key" "" }}
+                        {{ $collapseAfter := .Options.IntOr "collapse-after" 5 }}
 
-                    {{ $calendarUrl := printf "%s/api/v3/calendar?start=%s&end=%s" $baseUrl (now | formatTime "2006-01-02") ((now.Add (duration "168h")) | formatTime "2006-01-02") }}
-                    {{ $calendarData := newRequest $calendarUrl
-                      | withHeader "X-Api-Key" $apiKey
-                      | getResponse }}
+                        {{ $calendarUrl := printf "%s/api/v3/calendar?start=%s&end=%s&includeSeries=true" $baseUrl (now | formatTime "2006-01-02") ((now.Add (duration "168h")) | formatTime "2006-01-02") }}
+                        {{ $calendarData := newRequest $calendarUrl
+                          | withHeader "X-Api-Key" $apiKey
+                          | getResponse }}
 
-                    {{ if eq $calendarData.Response.StatusCode 200 }}
-                      {{ $episodes := $calendarData.JSON.Array "" }}
-                      {{ if eq (len $episodes) 0 }}
-                        <p class="color-subdue">No upcoming episodes</p>
-                      {{ else }}
-                        <ul class="list list-gap-10 collapsible-container" data-collapse-after="{{ $collapseAfter }}">
-                          {{ range $episodes }}
-                            <li>
-                              <div class="flex justify-between">
-                                <span class="color-highlight text-truncate">{{ .String "series.title" }} - S{{ .Int "seasonNumber" }}E{{ .Int "episodeNumber" }}</span>
-                                <span class="color-primary shrink-0" style="margin-left: 0.5rem;">{{ .String "airDateUtc" | parseTime "2006-01-02T15:04:05Z" | formatTime "Jan 2" }}</span>
-                              </div>
-                              <div class="color-subdue text-truncate size-h6">{{ .String "title" }}</div>
-                            </li>
+                        {{ if eq $calendarData.Response.StatusCode 200 }}
+                          {{ $episodes := $calendarData.JSON.Array "" }}
+                          {{ if eq (len $episodes) 0 }}
+                            <p class="color-subdue">No upcoming episodes</p>
+                          {{ else }}
+                            <ul class="list list-gap-10 collapsible-container" data-collapse-after="{{ $collapseAfter }}">
+                              {{ range $episodes }}
+                                <li>
+                                  <div class="flex justify-between">
+                                    <span class="color-highlight text-truncate">{{ .String "series.title" }}</span>
+                                    <span class="color-primary shrink-0" style="margin-left: 0.5rem;">{{ .String "airDateUtc" | parseTime "2006-01-02T15:04:05Z" | formatTime "Jan 2" }}</span>
+                                  </div>
+                                  <div class="color-subdue text-truncate size-h6">S{{ .Int "seasonNumber" }} E{{ .Int "episodeNumber" }}</div>
+                                </li>
+                              {{ end }}
+                            </ul>
                           {{ end }}
-                        </ul>
-                      {{ end }}
-                    {{ else }}
-                      <p class="color-negative">Failed to fetch Sonarr data</p>
-                    {{ end }}
-                  '';
+                        {{ else }}
+                          <p class="color-negative">Failed to fetch Sonarr data</p>
+                        {{ end }}
+                      '';
+                    }
+                    # Radarr Upcoming Widget
+                    {
+                      type = "custom-api";
+                      title = "Upcoming Movies";
+                      title-url = "http://calculon.home:7878/radarr";
+                      cache = "15m";
+                      options = {
+                        base-url = "http://calculon.home:7878/radarr";
+                        api-key = "\${RADARR_API_KEY}";
+                        collapse-after = 5;
+                      };
+                      template = ''
+                        {{ $baseUrl := .Options.StringOr "base-url" "" }}
+                        {{ $apiKey := .Options.StringOr "api-key" "" }}
+                        {{ $collapseAfter := .Options.IntOr "collapse-after" 5 }}
+
+                        {{ $calendarUrl := printf "%s/api/v3/calendar?start=%s&end=%s" $baseUrl (now | formatTime "2006-01-02") ((now.Add (duration "720h")) | formatTime "2006-01-02") }}
+                        {{ $calendarData := newRequest $calendarUrl
+                          | withHeader "X-Api-Key" $apiKey
+                          | getResponse }}
+
+                        {{ if eq $calendarData.Response.StatusCode 200 }}
+                          {{ $movies := $calendarData.JSON.Array "" }}
+                          {{ if eq (len $movies) 0 }}
+                            <p class="color-subdue">No upcoming movies</p>
+                          {{ else }}
+                            <ul class="list list-gap-10 collapsible-container" data-collapse-after="{{ $collapseAfter }}">
+                              {{ range $movies }}
+                                <li>
+                                  <div class="color-highlight text-truncate">{{ .String "title" }}</div>
+                                  <div class="flex justify-between">
+                                    <span class="color-subdue">{{ .Int "year" }}</span>
+                                    <span class="color-primary">{{ .String "digitalRelease" | parseTime "2006-01-02T15:04:05Z" | formatTime "Jan 2" }}</span>
+                                  </div>
+                                </li>
+                              {{ end }}
+                            </ul>
+                          {{ end }}
+                        {{ else }}
+                          <p class="color-negative">Failed to fetch Radarr data</p>
+                        {{ end }}
+                      '';
+                    }
+                  ];
                 }
-                # Radarr Upcoming Widget
+                # System Status (Server Stats) — shown above Unifi
                 {
-                  type = "custom-api";
-                  title = "Upcoming Movies";
-                  title-url = "http://calculon.home:7878/radarr";
-                  cache = "15m";
-                  options = {
-                    base-url = "http://calculon.home:7878/radarr";
-                    api-key = "\${RADARR_API_KEY}";
-                    collapse-after = 5;
-                  };
-                  template = ''
-                    {{ $baseUrl := .Options.StringOr "base-url" "" }}
-                    {{ $apiKey := .Options.StringOr "api-key" "" }}
-                    {{ $collapseAfter := .Options.IntOr "collapse-after" 5 }}
-
-                    {{ $calendarUrl := printf "%s/api/v3/calendar?start=%s&end=%s" $baseUrl (now | formatTime "2006-01-02") ((now.Add (duration "720h")) | formatTime "2006-01-02") }}
-                    {{ $calendarData := newRequest $calendarUrl
-                      | withHeader "X-Api-Key" $apiKey
-                      | getResponse }}
-
-                    {{ if eq $calendarData.Response.StatusCode 200 }}
-                      {{ $movies := $calendarData.JSON.Array "" }}
-                      {{ if eq (len $movies) 0 }}
-                        <p class="color-subdue">No upcoming movies</p>
-                      {{ else }}
-                        <ul class="list list-gap-10 collapsible-container" data-collapse-after="{{ $collapseAfter }}">
-                          {{ range $movies }}
-                            <li>
-                              <div class="color-highlight text-truncate">{{ .String "title" }}</div>
-                              <div class="flex justify-between">
-                                <span class="color-subdue">{{ .Int "year" }}</span>
-                                <span class="color-primary">{{ .String "digitalRelease" | parseTime "2006-01-02T15:04:05Z" | formatTime "Jan 2" }}</span>
-                              </div>
-                            </li>
-                          {{ end }}
-                        </ul>
-                      {{ end }}
-                    {{ else }}
-                      <p class="color-negative">Failed to fetch Radarr data</p>
-                    {{ end }}
-                  '';
+                  type = "server-stats";
+                  servers = [
+                    {
+                      type = "local";
+                      name = "Calculon";
+                    }
+                  ];
                 }
                 # Unifi Widget
                 {
