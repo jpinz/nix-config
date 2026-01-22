@@ -3,6 +3,7 @@
   imports = [
     # ./caddy.nix
     # ./hd-idle.nix
+    ./glance.nix
     ./plex.nix
     ./prowlarr.nix
     ./radarr.nix
@@ -34,6 +35,7 @@
     8080 # sabnzbd (currently bound to ::1)
     8989 # sonarr
     8181 # tautulli
+    32400 # plex
   ];
   # Plex opens its required ports via services.plex.openFirewall = true
 }
