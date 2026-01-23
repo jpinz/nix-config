@@ -3,7 +3,9 @@
   imports = [
     # ./caddy.nix
     # ./hd-idle.nix
+    ./bazarr.nix
     ./glance.nix
+    ./homebox.nix
     ./plex.nix
     ./prowlarr.nix
     ./radarr.nix
@@ -14,6 +16,7 @@
   ];
 
   users.groups.services.members = with config.services; [
+    bazarr.user
     plex.user
     radarr.user
     sabnzbd.user
@@ -30,6 +33,8 @@
 
   # Open firewall ports for locally hosted services
   networking.firewall.allowedTCPPorts = [
+    6767 # bazarr
+    7745 # homebox
     9696 # prowlarr
     7878 # radarr
     8080 # sabnzbd (currently bound to ::1)

@@ -213,6 +213,11 @@
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/plex.svg";
                     }
                     {
+                      title = "Homebox";
+                      url = "http://calculon.home:7745";
+                      icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/homebox.svg";
+                    }
+                    {
                       title = "Sonarr";
                       url = "http://calculon.home:8989/sonarr";
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/sonarr.svg";
@@ -221,6 +226,11 @@
                       title = "Radarr";
                       url = "http://calculon.home:7878/radarr";
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/radarr.svg";
+                    }
+                    {
+                      title = "Bazarr";
+                      url = "http://calculon.home:6767";
+                      icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/bazarr.svg";
                     }
                     {
                       title = "Prowlarr";
