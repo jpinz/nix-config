@@ -6,6 +6,7 @@
     ./opencode.nix
     ./jujutsu.nix
     ./nix.nix
+    ./micro.nix
     ./ssh.nix
     ./starship.nix
   ];
@@ -55,10 +56,8 @@
     };
     zellij = {
       enable = true;
-      enableFishIntegration = false;
-      attachExistingSession = true;
-      exitShellOnExit = true;
       settings = {
+        default_mode = "locked";
         theme = "dracula";
         themes = {
           nord = {
