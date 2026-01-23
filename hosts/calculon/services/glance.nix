@@ -132,8 +132,8 @@
                   type = "custom-api";
                   title = "SABnzbd";
                   cache = "30s";
-                  url = "http://calculon.home:8080/sabnzbd/api?output=json&apikey=\${SABNZBD_API_KEY}&mode=queue";
-                  title-url = "http://calculon.home:8080/sabnzbd";
+                  url = "http://calculon.home/sabnzbd/api?output=json&apikey=\${SABNZBD_API_KEY}&mode=queue";
+                  title-url = "http://calculon.home/sabnzbd";
                   headers = {
                     Accept = "application/json";
                   };
@@ -163,10 +163,10 @@
                   type = "custom-api";
                   title = "Prowlarr Indexers";
                   cache = "5m";
-                  title-url = "http://calculon.home:9696";
+                  title-url = "http://calculon.home/prowlarr";
                   options = {
-                    url = "http://calculon.home:9696";
-                    base-url = "http://calculon.home:9696";
+                    url = "http://calculon.home/prowlarr";
+                    base-url = "http://calculon.home/prowlarr";
                     api-key = "\${PROWLARR_API_KEY}";
                     collapse-after = 5;
                   };
@@ -219,12 +219,12 @@
                     }
                     {
                       title = "Sonarr";
-                      url = "http://calculon.home:8989/sonarr";
+                      url = "http://calculon.home/sonarr";
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/sonarr.svg";
                     }
                     {
                       title = "Radarr";
-                      url = "http://calculon.home:7878/radarr";
+                      url = "http://calculon.home/radarr";
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/radarr.svg";
                     }
                     {
@@ -234,12 +234,12 @@
                     }
                     {
                       title = "Prowlarr";
-                      url = "http://calculon.home:9696";
+                      url = "http://calculon.home/prowlarr";
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/prowlarr.svg";
                     }
                     {
                       title = "SABnzbd";
-                      url = "http://calculon.home:8080/sabnzbd";
+                      url = "http://calculon.home/sabnzbd";
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/sabnzbd.svg";
                     }
                     {
@@ -262,10 +262,10 @@
                     {
                       type = "custom-api";
                       title = "Upcoming TV";
-                      title-url = "http://calculon.home:8989/sonarr";
+                      title-url = "http://calculon.home/sonarr";
                       cache = "15m";
                       options = {
-                        base-url = "http://calculon.home:8989/sonarr";
+                        base-url = "http://calculon.home/sonarr";
                         api-key = "\${SONARR_API_KEY}";
                         collapse-after = 5;
                       };
@@ -305,10 +305,10 @@
                     {
                       type = "custom-api";
                       title = "Upcoming Movies";
-                      title-url = "http://calculon.home:7878/radarr";
+                      title-url = "http://calculon.home/radarr";
                       cache = "15m";
                       options = {
-                        base-url = "http://calculon.home:7878/radarr";
+                        base-url = "http://calculon.home/radarr";
                         api-key = "\${RADARR_API_KEY}";
                         collapse-after = 5;
                       };
