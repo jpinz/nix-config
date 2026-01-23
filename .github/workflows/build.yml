@@ -15,11 +15,11 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: 'nibbler-nuc'
-            path: 'nixosConfigurations."nibbler-nuc".config.system.build.toplevel'
+          - name: 'calculon'
+            path: 'nixosConfigurations."calculon".config.system.build.toplevel'
             os: ubuntu-24.04
-          - name: 'julian@nibbler-nuc'
-            path: 'homeConfigurations."julian@nibbler-nuc".activationPackage'
+          - name: 'julian@calculon'
+            path: 'homeConfigurations."julian@calculon".activationPackage'
             os: ubuntu-24.04
 
     steps:
