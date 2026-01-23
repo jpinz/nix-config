@@ -1,7 +1,7 @@
 { config, ... }:
 {
   imports = [
-    # ./caddy.nix
+    ./caddy.nix
     # ./hd-idle.nix
     ./bazarr.nix
     ./glance.nix
@@ -33,12 +33,9 @@
 
   # Open firewall ports for locally hosted services
   networking.firewall.allowedTCPPorts = [
+    80 # caddy reverse proxy (LAN + Tailscale)
     6767 # bazarr
     7745 # homebox
-    9696 # prowlarr
-    7878 # radarr
-    8080 # sabnzbd (currently bound to ::1)
-    8989 # sonarr
     8181 # tautulli
     32400 # plex
   ];

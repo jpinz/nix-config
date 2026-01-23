@@ -8,10 +8,10 @@
         complete_dir = "/mnt/downloads/complete";
         download_dir = "/mnt/downloads/incomplete";
         permissions = "0770";
-        host = "0.0.0.0"; # listen on all IPv4 interfaces for LAN access
+        host = "127.0.0.1"; # behind Caddy (still reachable on LAN/Tailscale via :80)
         port = 8080;
         url_base = "/sabnzbd";
-        host_whitelist = "calculon.home, calculon, 192.168.1.75";
+        host_whitelist = "calculon.home, calculon, localhost, 127.0.0.1, 192.168.1.75";
       };
       servers."news.newshosting.com" = {
         displayname = "Newshosting";
