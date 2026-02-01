@@ -458,6 +458,7 @@
                   type = "releases";
                   title = "Software Releases";
                   repositories = [
+                    "glanceapp/glance"
                     "Sonarr/Sonarr"
                     "Radarr/Radarr"
                     "Prowlarr/Prowlarr"
