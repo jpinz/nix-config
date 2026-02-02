@@ -3,6 +3,7 @@
   imports = [
     ./audiobookshelf.nix
     ./caddy.nix
+    ./calibre-web.nix
     # ./hd-idle.nix
     ./bazarr.nix
     ./glance.nix
@@ -18,6 +19,7 @@
 
   users.groups.services.members = with config.services; [
     bazarr.user
+    calibre-web.user
     plex.user
     radarr.user
     sabnzbd.user
@@ -37,6 +39,7 @@
     80 # caddy reverse proxy (LAN + Tailscale)
     6767 # bazarr
     7745 # homebox
+    8083 # calibre-web
     8181 # tautulli
     8888 # audiobookshelf
     32400 # plex

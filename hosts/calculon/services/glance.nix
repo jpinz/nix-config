@@ -252,6 +252,11 @@
                       url = "http://calculon.home:8888";
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/audiobookshelf.svg";
                     }
+                    {
+                      title = "Calibre-Web";
+                      url = "http://calculon.home:8083";
+                      icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/calibre-web.svg";
+                    }
                   ];
                 }
               ];
