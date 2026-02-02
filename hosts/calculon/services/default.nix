@@ -1,6 +1,7 @@
 { config, ... }:
 {
   imports = [
+    ./audiobookshelf.nix
     ./caddy.nix
     # ./hd-idle.nix
     ./bazarr.nix
@@ -37,6 +38,7 @@
     6767 # bazarr
     7745 # homebox
     8181 # tautulli
+    8888 # audiobookshelf
     32400 # plex
   ];
   # Plex opens its required ports via services.plex.openFirewall = true

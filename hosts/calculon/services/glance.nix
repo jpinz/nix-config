@@ -247,6 +247,11 @@
                       url = "http://calculon.home:8181";
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/tautulli.svg";
                     }
+                    {
+                      title = "Audiobookshelf";
+                      url = "http://calculon.home:8888";
+                      icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/audiobookshelf.svg";
+                    }
                   ];
                 }
               ];
