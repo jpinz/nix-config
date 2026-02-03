@@ -589,7 +589,7 @@
                               <span class="size-h6 color-text-subdue">{{ $uptimeStr }} uptime</span>
                               {{ end }}
                               {{ if and $showTemp (gt $temperature 0) }}
-                              {{ $tempF := add (mul $temperature 9 | div 5) 32 }}
+                              {{ $tempF := add (div (mul $temperature 9) 5) 32 }}
                               <span class="size-h6 temp-display {{ if lt $tempF 149 }}temp-low{{ else if lt $tempF 176 }}temp-medium{{ else }}temp-high{{ end }}">{{ $tempF }}°F</span>
                               {{ end }}
                             </div>
