@@ -249,13 +249,18 @@
                     }
                     {
                       title = "Audiobookshelf";
-                      url = "http://calculon.home:8888";
+                      url = "http://calculon.home/audiobookshelf";
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/audiobookshelf.svg";
                     }
                     {
                       title = "Calibre-Web";
-                      url = "http://calculon.home:8083";
+                      url = "http://calculon.home/calibre";
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/calibre-web.svg";
+                    }
+                    {
+                      title = "Overseerr";
+                      url = "http://calculon.home:5055";
+                      icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/overseerr.svg";
                     }
                   ];
                 }

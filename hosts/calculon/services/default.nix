@@ -8,6 +8,7 @@
     ./bazarr.nix
     ./glance.nix
     ./homebox.nix
+    ./overseerr.nix
     ./plex.nix
     ./prowlarr.nix
     ./radarr.nix
@@ -38,6 +39,7 @@
   # Open firewall ports for locally hosted services
   networking.firewall.allowedTCPPorts = [
     80 # caddy reverse proxy (LAN + Tailscale)
+    5055 # overseerr
     6767 # bazarr
     7745 # homebox
     8083 # calibre-web
