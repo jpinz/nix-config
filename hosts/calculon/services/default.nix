@@ -7,7 +7,6 @@
     # ./hd-idle.nix
     ./bazarr.nix
     ./glance.nix
-    ./glances.nix
     ./homebox.nix
     ./overseerr.nix
     ./plex.nix
@@ -47,7 +46,6 @@
     8181 # tautulli
     8888 # audiobookshelf
     32400 # plex
-    61208 # glances
   ];
   # Plex opens its required ports via services.plex.openFirewall = true
 }
