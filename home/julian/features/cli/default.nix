@@ -16,6 +16,7 @@
       deploy-rs
       fastfetch
       fd
+      glances
       lazygit
       p7zip
       ripgrep
