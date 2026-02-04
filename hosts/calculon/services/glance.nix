@@ -361,100 +361,134 @@
                     }
                   ];
                 }
-                # System Status (Server Stats) — shown above Unifi
                 {
-                  type = "server-stats";
-                  servers = [
+                  type = "group";
+                  style = "tabs-static";
+                  widgets = [
+                    # System Status (Server Stats)
                     {
-                      type = "local";
-                      name = "Calculon";
+                      type = "server-stats";
+                      title = "Server Stats";
+                      servers = [
+                        {
+                          type = "local";
+                          name = "Calculon";
+                        }
+                      ];
+                    }
+                    # Immich Stats
+                    {
+                      type = "custom-api";
+                      title = "Immich";
+                      cache = "1d";
+                      url = "\${IMMICH_URL}/api/server/statistics";
+                      headers = {
+                        x-api-key = "\${IMMICH_API_KEY}";
+                        Accept = "application/json";
+                      };
+                      template = ''
+                        <div class="flex justify-between text-center">
+                          <div>
+                              <div class="color-highlight size-h3">{{ .JSON.Int "photos" | formatNumber }}</div>
+                              <div class="size-h6">PHOTOS</div>
+                          </div>
+                          <div>
+                              <div class="color-highlight size-h3">{{ .JSON.Int "videos" | formatNumber }}</div>
+                              <div class="size-h6">VIDEOS</div>
+                          </div>
+                          <div>
+                              <div class="color-highlight size-h3">{{ div (.JSON.Int "usage" | toFloat) 1073741824 | toInt | formatNumber }}GB</div>
+                              <div class="size-h6">USAGE</div>
+                          </div>
+                        </div>
+                      '';
+                    }
+                    # Unifi Widget
+                    {
+                      type = "custom-api";
+                      title = "Unifi";
+                      cache = "1m";
+                      allow-insecure = true;
+                      url = "https://\${UNIFI_CONSOLE_IP}/proxy/network/api/stat/sites";
+                      headers = {
+                        X-API-KEY = "\${UNIFI_API_KEY}";
+                        Accept = "application/json";
+                      };
+                      template = ''
+                        <style>
+                          .list-horizontal-text.no-bullets-unifi > *:not(:last-child)::after {
+                              content: none !important;
+                          }
+                          .list-horizontal-text.no-bullets-unifi > *:not(:last-child) {
+                            margin-right: 1em;
+                          }
+                        </style>
+                        {{ range .JSON.Array "data" }}
+                          <div style="display:flex; align-items:center; gap:12px;">
+                            <div style="width:40px; height:40px; flex-shrink:0; display:flex; justify-content:center; align-items:center; overflow:hidden;">
+                              <img src="https://cdn.jsdelivr.net/gh/selfhst/icons/svg/ubiquiti-unifi-light.svg" width="24" height="24" style="object-fit:contain;">
+                            </div>
+                            <div style="flex-grow:1; min-width:0;">
+                              <a class="size-h4 block text-truncate color-highlight">
+                                {{ .String "health.#(subsystem=wan).gw_name" }}
+                                {{ if eq (.String "health.#(subsystem=wan).status") "ok" }}
+                                <span style="width: 8px; height: 8px; border-radius: 50%; background-color: var(--color-positive); display: inline-block; vertical-align: middle;"></span>
+                                {{ else }}
+                                <span style="width: 8px; height: 8px; border-radius: 50%; background-color: var(--color-negative); display: inline-block; vertical-align: middle;"></span>
+                                {{ end }}
+                              </a>
+                              <ul class="list-horizontal-text no-bullets-unifi">
+                                <li>
+                                  <p style="display:inline-flex;align-items:center;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="height:1em;vertical-align:middle;margin-right:0.5em;">
+                                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                                    </svg>
+                                    {{ printf "%.1f" (div (.Float "health.#(subsystem=wan).gw_system-stats.uptime") 86400) }}d
+                                  </p>
+                                </li>
+                                <li>
+                                  <p style="display:inline-flex;align-items:center;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="height:1em;vertical-align:middle;margin-right:0.5em;">
+                                      <path fill="none" d="M0 0h24v24H0z"></path><path d="M7.77 6.76 6.23 5.48.82 12l5.41 6.52 1.54-1.28L3.42 12l4.35-5.24zM7 13h2v-2H7v2zm10-2h-2v2h2v-2zm-6 2h2v-2h-2v2zm6.77-7.52-1.54 1.28L20.58 12l-4.35 5.24 1.54 1.28L23.18 12l-5.41-6.52z"></path>
+                                    </svg>
+                                    {{ .Int "health.#(subsystem=lan).num_user" }} wired
+                                  </p>
+                                </li>
+                                <li>
+                                  <p style="display:inline-flex;align-items:center;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="height:1em;vertical-align:middle;margin-right:0.5em;">
+                                      <path d="M12 6c3.537 0 6.837 1.353 9.293 3.809l1.414-1.414C19.874 5.561 16.071 4 12 4c-4.071.001-7.874 1.561-10.707 4.395l1.414 1.414C5.163 7.353 8.463 6 12 6zm5.671 8.307c-3.074-3.074-8.268-3.074-11.342 0l1.414 1.414c2.307-2.307 6.207-2.307 8.514 0l1.414-1.414z"></path><path d="M20.437 11.293c-4.572-4.574-12.301-4.574-16.873 0l1.414 1.414c3.807-3.807 10.238-3.807 14.045 0l1.414-1.414z"></path><circle cx="12" cy="18" r="2"></circle>
+                                    </svg>
+                                    {{ .Int "health.#(subsystem=wlan).num_user" }} wifi
+                                  </p>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                          <div class="margin-block-2" style="margin-top: 1em">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                              <div>
+                                <div class="size-h5">Latency</div>
+                                <div class="size-h3 color-highlight">{{ .Int "health.#(subsystem=wan).uptime_stats.WAN.latency_average" }}<span class="color-base"> ms</span></div>
+                              </div>
+                              <div>
+                                <div class="size-h5">WAN IP</div>
+                                <div class="size-h3 color-highlight">{{ .String "health.#(subsystem=wan).wan_ip" }}</div>
+                              </div>
+                              <div>
+                                <div class="size-h5">Gateway CPU</div>
+                                <div class="size-h3 color-highlight">{{ .String "health.#(subsystem=wan).gw_system-stats.cpu" }}<span class="color-base"> %</span></div>
+                              </div>
+                              <div>
+                                <div class="size-h5">Gateway RAM</div>
+                                <div class="size-h3 color-highlight">{{ .String "health.#(subsystem=wan).gw_system-stats.mem" }}<span class="color-base"> %</span></div>
+                              </div>
+                            </div>
+                          </div>
+                        {{ end }}
+                      '';
                     }
                   ];
-                }
-                # Unifi Widget
-                {
-                  type = "custom-api";
-                  title = "Unifi";
-                  cache = "1m";
-                  allow-insecure = true;
-                  url = "https://\${UNIFI_CONSOLE_IP}/proxy/network/api/stat/sites";
-                  headers = {
-                    X-API-KEY = "\${UNIFI_API_KEY}";
-                    Accept = "application/json";
-                  };
-                  template = ''
-                    <style>
-                      .list-horizontal-text.no-bullets-unifi > *:not(:last-child)::after {
-                          content: none !important;
-                      }
-                      .list-horizontal-text.no-bullets-unifi > *:not(:last-child) {
-                        margin-right: 1em;
-                      }
-                    </style>
-                    {{ range .JSON.Array "data" }}
-                      <div style="display:flex; align-items:center; gap:12px;">
-                        <div style="width:40px; height:40px; flex-shrink:0; display:flex; justify-content:center; align-items:center; overflow:hidden;">
-                          <img src="https://cdn.jsdelivr.net/gh/selfhst/icons/svg/ubiquiti-unifi-light.svg" width="24" height="24" style="object-fit:contain;">
-                        </div>
-                        <div style="flex-grow:1; min-width:0;">
-                          <a class="size-h4 block text-truncate color-highlight">
-                            {{ .String "health.#(subsystem=wan).gw_name" }}
-                            {{ if eq (.String "health.#(subsystem=wan).status") "ok" }}
-                            <span style="width: 8px; height: 8px; border-radius: 50%; background-color: var(--color-positive); display: inline-block; vertical-align: middle;"></span>
-                            {{ else }}
-                            <span style="width: 8px; height: 8px; border-radius: 50%; background-color: var(--color-negative); display: inline-block; vertical-align: middle;"></span>
-                            {{ end }}
-                          </a>
-                          <ul class="list-horizontal-text no-bullets-unifi">
-                            <li>
-                              <p style="display:inline-flex;align-items:center;">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="height:1em;vertical-align:middle;margin-right:0.5em;">
-                                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
-                                </svg>
-                                {{ printf "%.1f" (div (.Float "health.#(subsystem=wan).gw_system-stats.uptime") 86400) }}d
-                              </p>
-                            </li>
-                            <li>
-                              <p style="display:inline-flex;align-items:center;">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="height:1em;vertical-align:middle;margin-right:0.5em;">
-                                  <path fill="none" d="M0 0h24v24H0z"></path><path d="M7.77 6.76 6.23 5.48.82 12l5.41 6.52 1.54-1.28L3.42 12l4.35-5.24zM7 13h2v-2H7v2zm10-2h-2v2h2v-2zm-6 2h2v-2h-2v2zm6.77-7.52-1.54 1.28L20.58 12l-4.35 5.24 1.54 1.28L23.18 12l-5.41-6.52z"></path>
-                                </svg>
-                                {{ .Int "health.#(subsystem=lan).num_user" }} wired
-                              </p>
-                            </li>
-                            <li>
-                              <p style="display:inline-flex;align-items:center;">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="height:1em;vertical-align:middle;margin-right:0.5em;">
-                                  <path d="M12 6c3.537 0 6.837 1.353 9.293 3.809l1.414-1.414C19.874 5.561 16.071 4 12 4c-4.071.001-7.874 1.561-10.707 4.395l1.414 1.414C5.163 7.353 8.463 6 12 6zm5.671 8.307c-3.074-3.074-8.268-3.074-11.342 0l1.414 1.414c2.307-2.307 6.207-2.307 8.514 0l1.414-1.414z"></path><path d="M20.437 11.293c-4.572-4.574-12.301-4.574-16.873 0l1.414 1.414c3.807-3.807 10.238-3.807 14.045 0l1.414-1.414z"></path><circle cx="12" cy="18" r="2"></circle>
-                                </svg>
-                                {{ .Int "health.#(subsystem=wlan).num_user" }} wifi
-                              </p>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                      <div class="margin-block-2" style="margin-top: 1em">
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                          <div>
-                            <div class="size-h5">Latency</div>
-                            <div class="size-h3 color-highlight">{{ .Int "health.#(subsystem=wan).uptime_stats.WAN.latency_average" }}<span class="color-base"> ms</span></div>
-                          </div>
-                          <div>
-                            <div class="size-h5">WAN IP</div>
-                            <div class="size-h3 color-highlight">{{ .String "health.#(subsystem=wan).wan_ip" }}</div>
-                          </div>
-                          <div>
-                            <div class="size-h5">Gateway CPU</div>
-                            <div class="size-h3 color-highlight">{{ .String "health.#(subsystem=wan).gw_system-stats.cpu" }}<span class="color-base"> %</span></div>
-                          </div>
-                          <div>
-                            <div class="size-h5">Gateway RAM</div>
-                            <div class="size-h3 color-highlight">{{ .String "health.#(subsystem=wan).gw_system-stats.mem" }}<span class="color-base"> %</span></div>
-                          </div>
-                        </div>
-                      </div>
-                    {{ end }}
-                  '';
                 }
                 # xkcd Widget
                 {
@@ -497,6 +531,8 @@
     SABNZBD_API_KEY = "ad5eaed00c6342e58958cc9540142ecd";
     UNIFI_CONSOLE_IP = "192.168.1.1";
     UNIFI_API_KEY = "DkNpJ8CbHHrd02I-3G7X2MeiP6JtfXQN";
+    IMMICH_URL = "http://192.168.1.128:2283";
+    IMMICH_API_KEY = "WgdbN331e4zeClpAunCb4p1N37FKyCcz6n8oLzMIXM";
   };
 
   # Open port 8000 for the dashboard
