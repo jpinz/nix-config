@@ -262,6 +262,11 @@
                       url = "http://calculon.home:5055";
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/overseerr.svg";
                     }
+                    {
+                      title = "Immich";
+                      url = "http://192.168.1.128:2283";
+                      icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/immich.svg";
+                    }
                   ];
                 }
               ];
