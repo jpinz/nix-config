@@ -13,6 +13,7 @@ in
     package = pkgs.opencode;
     settings = {
       model = "github-copilot/claude-opus-4.5";
+      plugin = [ "oh-my-opencode" ];
       mcp = {
         "github" = {
           type = "local";
@@ -37,6 +38,17 @@ in
           enabled = true;
         };
       };
+    };
+  };
+
+  # oh-my-opencode agent configuration
+  programs.oh-my-opencode = {
+    enable = true;
+    agents = {
+      sisyphus.model = "github-copilot/claude-opus-4.6";
+      oracle.model = "github-copilot/gpt-5.2";
+      explore.model = "opencode/gpt-5-nano";
+      librarian.model = "opencode/big-pickle";
     };
   };
 }
