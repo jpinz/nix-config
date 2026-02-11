@@ -32,6 +32,7 @@
     "d /mnt/downloads/complete 2770 ${config.users.users.julian.name} ${config.users.groups.services.name}"
 
     "d /mnt/data/tv 2770 ${config.users.users.julian.name} ${config.users.groups.services.name}"
+    "d /mnt/data/anime 2770 ${config.users.users.julian.name} ${config.users.groups.services.name}"
     "d /mnt/data/movies 2770 ${config.users.users.julian.name} ${config.users.groups.services.name}"
     "d /mnt/data/ebooks 2770 ${config.users.users.julian.name} ${config.users.groups.services.name}"
   ];
