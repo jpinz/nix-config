@@ -42,6 +42,54 @@
           };
         };
       };
+      hdd1 = {
+        type = "disk";
+        device = "/dev/sdc";
+        content = {
+          type = "gpt";
+          partitions = {
+            zfs = {
+              size = "100%";
+              content = {
+                type = "zfs";
+                pool = "tank";
+              };
+            };
+          };
+        };
+      };
+      hdd2 = {
+        type = "disk";
+        device = "/dev/sdd";
+        content = {
+          type = "gpt";
+          partitions = {
+            zfs = {
+              size = "100%";
+              content = {
+                type = "zfs";
+                pool = "tank";
+              };
+            };
+          };
+        };
+      };
+      hdd3 = {
+        type = "disk";
+        device = "/dev/sde";
+        content = {
+          type = "gpt";
+          partitions = {
+            zfs = {
+              size = "100%";
+              content = {
+                type = "zfs";
+                pool = "tank";
+              };
+            };
+          };
+        };
+      };
     };
     zpool = {
       zroot = {
@@ -71,6 +119,7 @@
       };
       tank = {
         type = "zpool";
+        mode = "raidz";
         mountpoint = null;
         rootFsOptions = {
           atime = "off";
