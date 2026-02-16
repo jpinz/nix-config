@@ -30,6 +30,15 @@
         reverse_proxy 127.0.0.1:8080
       }
 
+      handle /lidarr* {
+        reverse_proxy 127.0.0.1:8686
+      }
+
+      handle /music* {
+        uri replace /music /lidarr
+        reverse_proxy 127.0.0.1:8686
+      }
+
       handle /movies* {
         uri replace /movies /radarr
         reverse_proxy 127.0.0.1:7878

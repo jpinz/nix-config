@@ -8,6 +8,7 @@
     ./bazarr.nix
     ./glance.nix
     ./homebox.nix
+    ./lidarr.nix
     ./overseerr.nix
     ./plex.nix
     ./prowlarr.nix
@@ -21,6 +22,7 @@
   users.groups.services.members = with config.services; [
     bazarr.user
     calibre-web.user
+    lidarr.user
     plex.user
     radarr.user
     sabnzbd.user
@@ -34,6 +36,7 @@
     "d /mnt/data/tv 2770 ${config.users.users.julian.name} ${config.users.groups.services.name}"
     "d /mnt/data/anime 2770 ${config.users.users.julian.name} ${config.users.groups.services.name}"
     "d /mnt/data/movies 2770 ${config.users.users.julian.name} ${config.users.groups.services.name}"
+    "d /mnt/data/music 2770 ${config.users.users.julian.name} ${config.users.groups.services.name}"
     "d /mnt/data/ebooks 2770 ${config.users.users.julian.name} ${config.users.groups.services.name}"
   ];
 
@@ -45,6 +48,7 @@
     7745 # homebox
     8083 # calibre-web
     8181 # tautulli
+    8686 # lidarr
     8888 # audiobookshelf
     32400 # plex
   ];
