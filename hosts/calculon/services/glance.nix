@@ -228,6 +228,11 @@
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/radarr.svg";
                     }
                     {
+                      title = "Lidarr";
+                      url = "http://calculon.home/lidarr";
+                      icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/lidarr.svg";
+                    }
+                    {
                       title = "Bazarr";
                       url = "http://calculon.home:6767";
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/bazarr.svg";
@@ -515,6 +520,7 @@
                     "glanceapp/glance"
                     "Sonarr/Sonarr"
                     "Radarr/Radarr"
+                    "Lidarr/Lidarr"
                     "Prowlarr/Prowlarr"
                     "sabnzbd/sabnzbd"
                     "Tautulli/Tautulli"
