@@ -14,6 +14,7 @@
     ./prowlarr.nix
     ./radarr.nix
     ./recyclarr.nix
+    ./rustdesk-server.nix
     ./sabnzbd.nix
     ./sonarr.nix
     ./tautulli.nix
