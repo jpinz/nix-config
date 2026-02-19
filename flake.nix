@@ -36,6 +36,11 @@
       url = "github:natsukium/mcp-servers-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    micasa = {
+      url = "github:cpcloud/micasa";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

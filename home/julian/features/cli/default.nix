@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 {
   imports = [
     ./fish.nix
@@ -13,6 +13,7 @@
 
   home = {
     packages = with pkgs; [
+      inputs.micasa.packages.${pkgs.system}.default
       deploy-rs
       fastfetch
       fd
