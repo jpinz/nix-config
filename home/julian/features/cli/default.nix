@@ -19,6 +19,7 @@
       fd
       glances
       lazygit
+      magic-wormhole
       p7zip
       ripgrep
       skopeo
