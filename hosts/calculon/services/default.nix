@@ -4,6 +4,7 @@
     ./audiobookshelf.nix
     ./caddy.nix
     ./calibre-web.nix
+    ./samba.nix
     # ./hd-idle.nix
     ./bazarr.nix
     ./glance.nix
