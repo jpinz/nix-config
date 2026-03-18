@@ -213,11 +213,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1773688074,
-        "narHash": "sha256-5bYmVmhCofwzju9BJAZY0EKdCHCceK7S33/Eh5b5BSU=",
+        "lastModified": 1773774022,
+        "narHash": "sha256-s+EMBn+DlJmMH+ZUp+MrqnAaIomR9q+1xAyHMVF5HGE=",
         "owner": "natsukium",
         "repo": "mcp-servers-nix",
-        "rev": "a1ed82ef6b5c30b7e82b36d062126ae05893ec1c",
+        "rev": "411638cb2dae8e93415806340f3e7432ee09b8fd",
         "type": "github"
       },
       "original": {
@@ -235,11 +235,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1773658576,
-        "narHash": "sha256-0tzc2Mr0YeDFydAehPgtyqSVsdHUerzgeqa6cNYePak=",
+        "lastModified": 1773763751,
+        "narHash": "sha256-w8vtUEWTK+4qew6rnyTNBEycnv8W8ckx8p77gYB4bhM=",
         "owner": "cpcloud",
         "repo": "micasa",
-        "rev": "7b9d5dc3193ea2aeb580b8a3ce677bc87b470ce0",
+        "rev": "a12dea34324e60188d6d4ee1826a1c4d8cfcd96f",
         "type": "github"
       },
       "original": {
