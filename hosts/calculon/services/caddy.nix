@@ -71,6 +71,14 @@
         reverse_proxy 127.0.0.1:8888
       }
 
+      handle /navidrome* {
+        reverse_proxy 127.0.0.1:4533
+      }
+
+      handle /shelfmark* {
+        reverse_proxy 127.0.0.1:8084
+      }
+
       handle /dashboard* {
         reverse_proxy 127.0.0.1:8000
       }

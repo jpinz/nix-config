@@ -10,6 +10,7 @@
     ./glance.nix
     ./homebox.nix
     ./lidarr.nix
+    ./navidrome.nix
     ./overseerr.nix
     ./plex.nix
     ./prowlarr.nix
@@ -17,6 +18,7 @@
     ./recyclarr.nix
     ./rustdesk-server.nix
     ./sabnzbd.nix
+    ./shelfmark.nix
     ./sonarr.nix
     ./tautulli.nix
   ];
@@ -49,6 +51,7 @@
     6767 # bazarr
     7745 # homebox
     8083 # calibre-web
+    8084 # shelfmark
     8181 # tautulli
     8686 # lidarr
     8888 # audiobookshelf

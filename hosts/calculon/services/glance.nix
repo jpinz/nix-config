@@ -258,6 +258,16 @@
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/audiobookshelf.svg";
                     }
                     {
+                      title = "Navidrome";
+                      url = "http://calculon.home/navidrome";
+                      icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/navidrome.svg";
+                    }
+                    {
+                      title = "Shelfmark";
+                      url = "http://calculon.home/shelfmark";
+                      icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/shelfmark.svg";
+                    }
+                    {
                       title = "Calibre-Web";
                       url = "http://calculon.home/calibre";
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/calibre-web.svg";
