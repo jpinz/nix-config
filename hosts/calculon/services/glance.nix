@@ -278,6 +278,11 @@
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/overseerr.svg";
                     }
                     {
+                      title = "Tdarr";
+                      url = "http://calculon.home:8265";
+                      icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/tdarr.svg";
+                    }
+                    {
                       title = "Immich";
                       url = "http://192.168.1.128:2283";
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/immich.svg";

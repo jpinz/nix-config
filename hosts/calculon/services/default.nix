@@ -3,7 +3,7 @@
   imports = [
     ./audiobookshelf.nix
     ./caddy.nix
-    ./calibre-web.nix
+    # ./calibre-web.nix
     ./samba.nix
     # ./hd-idle.nix
     ./bazarr.nix
@@ -21,6 +21,7 @@
     ./shelfmark.nix
     ./sonarr.nix
     ./tautulli.nix
+    ./tdarr.nix
   ];
 
   users.groups.services.members = with config.services; [
@@ -31,6 +32,7 @@
     radarr.user
     sabnzbd.user
     sonarr.user
+    tdarr.user
   ];
 
   systemd.tmpfiles.rules = [

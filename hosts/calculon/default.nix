@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, pkgs, ... }:
 {
   imports = [
     inputs.hardware.nixosModules.common-cpu-intel
@@ -25,4 +25,13 @@
   system.stateVersion = "23.05";
 
   hardware.bluetooth.enable = true;
+
+  # Intel Quick Sync Video (QSV) for hardware transcoding
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      intel-media-driver # LIBVA_DRIVER_NAME=iHD (Broadwell+)
+      intel-compute-runtime # OpenCL support
+    ];
+  };
 }
