@@ -41,6 +41,11 @@
       url = "github:cpcloud/micasa";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    copyparty = {
+      url = "github:9001/copyparty";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -93,7 +98,12 @@
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt);
 
       nixosConfigurations = {
-        calculon = mkSystem "calculon" "x86_64-linux" [ ];
+        calculon = mkSystem "calculon" "x86_64-linux" [
+          inputs.copyparty.nixosModules.default
+          {
+            nixpkgs.overlays = [ inputs.copyparty.overlays.default ];
+          }
+        ];
         julian-desktop = mkSystem "julian-desktop" "x86_64-linux" [ ];
       };
 

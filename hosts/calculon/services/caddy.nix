@@ -79,6 +79,10 @@
         reverse_proxy 127.0.0.1:8084
       }
 
+      handle /copyparty* {
+        reverse_proxy 127.0.0.1:3923
+      }
+
       handle /dashboard* {
         reverse_proxy 127.0.0.1:8000
       }

@@ -159,75 +159,75 @@
                   '';
                 }
                 # Tdarr Status Widget
-                {
-                  type = "custom-api";
-                  title = "Tdarr";
-                  title-url = "http://calculon.home:8265";
-                  cache = "10s";
-                  url = "http://localhost:8266/api/v2/get-nodes";
-                  headers = {
-                    Accept = "application/json";
-                  };
-                  subrequests = {
-                    stats = {
-                      url = "http://localhost:8266/api/v2/cruddb";
-                      method = "post";
-                      body = {
-                        data = {
-                          collection = "StatisticsJSONDB";
-                          mode = "getById";
-                          docID = "statistics";
-                        };
-                      };
-                      headers = {
-                        Content-Type = "application/json";
-                      };
-                    };
-                  };
-                  template = ''
-                    {{ $stats := .Subrequest "stats" }}
-                    <div class="flex gap-15" style="margin-bottom: 1em;">
-                      <div class="flex-1">
-                        <div class="size-h6">FILES</div>
-                        <div class="color-highlight size-h3">{{ $stats.JSON.Int "totalFileCount" | formatNumber }}</div>
-                      </div>
-                      <div class="flex-1">
-                        <div class="size-h6">TRANSCODED</div>
-                        <div class="color-highlight size-h3">{{ $stats.JSON.Int "totalTranscodeCount" | formatNumber }}</div>
-                      </div>
-                      <div class="flex-1">
-                        <div class="size-h6">HEALTH CHK</div>
-                        <div class="color-highlight size-h3">{{ $stats.JSON.Int "totalHealthCheckCount" | formatNumber }}</div>
-                      </div>
-                      <div class="flex-1">
-                        <div class="size-h6">SAVED</div>
-                        <div class="color-highlight size-h3">{{ printf "%.1f" (div ($stats.JSON.Float "sizeDiff") 1073741824.0) }}GB</div>
-                      </div>
-                    </div>
-                    {{ $hasWorkers := false }}
-                    {{ range .JSON.Array "@values.#.workers.@values|@flatten" }}
-                      {{ if not (.Bool "idle") }}
-                        {{ $hasWorkers = true }}
-                        <div style="margin-bottom: 0.5em; padding: 0.5em; background: var(--color-background); border-radius: var(--border-radius); border: 1px solid var(--color-widget-content-border);">
-                          <div class="flex justify-between">
-                            <span class="color-highlight text-truncate" style="max-width: 70%;">{{ findMatch "[^/]+$" (.String "file") }}</span>
-                            <span class="color-primary">{{ printf "%.1f" (.Float "percentage") }}%</span>
-                          </div>
-                          <div class="flex justify-between size-h6 color-subdue">
-                            <span style="text-transform: capitalize;">{{ .String "workerType" }}</span>
-                            <span>{{ .String "ETA" }}</span>
-                          </div>
-                          <div style="margin-top: 0.3em; height: 4px; background: var(--color-widget-content-border); border-radius: 2px; overflow: hidden;">
-                            <div style="height: 100%; width: {{ printf "%.1f" (.Float "percentage") }}%; background: var(--color-primary); border-radius: 2px;"></div>
-                          </div>
-                        </div>
-                      {{ end }}
-                    {{ end }}
-                    {{ if not $hasWorkers }}
-                      <p class="color-subdue" style="text-align: center;">No active workers</p>
-                    {{ end }}
-                  '';
-                }
+                # {
+                #   type = "custom-api";
+                #   title = "Tdarr";
+                #   title-url = "http://calculon.home:8265";
+                #   cache = "10s";
+                #   url = "http://localhost:8266/api/v2/get-nodes";
+                #   headers = {
+                #     Accept = "application/json";
+                #   };
+                #   subrequests = {
+                #     stats = {
+                #       url = "http://localhost:8266/api/v2/cruddb";
+                #       method = "post";
+                #       body = {
+                #         data = {
+                #           collection = "StatisticsJSONDB";
+                #           mode = "getById";
+                #           docID = "statistics";
+                #         };
+                #       };
+                #       headers = {
+                #         Content-Type = "application/json";
+                #       };
+                #     };
+                #   };
+                #   template = ''
+                #     {{ $stats := .Subrequest "stats" }}
+                #     <div class="flex gap-15" style="margin-bottom: 1em;">
+                #       <div class="flex-1">
+                #         <div class="size-h6">FILES</div>
+                #         <div class="color-highlight size-h3">{{ $stats.JSON.Int "totalFileCount" | formatNumber }}</div>
+                #       </div>
+                #       <div class="flex-1">
+                #         <div class="size-h6">TRANSCODED</div>
+                #         <div class="color-highlight size-h3">{{ $stats.JSON.Int "totalTranscodeCount" | formatNumber }}</div>
+                #       </div>
+                #       <div class="flex-1">
+                #         <div class="size-h6">HEALTH CHK</div>
+                #         <div class="color-highlight size-h3">{{ $stats.JSON.Int "totalHealthCheckCount" | formatNumber }}</div>
+                #       </div>
+                #       <div class="flex-1">
+                #         <div class="size-h6">SAVED</div>
+                #         <div class="color-highlight size-h3">{{ printf "%.1f" (div ($stats.JSON.Float "sizeDiff") 1073741824.0) }}GB</div>
+                #       </div>
+                #     </div>
+                #     {{ $hasWorkers := false }}
+                #     {{ range .JSON.Array "@values.#.workers.@values|@flatten" }}
+                #       {{ if not (.Bool "idle") }}
+                #         {{ $hasWorkers = true }}
+                #         <div style="margin-bottom: 0.5em; padding: 0.5em; background: var(--color-background); border-radius: var(--border-radius); border: 1px solid var(--color-widget-content-border);">
+                #           <div class="flex justify-between">
+                #             <span class="color-highlight text-truncate" style="max-width: 70%;">{{ findMatch "[^/]+$" (.String "file") }}</span>
+                #             <span class="color-primary">{{ printf "%.1f" (.Float "percentage") }}%</span>
+                #           </div>
+                #           <div class="flex justify-between size-h6 color-subdue">
+                #             <span style="text-transform: capitalize;">{{ .String "workerType" }}</span>
+                #             <span>{{ .String "ETA" }}</span>
+                #           </div>
+                #           <div style="margin-top: 0.3em; height: 4px; background: var(--color-widget-content-border); border-radius: 2px; overflow: hidden;">
+                #             <div style="height: 100%; width: {{ printf "%.1f" (.Float "percentage") }}%; background: var(--color-primary); border-radius: 2px;"></div>
+                #           </div>
+                #         </div>
+                #       {{ end }}
+                #     {{ end }}
+                #     {{ if not $hasWorkers }}
+                #       <p class="color-subdue" style="text-align: center;">No active workers</p>
+                #     {{ end }}
+                #   '';
+                # }
                 # Prowlarr Indexers Widget
                 {
                   type = "custom-api";
@@ -347,11 +347,11 @@
                       url = "http://calculon.home:5055";
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/overseerr.svg";
                     }
-                    {
-                      title = "Tdarr";
-                      url = "http://calculon.home:8265";
-                      icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/tdarr.svg";
-                    }
+                    # {
+                    #   title = "Tdarr";
+                    #   url = "http://calculon.home:8265";
+                    #   icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/tdarr.svg";
+                    # }
                     {
                       title = "Immich";
                       url = "http://192.168.1.128:2283";

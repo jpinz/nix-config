@@ -3,6 +3,7 @@
   imports = [
     ./audiobookshelf.nix
     ./caddy.nix
+    ./copyparty.nix
     # ./calibre-web.nix
     ./samba.nix
     # ./hd-idle.nix
@@ -21,7 +22,7 @@
     ./shelfmark.nix
     ./sonarr.nix
     ./tautulli.nix
-    ./tdarr.nix
+    # ./tdarr.nix
   ];
 
   users.groups.services.members = with config.services; [
