@@ -3,6 +3,7 @@
   imports = [
     ./audiobookshelf.nix
     ./caddy.nix
+    ./cloudflared.nix
     ./copyparty.nix
     # ./calibre-web.nix
     ./samba.nix
@@ -28,6 +29,7 @@
   users.groups.services.members = with config.services; [
     bazarr.user
     calibre-web.user
+    copyparty.user
     lidarr.user
     plex.user
     radarr.user

@@ -226,7 +226,7 @@
                 }
               ];
             }
-            # x265/HEVC preference for 2160p only (Golden Rule: 2160p => x265, 720/1080p => x264)
+            # x265/HEVC preference for 1080p and above (Golden Rule: 1080p+ => x265, 720p => x264)
             {
               trash_ids = [
                 "c9eafd50846d299b862ca9bb6ea91950" # x265
@@ -275,7 +275,7 @@
                 "d84935abd3f8556dcd51d4f27e22d0a6" # WEB Tier 03
                 "d0c516558625b04b363fa6c5c2c7cfd4" # WEB Scene
 
-                # Golden Rule (720/1080p => x264, penalize x265 at HD)
+                # Golden Rule (720p => x264, penalize x265 at 720p)
                 "47435ece6b99a0b477caf360e79ba0bb" # x265 (HD)
                 "9b64dff695c2115facf1b6ea59c9bd07" # x265 (no HDR/DV)
               ];
@@ -314,6 +314,15 @@
                 {
                   name = "SQP-2";
                 }
+              ];
+            }
+            # x265/HEVC preference
+            {
+              trash_ids = [
+                "c9eafd50846d299b862ca9bb6ea91950" # x265
+              ];
+              assign_scores_to = [
+                { name = "SQP-2"; score = 50; }
               ];
             }
           ];
