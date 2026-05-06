@@ -7,32 +7,22 @@
           base_url = "http://localhost:8989/sonarr";
           api_key = "3334f2d003d148108d0084d270c8fcf9";
           delete_old_custom_formats = true;
-          replace_existing_custom_formats = true;
-          include = [
-            {
-              template = "sonarr-quality-definition-anime";
-            }
-            {
-              template = "sonarr-v4-quality-profile-web-2160p-alternative";
-            }
-            {
-              template = "sonarr-v4-custom-formats-web-2160p";
-            }
-            {
-              template = "sonarr-v4-custom-formats-anime";
-            }
-            {
-              template = "sonarr-v4-quality-profile-anime";
-            }
-            # WEB-1080p profile and custom formats
-            {
-              template = "sonarr-v4-quality-profile-web-1080p";
-            }
-            {
-              template = "sonarr-v4-custom-formats-web-1080p";
-            }
-          ];
+          quality_definition = {
+            type = "anime";
+          };
           quality_profiles = [
+            {
+              trash_id = "dfa5eaae7894077ad6449169b6eb03e0";
+              name = "WEB-2160p";
+            }
+            {
+              trash_id = "20e0fc959f1f1704bed501f23bdae76f";
+              name = "Remux-1080p - Anime";
+            }
+            {
+              trash_id = "72dae194fc92bf828f32cde7744e51a1";
+              name = "WEB-1080p";
+            }
             {
               name = "Remux-2160p - Anime";
               reset_unmatched_scores = {
@@ -136,38 +126,12 @@
           custom_formats = [
             {
               trash_ids = [
-                "6d0d8de7b57e35518ac0308b0ddf404e" # DV
-              ];
-              assign_scores_to = [
-                {
-                  name = "WEB-2160p";
-                  score = -10000;
-                }
-                {
-                  name = "WEB-1080p";
-                  score = -10000;
-                }
-              ];
-            }
-            {
-              trash_ids = [
                 "b2550eb333d27b75833e25b8c2557b38" # 10bit
               ];
               assign_scores_to = [
                 {
                   name = "Remux-1080p - Anime";
                   score = 100;
-                }
-              ];
-            }
-            {
-              trash_ids = [
-                "418f50b10f1907201b6cfdf881f467b7" # Anume Dual Audio
-              ];
-              assign_scores_to = [
-                {
-                  name = "Remux-1080p - Anime";
-                  score = 10;
                 }
               ];
             }
@@ -226,13 +190,44 @@
                 }
               ];
             }
-            # x265/HEVC preference for 1080p and above (Golden Rule: 1080p+ => x265, 720p => x264)
+            # 4K WEB x265 preference (non-remux): boost generic x265
+            # Note: the generic x265 CF does not match remux releases.
             {
               trash_ids = [
                 "c9eafd50846d299b862ca9bb6ea91950" # x265
               ];
               assign_scores_to = [
-                { name = "WEB-2160p"; score = 100; }
+                { name = "WEB-2160p"; score = 500; }
+              ];
+            }
+            # Neutralize guide default penalty for generic x265 at 1080p
+            {
+              trash_ids = [
+                "c9eafd50846d299b862ca9bb6ea91950" # x265
+              ];
+              assign_scores_to = [
+                { name = "WEB-1080p"; score = 0; }
+                { name = "Remux-1080p - Anime"; score = 0; }
+              ];
+            }
+            # Strong 1080p h265 preference so it wins over typical h264 guide scores.
+            # Keep a small HDR/DV advantage by slightly reducing no-HDR/DV matches.
+            {
+              trash_ids = [
+                "47435ece6b99a0b477caf360e79ba0bb" # x265 (HD)
+              ];
+              assign_scores_to = [
+                { name = "WEB-1080p"; score = 2500; }
+                { name = "Remux-1080p - Anime"; score = 2500; }
+              ];
+            }
+            {
+              trash_ids = [
+                "9b64dff695c2115facf1b6ea59c9bd07" # x265 (no HDR/DV)
+              ];
+              assign_scores_to = [
+                { name = "WEB-1080p"; score = -250; }
+                { name = "Remux-1080p - Anime"; score = -250; }
               ];
             }
             # Standard CFs for WEB-720p profiles (no template covers these)
@@ -292,37 +287,23 @@
           base_url = "http://localhost:7878/radarr";
           api_key = "9a2534c83b4f492680a95c4d045d9b61";
           delete_old_custom_formats = true;
-          replace_existing_custom_formats = true;
-          include = [
+          quality_profiles = [
             {
-              template = "radarr-quality-definition-sqp-uhd";
-            }
-            {
-              template = "radarr-quality-profile-sqp-2";
-            }
-            {
-              template = "radarr-custom-formats-sqp-2";
+              trash_id = "c3933358ba2356bafc41524f81471069";
+              name = "SQP-2";
             }
           ];
+          quality_definition = {
+            type = "sqp-uhd";
+          };
+          # x265 preference for 4K: SQP-2 is a 4K profile, boost all x265
           custom_formats = [
             {
               trash_ids = [
-                "b17886cb4158d9fea189859409975758" # HDR10 + Boost
-                "55a5b50cb416dea5a50c4955896217ab" # DV HDR10+ Boost
+                "47435ece6b99a0b477caf360e79ba0bb" # x265 (HD)
               ];
               assign_scores_to = [
-                {
-                  name = "SQP-2";
-                }
-              ];
-            }
-            # x265/HEVC preference
-            {
-              trash_ids = [
-                "c9eafd50846d299b862ca9bb6ea91950" # x265
-              ];
-              assign_scores_to = [
-                { name = "SQP-2"; score = 50; }
+                { name = "SQP-2"; score = 500; }
               ];
             }
           ];
