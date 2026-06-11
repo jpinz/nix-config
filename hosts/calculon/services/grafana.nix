@@ -1,5 +1,46 @@
 { ... }:
 {
+  services.opentelemetry-collector = {
+    enable = true;
+    settings = {
+      receivers.otlp.protocols = {
+        grpc.endpoint = "0.0.0.0:4317";
+        http.endpoint = "0.0.0.0:4318";
+      };
+      exporters = {
+        prometheusRemoteWrite.endpoint = "http://127.0.0.1:9090/api/v1/write";
+        otlp = {
+          endpoint = "127.0.0.1:4319";
+          tls.insecure = true;
+        };
+      };
+      service.pipelines = {
+        metrics = {
+          receivers = [ "otlp" ];
+          exporters = [ "prometheusRemoteWrite" ];
+        };
+        traces = {
+          receivers = [ "otlp" ];
+          exporters = [ "otlp" ];
+        };
+      };
+    };
+  };
+
+  services.prometheus = {
+    enable = true;
+    port = 9090;
+    listenAddress = "127.0.0.1";
+    extraFlags = [ "--web.enable-remote-write-receiver" ];
+    globalConfig.scrape_interval = "15s";
+    scrapeConfigs = [
+      {
+        job_name = "prometheus";
+        static_configs = [{ targets = [ "127.0.0.1:9090" ]; }];
+      }
+    ];
+  };
+
   services.tempo = {
     enable = true;
     settings = {
@@ -9,8 +50,8 @@
       };
 
       distributor.receivers.otlp.protocols = {
-        grpc.endpoint = "0.0.0.0:4317";
-        http.endpoint = "0.0.0.0:4318";
+        grpc.endpoint = "127.0.0.1:4319";
+        http.endpoint = "127.0.0.1:4320";
       };
 
       ingester.max_block_duration = "5m";
@@ -25,19 +66,6 @@
     };
   };
 
-  services.prometheus = {
-    enable = true;
-    port = 9090;
-    listenAddress = "127.0.0.1";
-    globalConfig.scrape_interval = "15s";
-    scrapeConfigs = [
-      {
-        job_name = "prometheus";
-        static_configs = [{ targets = [ "127.0.0.1:9090" ]; }];
-      }
-    ];
-  };
-
   services.grafana = {
     enable = true;
     settings = {
@@ -49,7 +77,6 @@
         serve_from_sub_path = true;
       };
 
-      # Keep the key out of the Nix store.
       security.secret_key = "$__file{/etc/grafana/secret_key}";
     };
 
