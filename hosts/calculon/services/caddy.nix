@@ -91,6 +91,10 @@
         reverse_proxy 127.0.0.1:8000
       }
 
+      handle /grafana* {
+        reverse_proxy 127.0.0.1:3000
+      }
+
       respond "ok" 200
     '';
   };

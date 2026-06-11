@@ -347,6 +347,11 @@
                       url = "http://calculon.home:5055";
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/overseerr.svg";
                     }
+                    {
+                      title = "Grafana";
+                      url = "http://calculon.home/grafana";
+                      icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/grafana.svg";
+                    }
                     # {
                     #   title = "Tdarr";
                     #   url = "http://calculon.home:8265";
