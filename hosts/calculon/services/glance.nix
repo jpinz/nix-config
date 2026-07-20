@@ -363,11 +363,6 @@
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/calibre-web.svg";
                     }
                     {
-                      title = "Overseerr";
-                      url = "http://calculon.home:5055";
-                      icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/overseerr.svg";
-                    }
-                    {
                       title = "Grafana";
                       url = "http://calculon.home/grafana";
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/grafana.svg";

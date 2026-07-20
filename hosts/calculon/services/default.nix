@@ -13,8 +13,8 @@
     ./glance.nix
     ./homebox.nix
     ./lidarr.nix
+    ./doplarr.nix
     ./navidrome.nix
-    ./overseerr.nix
     ./plex.nix
     ./prowlarr.nix
     ./radarr.nix

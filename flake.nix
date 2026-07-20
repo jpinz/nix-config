@@ -52,6 +52,12 @@
       url = "github:9001/copyparty";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Doplarr — Discord bot for requesting media through *arr backends
+    doplarr = {
+      url = "github:activexray/doplarr_rs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
