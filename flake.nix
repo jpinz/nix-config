@@ -9,6 +9,12 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     hardware.url = "github:NixOS/nixos-hardware";
 
+    # Dedicated, more recent nixpkgs pin used solely to provide the Stump
+    # package and NixOS module, which aren't yet present in the main `nixpkgs`.
+    # Tracks `master` because Stump hasn't reached the `nixos-unstable` channel
+    # branch yet.
+    nixpkgs-stump.url = "github:NixOS/nixpkgs";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";

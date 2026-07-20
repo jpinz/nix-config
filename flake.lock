@@ -371,6 +371,21 @@
         "type": "github"
       }
     },
+    "nixpkgs-stump": {
+      "locked": {
+        "lastModified": 1782411961,
+        "narHash": "sha256-5xWhA6s4jOd/dLX/pk8bZehfX32/WT4PXqqkvMR9VUM=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "94ae3b6683917eda355d74e2346b71a6b09f7381",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1784356753,
@@ -398,6 +413,7 @@
         "micasa": "micasa",
         "nix-colors": "nix-colors",
         "nixpkgs": "nixpkgs_2",
+        "nixpkgs-stump": "nixpkgs-stump",
         "vscode-server": "vscode-server"
       }
     },

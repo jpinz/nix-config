@@ -27,17 +27,21 @@
     # ./tdarr.nix
   ];
 
-  users.groups.services.members = with config.services; [
-    bazarr.user
-    calibre-web.user
-    copyparty.user
-    lidarr.user
-    plex.user
-    radarr.user
-    sabnzbd.user
-    sonarr.user
-    tdarr.user
-  ];
+  users.groups.services.members =
+    (with config.services; [
+      bazarr.user
+      calibre-web.user
+      copyparty.user
+      lidarr.user
+      plex.user
+      radarr.user
+      sabnzbd.user
+      sonarr.user
+      tdarr.user
+    ])
+    # Give julian access to the shared library trees (e.g. /mnt/data/ebooks),
+    # whose files are group-owned by `services`.
+    ++ [ config.users.users.julian.name ];
 
   systemd.tmpfiles.rules = [
     "d /mnt/downloads/incomplete 2770 ${config.users.users.julian.name} ${config.users.groups.services.name}"

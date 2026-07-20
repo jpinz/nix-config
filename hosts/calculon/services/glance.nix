@@ -110,6 +110,18 @@
                       ];
                     }
                     {
+                      type = "rss";
+                      title = "Wired";
+                      style = "detailed-list";
+                      limit = 15;
+                      collapse-after = 5;
+                      feeds = [
+                        {
+                          url = "https://www.wired.com/feed/rss";
+                        }
+                      ];
+                    }
+                    {
                       type = "reddit";
                       title = "/r/homeassistant";
                       subreddit = "homeassistant";
@@ -121,6 +133,14 @@
                       type = "reddit";
                       title = "/r/selfhosted";
                       subreddit = "selfhosted";
+                      style = "vertical-cards";
+                      limit = 15;
+                      collapse-after = 5;
+                    }
+                    {
+                      type = "reddit";
+                      title = "/r/magictcg";
+                      subreddit = "magictcg";
                       style = "vertical-cards";
                       limit = 15;
                       collapse-after = 5;
@@ -334,7 +354,7 @@
                     }
                     {
                       title = "Shelfmark";
-                      url = "http://calculon.home/shelfmark";
+                      url = "http://calculon.home:8084";
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/shelfmark.svg";
                     }
                     {
