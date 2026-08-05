@@ -15,6 +15,7 @@
     ./lidarr.nix
     ./doplarr.nix
     ./navidrome.nix
+    ./notifiarr.nix
     ./plex.nix
     ./prowlarr.nix
     ./radarr.nix
@@ -59,7 +60,6 @@
     80 # caddy reverse proxy (LAN + Tailscale)
     4317 # OpenTelemetry OTLP gRPC ingest (Tempo)
     4318 # OpenTelemetry OTLP HTTP ingest (Tempo)
-    5055 # overseerr
     6767 # bazarr
     7745 # homebox
     8083 # calibre-web

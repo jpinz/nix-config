@@ -95,6 +95,10 @@
         reverse_proxy 127.0.0.1:3000
       }
 
+      handle /notifiarr* {
+        reverse_proxy 127.0.0.1:5454
+      }
+
       respond "ok" 200
     '';
   };
