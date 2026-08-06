@@ -19,7 +19,7 @@
     ./plex.nix
     ./prowlarr.nix
     ./radarr.nix
-    ./recyclarr.nix
+    ./profilarr.nix
     ./rustdesk-server.nix
     ./sabnzbd.nix
     ./shelfmark.nix
@@ -61,6 +61,7 @@
     4317 # OpenTelemetry OTLP gRPC ingest (Tempo)
     4318 # OpenTelemetry OTLP HTTP ingest (Tempo)
     6767 # bazarr
+    6868 # profilarr
     7745 # homebox
     8083 # calibre-web
     8084 # shelfmark
