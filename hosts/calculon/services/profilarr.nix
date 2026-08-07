@@ -47,20 +47,9 @@
     "d /var/lib/profilarr 0750 julian users -"
   ];
 
-  # Keep the UI reachable from the LAN and tailnet, but not the public internet.
-  networking.firewall.extraCommands = ''
-    iptables -I INPUT 1 -p tcp --dport 6868 -j DROP
-    iptables -I INPUT 1 -p tcp --dport 6868 -s 100.64.0.0/10 -j ACCEPT
-    iptables -I INPUT 1 -p tcp --dport 6868 -s 192.168.0.0/16 -j ACCEPT
-    iptables -I INPUT 1 -p tcp --dport 6868 -s 10.0.0.0/8 -j ACCEPT
-    iptables -I INPUT 1 -p tcp --dport 6868 -s 172.16.0.0/12 -j ACCEPT
-  '';
-
-  networking.firewall.extraStopCommands = ''
-    iptables -D INPUT -p tcp --dport 6868 -s 172.16.0.0/12 -j ACCEPT 2>/dev/null || true
-    iptables -D INPUT -p tcp --dport 6868 -s 10.0.0.0/8 -j ACCEPT 2>/dev/null || true
-    iptables -D INPUT -p tcp --dport 6868 -s 192.168.0.0/16 -j ACCEPT 2>/dev/null || true
-    iptables -D INPUT -p tcp --dport 6868 -s 100.64.0.0/10 -j ACCEPT 2>/dev/null || true
-    iptables -D INPUT -p tcp --dport 6868 -j DROP 2>/dev/null || true
-  '';
+  # Keep the UI reachable from the LAN and tailnet, but not from other interfaces.
+  networking.firewall.interfaces = {
+    "en+".allowedTCPPorts = [ 6868 ];
+    tailscale0.allowedTCPPorts = [ 6868 ];
+  };
 }
