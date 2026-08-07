@@ -19,6 +19,7 @@
     ./plex.nix
     ./prowlarr.nix
     ./radarr.nix
+    ./profilarr.nix
     ./rustdesk-server.nix
     ./sabnzbd.nix
     ./shelfmark.nix
