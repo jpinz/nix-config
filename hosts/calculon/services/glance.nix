@@ -333,11 +333,6 @@
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/prowlarr.svg";
                     }
                     {
-                      title = "Profilarr";
-                      url = "http://calculon.home:6868";
-                      icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/profilarr.svg";
-                    }
-                    {
                       title = "SABnzbd";
                       url = "http://calculon.home/sabnzbd";
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/sabnzbd.svg";
