@@ -17,7 +17,7 @@ This configuration manages several different machines:
 ```
 ├── flake.nix           # Main flake configuration
 ├── hosts/              # NixOS system configurations
-│   ├── calculon/       # Media Aerver
+│   ├── calculon/       # Media Server
 │   ├── julian-desktop/ # Main desktop
 │   └── common/         # Shared system modules
 ├── home/               # Home Manager configurations
