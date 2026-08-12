@@ -5,7 +5,7 @@
     ./caddy.nix
     ./cloudflared.nix
     ./copyparty.nix
-    ./grafana.nix
+    # ./grafana.nix
     # ./calibre-web.nix
     ./samba.nix
     # ./hd-idle.nix
@@ -25,7 +25,6 @@
     ./shelfmark.nix
     ./sonarr.nix
     ./tautulli.nix
-    # ./tdarr.nix
   ];
 
   users.groups.services.members =
@@ -38,7 +37,6 @@
       radarr.user
       sabnzbd.user
       sonarr.user
-      tdarr.user
     ])
     # Give julian access to the shared library trees (e.g. /mnt/data/ebooks),
     # whose files are group-owned by `services`.
@@ -58,8 +56,8 @@
   # Open firewall ports for locally hosted services
   networking.firewall.allowedTCPPorts = [
     80 # caddy reverse proxy (LAN + Tailscale)
-    4317 # OpenTelemetry OTLP gRPC ingest (Tempo)
-    4318 # OpenTelemetry OTLP HTTP ingest (Tempo)
+    # 4317 # OpenTelemetry OTLP gRPC ingest (Tempo)
+    # 4318 # OpenTelemetry OTLP HTTP ingest (Tempo)
     6767 # bazarr
     6868 # profilarr
     7745 # homebox

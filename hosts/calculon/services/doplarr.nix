@@ -20,7 +20,7 @@ let
     [backends.config.Radarr]
     url = "http://calculon.home/radarr"
     api_key = "''${RADARR_API_KEY}"
-    quality_profile = "HD-1080p"
+    quality_profile = "1080p Balanced"
     monitor_type = "movieOnly"
     minimum_availability = "announced"
 
@@ -31,7 +31,7 @@ let
     [backends.config.Sonarr]
     url = "http://calculon.home/sonarr"
     api_key = "''${SONARR_API_KEY}"
-    quality_profile = "HD-1080p"
+    quality_profile = "1080p Balanced"
     season_folders = true
     rootfolder = "/mnt/data/tv"
 
@@ -42,7 +42,7 @@ let
     [backends.config.Sonarr]
     url = "http://calculon.home/sonarr"
     api_key = "''${SONARR_API_KEY}"
-    quality_profile = "Remux-1080p - Anime"
+    quality_profile = "1080p Balanced"
     series_type = "anime"
     season_folders = true
     # Pin anime requests to the dedicated anime library so they never land in

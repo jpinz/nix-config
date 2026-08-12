@@ -367,15 +367,10 @@
                       url = "http://calculon.home/calibre";
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/calibre-web.svg";
                     }
-                    {
-                      title = "Grafana";
-                      url = "http://calculon.home/grafana";
-                      icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/grafana.svg";
-                    }
                     # {
-                    #   title = "Tdarr";
-                    #   url = "http://calculon.home:8265";
-                    #   icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/tdarr.svg";
+                    #   title = "Grafana";
+                    #   url = "http://calculon.home/grafana";
+                    #   icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/grafana.svg";
                     # }
                     {
                       title = "Immich";
