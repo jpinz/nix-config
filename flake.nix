@@ -58,6 +58,8 @@
       url = "github:activexray/doplarr_rs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    hermes-agent.url = "github:NousResearch/hermes-agent";
   };
 
   outputs =
@@ -116,12 +118,14 @@
             nixpkgs.overlays = [ inputs.copyparty.overlays.default ];
           }
         ];
+        hermes = mkSystem "hermes" "x86_64-linux" [ inputs.hermes-agent.nixosModules.default ];
         julian-desktop = mkSystem "julian-desktop" "x86_64-linux" [ ];
       };
 
       homeConfigurations = {
         "julian@calculon" = mkHome "julian" "calculon" "x86_64-linux" [ ];
         "julian@generic" = mkHome "julian" "generic" "x86_64-linux" [ ];
+        "julian@hermes" = mkHome "julian" "hermes" "x86_64-linux" [ ];
         "julian@jpinzer-desktop" = mkHome "julian" "wsl" "x86_64-linux" [ ];
         "julian@jpinzer-surface" = mkHome "julian" "wsl" "x86_64-linux" [ ];
       };
