@@ -55,6 +55,7 @@
         type = "zpool";
         mode = "raidz";
         mountpoint = null;
+        options.ashift = "12";
         rootFsOptions = {
           atime = "off";
           compression = "zstd";

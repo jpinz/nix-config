@@ -317,17 +317,38 @@ lsblk -o NAME,SIZE,MODEL,SERIAL,FSTYPE,MOUNTPOINTS
 ls -l /dev/disk/by-id/ata-*
 ```
 
-### 4. Create and Mount a New Tank
+### 4. Bootstrap ZFS
+
+Before creating the pool from a stock NixOS installation, add these settings to
+`/etc/nixos/configuration.nix`:
+
+```nix
+boot.supportedFilesystems = [ "zfs" ];
+networking.hostId = "c1f22144";
+```
+
+Boot into the resulting generation and verify that the ZFS module and tools are
+available:
+
+```bash
+sudo nixos-rebuild boot
+sudo reboot
+sudo modprobe zfs
+command -v zpool
+```
+
+### 5. Create and Mount a New Tank
 
 After confirming that all three existing XFS filesystems are disposable,
 partition, format, and mount only the data disks declared in Disko:
 
 ```bash
-nix run github:nix-community/disko -- \
+sudo nix --extra-experimental-features "nix-command flakes" \
+  run github:nix-community/disko -- \
   --mode destroy,format,mount ./hosts/calculon/disko.nix
 ```
 
-### 5. Activate Calculon
+### 6. Activate Calculon
 
 Activate the host configuration and reboot. Services requiring credentials
 remain disabled until their SOPS, environment, or password files are configured:
@@ -340,7 +361,7 @@ reboot
 Complete the required secrets and first-run setup above. Secrets and service
 databases under `/etc` and `/var/lib` are not recreated by the flake.
 
-### 6. Complete the Cutover
+### 7. Complete the Cutover
 
 After the old host is powered off permanently, change
 `networking.hostName` from `nixos` to `calculon`, rebuild, and update the DHCP or
