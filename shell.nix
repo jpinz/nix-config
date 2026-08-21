@@ -22,5 +22,6 @@ pkgs.mkShell {
     deploy-rs
     gnupg
     age
+    sops
   ];
 }

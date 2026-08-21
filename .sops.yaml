@@ -1,0 +1,10 @@
+keys:
+  - &julian age1fuphaz25twey0spmaf6dcfvmqtykke42ss4nkl550x9pve4gmseq9aumfu
+  - &calculon age14evfmdcc3d6tyzazc5j3e3c09dygvulerw9nch5gyqjv7lfm65zqs9c0ry
+
+creation_rules:
+  - path_regex: secrets/calculon\.yaml$
+    key_groups:
+      - age:
+          - *julian
+          - *calculon

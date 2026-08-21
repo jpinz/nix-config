@@ -39,6 +39,12 @@ Apply Home Manager configuration:
 home-manager switch --flake .#username@hostname
 ```
 
+## Secrets
+
+Runtime credentials are encrypted with SOPS and age. See
+[Secret Management](./docs/SECRETS.md) for editing, backup, recovery, and host
+replacement procedures.
+
 Deploy to remote systems:
 
 ```bash

@@ -64,6 +64,7 @@ be opened using their path rather than their application port.
 | Plex | `:32400/web` | Media streaming and transcoding |
 | Tautulli | `:8181` | Plex monitoring and history |
 | Navidrome | `/navidrome` | Music streaming from `/mnt/data/music` |
+| FreshRSS | `/freshrss` | RSS feed aggregation and reading |
 | Audiobookshelf | `/audiobookshelf` or `:8888` | Audiobook streaming |
 | Shelfmark | `/shelfmark` or `:8084` | Ebook acquisition into `/mnt/data/ebooks` |
 | Copyparty | `/copyparty` | Authenticated web access to `/mnt/data` |
@@ -79,9 +80,12 @@ repository but are not currently imported and therefore are not enabled.
 
 ## Required Secrets
 
-Secrets are created directly on Calculon and must not be committed to this
-repository. Create the directories and files before starting the affected
-services. Replace every placeholder below.
+Glance, Copyparty, Doplarr, and FreshRSS credentials are encrypted in
+`secrets/calculon.yaml` and deployed by sops-nix. Follow the repository's
+[secret management guide](../../docs/SECRETS.md) to edit or recover them.
+
+The remaining credentials below are created directly on Calculon and must not
+be committed to this repository.
 
 ### Cloudflare Tunnel
 
@@ -95,20 +99,6 @@ sudo systemctl restart cloudflared-tunnel
 ```
 
 The file contains only the tunnel token, with no variable name.
-
-### Copyparty Accounts
-
-Copyparty reads one plain-text password from each file. Its service user must be
-able to read them through the shared `services` group:
-
-```bash
-sudo install -d -m 0750 -o root -g services /etc/copyparty
-sudo install -m 0640 -o root -g services /dev/null /etc/copyparty/julian-password
-sudo install -m 0640 -o root -g services /dev/null /etc/copyparty/david-password
-sudoedit /etc/copyparty/julian-password
-sudoedit /etc/copyparty/david-password
-sudo systemctl restart copyparty
-```
 
 ### SABnzbd
 
@@ -132,25 +122,8 @@ the generated configuration before removing the credentials from
 
 ### Doplarr
 
-Set up Sonarr and Radarr first, then copy their API keys from **Settings >
-General > Security**. Create a Discord application and bot in the Discord
-Developer Portal, install it in the target server, and add its token here:
-
-```bash
-sudo install -d -m 0755 /etc/doplarr
-sudo install -m 0600 /dev/null /etc/doplarr/doplarr.env
-sudoedit /etc/doplarr/doplarr.env
-```
-
-```dotenv
-DOPLARR_DISCORD_TOKEN=REPLACE_ME
-RADARR_API_KEY=REPLACE_ME
-SONARR_API_KEY=REPLACE_ME
-```
-
-```bash
-sudo systemctl restart doplarr
-```
+Set up Sonarr and Radarr first. Their API keys and the Discord bot token are
+managed through SOPS and rendered to Doplarr's runtime environment file.
 
 Doplarr expects the `1080p Balanced` quality profile in both Arr applications
 and the `/mnt/data/tv` and `/mnt/data/anime` root folders in Sonarr.
@@ -180,12 +153,10 @@ state persist under `/etc/notifiarr`.
 
 ### Glance Credentials
 
-Glance currently has the Sonarr, Radarr, Prowlarr, SABnzbd, UniFi, and Immich
-API credentials embedded in `services/glance.nix`. They enter the Nix store and
-Git history, so they must not be treated as secret. Rotate those credentials
-and move them to an out-of-store environment file before sharing this
-repository or host configuration. UniFi and Immich are external dependencies;
-they are not hosted by Calculon.
+Glance reads its Sonarr, Radarr, Prowlarr, SABnzbd, UniFi, and Immich API keys
+from a SOPS-rendered runtime environment file. Rotate all six keys because their
+previous values remain in Git history and old Nix store paths. UniFi and Immich
+are external dependencies; they are not hosted by Calculon.
 
 ## First-Run Setup
 
@@ -208,8 +179,8 @@ tailscale status
 
 ### 2. Create Local Credentials
 
-Create the secret files documented above. A service whose required file is
-missing will fail until that file exists.
+Create the remaining manual secret files documented above. A service whose
+required file is missing will fail until that file exists.
 
 Create the separate Samba password for the existing NixOS user:
 
@@ -252,6 +223,8 @@ does not declare its remote ingress policy.
 ### 5. Create Application Accounts
 
 - Navidrome: create the first administrator account.
+- FreshRSS: sign in as `admin` with the configured
+  `FRESHRSS_ADMIN_PASSWORD` secret.
 - Audiobookshelf: create the first administrator and add audiobook library
   directories.
 - Homebox: register the initial account. Afterwards, set

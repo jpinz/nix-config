@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   inputs,
   ...
@@ -18,7 +19,7 @@ let
     media = "movie"
 
     [backends.config.Radarr]
-    url = "http://calculon.home/radarr"
+    url = "http://127.0.0.1:7878/radarr"
     api_key = "''${RADARR_API_KEY}"
     quality_profile = "1080p Balanced"
     monitor_type = "movieOnly"
@@ -29,7 +30,7 @@ let
     media = "series"
 
     [backends.config.Sonarr]
-    url = "http://calculon.home/sonarr"
+    url = "http://127.0.0.1:8989/sonarr"
     api_key = "''${SONARR_API_KEY}"
     quality_profile = "1080p Balanced"
     season_folders = true
@@ -40,7 +41,7 @@ let
     media = "anime"
 
     [backends.config.Sonarr]
-    url = "http://calculon.home/sonarr"
+    url = "http://127.0.0.1:8989/sonarr"
     api_key = "''${SONARR_API_KEY}"
     quality_profile = "1080p Balanced"
     series_type = "anime"
@@ -52,25 +53,37 @@ let
   '';
 in
 {
+  sops.secrets = {
+    DOPLARR_DISCORD_TOKEN.restartUnits = [ "doplarr.service" ];
+    RADARR_API_KEY.restartUnits = [ "doplarr.service" ];
+    SONARR_API_KEY.restartUnits = [ "doplarr.service" ];
+  };
+
+  sops.templates."doplarr.env".content = ''
+    DOPLARR_DISCORD_TOKEN=${config.sops.placeholder.DOPLARR_DISCORD_TOKEN}
+    RADARR_API_KEY=${config.sops.placeholder.RADARR_API_KEY}
+    SONARR_API_KEY=${config.sops.placeholder.SONARR_API_KEY}
+  '';
+
   # Doplarr — Discord bot for requesting movies and TV through Radarr/Sonarr.
-  #
-  # Secrets are read from an EnvironmentFile that must be created manually and
-  # kept out of the Nix store (like the cloudflared tunnel token). Create
-  # /etc/doplarr/doplarr.env with 0600 perms containing:
-  #
-  #   DOPLARR_DISCORD_TOKEN=your_discord_bot_token
-  #   RADARR_API_KEY=your_radarr_api_key
-  #   SONARR_API_KEY=your_sonarr_api_key
   systemd.services.doplarr = {
     description = "Doplarr - Discord media request bot";
-    after = [ "network-online.target" ];
-    wants = [ "network-online.target" ];
+    after = [
+      "network-online.target"
+      "radarr.service"
+      "sonarr.service"
+    ];
+    wants = [
+      "network-online.target"
+      "radarr.service"
+      "sonarr.service"
+    ];
     wantedBy = [ "multi-user.target" ];
 
     serviceConfig = {
       Type = "exec";
       ExecStart = "${doplarr}/bin/doplarr ${configFile}";
-      EnvironmentFile = "/etc/doplarr/doplarr.env";
+      EnvironmentFile = config.sops.templates."doplarr.env".path;
       Restart = "on-failure";
       RestartSec = 5;
       DynamicUser = true;

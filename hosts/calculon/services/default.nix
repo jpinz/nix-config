@@ -10,6 +10,7 @@
     ./samba.nix
     # ./hd-idle.nix
     ./bazarr.nix
+    ./freshrss.nix
     ./glance.nix
     ./homebox.nix
     ./lidarr.nix

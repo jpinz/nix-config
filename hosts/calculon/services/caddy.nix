@@ -75,6 +75,14 @@
         reverse_proxy 127.0.0.1:4533
       }
 
+      handle /rss* {
+        uri strip_prefix /rss
+        reverse_proxy 127.0.0.1:8090 {
+          header_up Host 127.0.0.1:8090
+          header_up X-Forwarded-Prefix /rss
+        }
+      }
+
       handle /shelfmark* {
         reverse_proxy 127.0.0.1:8084
       }
@@ -111,6 +119,7 @@
     iptables -I INPUT 1 -p tcp --dport 80 -s 192.168.0.0/16 -j ACCEPT
     iptables -I INPUT 1 -p tcp --dport 80 -s 10.0.0.0/8 -j ACCEPT
     iptables -I INPUT 1 -p tcp --dport 80 -s 172.16.0.0/12 -j ACCEPT
+    iptables -I INPUT 1 -i lo -p tcp --dport 80 -j ACCEPT
     iptables -I INPUT 1 -p tcp --dport 443 -j DROP
     iptables -I INPUT 1 -p tcp --dport 443 -s 100.64.0.0/10 -j ACCEPT
   '';
@@ -118,6 +127,7 @@
   networking.firewall.extraStopCommands = ''
     iptables -D INPUT -p tcp --dport 443 -s 100.64.0.0/10 -j ACCEPT 2>/dev/null || true
     iptables -D INPUT -p tcp --dport 443 -j DROP 2>/dev/null || true
+    iptables -D INPUT -i lo -p tcp --dport 80 -j ACCEPT 2>/dev/null || true
     iptables -D INPUT -p tcp --dport 80 -s 172.16.0.0/12 -j ACCEPT 2>/dev/null || true
     iptables -D INPUT -p tcp --dport 80 -s 10.0.0.0/8 -j ACCEPT 2>/dev/null || true
     iptables -D INPUT -p tcp --dport 80 -s 192.168.0.0/16 -j ACCEPT 2>/dev/null || true

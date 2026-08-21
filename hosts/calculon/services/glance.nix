@@ -1,6 +1,13 @@
+{ config, ... }:
+let
+  glanceSecret = {
+    restartUnits = [ "glance.service" ];
+  };
+in
 {
   services.glance = {
     enable = true;
+    environmentFile = config.sops.templates."glance.env".path;
     settings = {
       server = {
         host = "0.0.0.0";
@@ -358,6 +365,11 @@
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/navidrome.svg";
                     }
                     {
+                      title = "FreshRSS";
+                      url = "http://calculon.home/rss";
+                      icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/freshrss.svg";
+                    }
+                    {
                       title = "Shelfmark";
                       url = "http://calculon.home:8084";
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/shelfmark.svg";
@@ -639,16 +651,27 @@
     };
   };
 
-  # Environment variables for API keys
+  sops.secrets = {
+    SONARR_API_KEY = glanceSecret;
+    RADARR_API_KEY = glanceSecret;
+    PROWLARR_API_KEY = glanceSecret;
+    SABNZBD_API_KEY = glanceSecret;
+    UNIFI_API_KEY = glanceSecret;
+    IMMICH_API_KEY = glanceSecret;
+  };
+
+  sops.templates."glance.env".content = ''
+    SONARR_API_KEY=${config.sops.placeholder.SONARR_API_KEY}
+    RADARR_API_KEY=${config.sops.placeholder.RADARR_API_KEY}
+    PROWLARR_API_KEY=${config.sops.placeholder.PROWLARR_API_KEY}
+    SABNZBD_API_KEY=${config.sops.placeholder.SABNZBD_API_KEY}
+    UNIFI_API_KEY=${config.sops.placeholder.UNIFI_API_KEY}
+    IMMICH_API_KEY=${config.sops.placeholder.IMMICH_API_KEY}
+  '';
+
   systemd.services.glance.environment = {
-    SONARR_API_KEY = "3334f2d003d148108d0084d270c8fcf9";
-    RADARR_API_KEY = "9a2534c83b4f492680a95c4d045d9b61";
-    PROWLARR_API_KEY = "ca2a381695a340d8923edc6b2e03ccef";
-    SABNZBD_API_KEY = "ad5eaed00c6342e58958cc9540142ecd";
     UNIFI_CONSOLE_IP = "192.168.1.1";
-    UNIFI_API_KEY = "DkNpJ8CbHHrd02I-3G7X2MeiP6JtfXQN";
     IMMICH_URL = "http://192.168.1.128:2283";
-    IMMICH_API_KEY = "WgdbN331e4zeClpAunCb4p1N37FKyCcz6n8oLzMIXM";
   };
 
   # Open port 8000 for the dashboard

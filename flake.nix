@@ -20,6 +20,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     deploy-rs = {
       url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -113,6 +118,7 @@
 
       nixosConfigurations = {
         calculon = mkSystem "calculon" "x86_64-linux" [
+          inputs.sops-nix.nixosModules.sops
           inputs.copyparty.nixosModules.default
           {
             nixpkgs.overlays = [ inputs.copyparty.overlays.default ];
