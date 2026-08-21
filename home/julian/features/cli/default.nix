@@ -14,6 +14,7 @@
   home = {
     packages = with pkgs; [
       inputs.micasa.packages.${pkgs.system}.default
+      atop
       deploy-rs
       fastfetch
       fd
@@ -48,10 +49,16 @@
     bottom = {
       enable = true;
     };
+    btop = {
+      enable = true;
+    };
     eza = {
       enable = true;
     };
     fzf = {
+      enable = true;
+    };
+    htop = {
       enable = true;
     };
     jq = {
