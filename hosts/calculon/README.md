@@ -1,12 +1,13 @@
 # Calculon
 
-Calculon is an [Intel NUC7i5BNH][hardware] running NixOS. It is the home media
-server, download automation host, file server, and home-services host. The Intel
-i5-7260U GPU is configured for Quick Sync hardware transcoding.
+Calculon is an AMD Ryzen 5 3600 system running NixOS. It is the home media
+server, download automation host, file server, and home-services host. An
+NVIDIA RTX 2060 Super is configured for hardware transcoding.
 
 ## Architecture
 
-- Hostname: `calculon` (`calculon.home` on the LAN)
+- Hostname during migration: `nixos`; change it to `calculon` after retiring the
+  old host
 - Remote administration: SSH on port `2222`, public-key authentication only
 - Private remote access: Tailscale
 - Public access: selected routes through a Cloudflare Tunnel; ingress rules are
@@ -18,18 +19,20 @@ i5-7260U GPU is configured for Quick Sync hardware transcoding.
 
 ### Storage
 
-The Disko configuration assumes this exact device layout:
+The system SSD retains the ext4 installation created by the NixOS installer.
+Disko manages only the three data disks and assumes these exact stable device
+IDs:
 
 <!-- markdownlint-disable MD013 -->
 
-| Devices | Pool | Layout | Mount point | Purpose |
+| Devices | Pool/filesystem | Layout | Mount point | Purpose |
 | --- | --- | --- | --- | --- |
-| `/dev/sda` | `zroot` | Single-disk ZFS | `/`, `/nix`, `/home` | Operating system and service state |
-| `/dev/sdb` through `/dev/sde` | `tank` | Four-disk RAID-Z | `/mnt/data` | Media library |
+| Samsung SSD `S4PGNG0KC19095L` | ext4 | Installer-managed | `/` | Operating system and service state |
+| WDC `7SGH1MDC`, `1EHVGXHZ`, `7SGGTZ9C` | `tank` | Three-disk RAID-Z1 | `/mnt/data` | Media library |
 
 <!-- markdownlint-enable MD013 -->
 
-Both pools use Zstandard compression with access-time updates disabled. The
+`tank` uses Zstandard compression with access-time updates disabled. The
 configuration creates these shared directories with group-writable, setgid
 permissions:
 
@@ -38,7 +41,7 @@ permissions:
 /mnt/data/{tv,anime,movies,music,ebooks}
 ```
 
-`/mnt/downloads` is on the system pool; only `/mnt/data` is on `tank`. RAID-Z is
+`/mnt/downloads` is on the system SSD; only `/mnt/data` is on `tank`. RAID-Z is
 not a backup, and this configuration does not currently configure ZFS snapshots,
 replication, or an off-site backup.
 
@@ -282,18 +285,18 @@ zpool status
 curl --fail http://calculon.home/dashboard >/dev/null
 ```
 
-## Bare-Metal Reinstallation
+## Replacement-Hardware Installation
 
 > [!CAUTION]
-> The Disko command below destroys all data on `/dev/sda` through `/dev/sde`.
-> Verify the device mapping with `lsblk` and restore requirements before
-> running it. Import an existing `tank` instead of recreating it when preserving
-> the media library.
+> The Disko command below destroys all data on the three explicitly declared
+> 8 TB data disks. It does not repartition the system SSD. Verify every stable
+> device ID and restore requirement before running it.
 
-### 1. Boot the Installer
+### 1. Install and Boot NixOS
 
-Boot a current minimal NixOS installer, connect Ethernet or configure Wi-Fi,
-and become root with `sudo -i`.
+Install a minimal NixOS system on the SSD, boot it, and enable SSH. The checked-in
+hardware configuration contains UUIDs from this installation and must be
+regenerated if the SSD is reinstalled or replaced.
 
 ### 2. Clone the Configuration
 
@@ -307,33 +310,39 @@ nix-shell
 
 ### 3. Verify the Device Map
 
-Confirm that `/dev/sda` is the system SSD and `/dev/sdb` through `/dev/sde`
-are the intended media disks:
+Confirm the model, serial number, and `/dev/disk/by-id` link for every disk:
 
 ```bash
 lsblk -o NAME,SIZE,MODEL,SERIAL,FSTYPE,MOUNTPOINTS
+ls -l /dev/disk/by-id/ata-*
 ```
 
-### 4. Partition and Mount New Disks
+### 4. Create and Mount a New Tank
 
-For a completely new installation with no data to preserve, partition, format,
-and mount the declared disks:
+After confirming that all three existing XFS filesystems are disposable,
+partition, format, and mount only the data disks declared in Disko:
 
 ```bash
 nix run github:nix-community/disko -- \
   --mode destroy,format,mount ./hosts/calculon/disko.nix
 ```
 
-### 5. Install NixOS
+### 5. Activate Calculon
 
-Install the host configuration and reboot:
+Activate the host configuration and reboot. Services requiring credentials
+remain disabled until their SOPS, environment, or password files are configured:
 
 ```bash
-nixos-install --flake .#calculon
+sudo nixos-rebuild switch --flake .#calculon
 reboot
 ```
 
 Complete the required secrets and first-run setup above. Secrets and service
 databases under `/etc` and `/var/lib` are not recreated by the flake.
 
-[hardware]: https://www.amazon.com/Intel-NUC-Mainstream-Kit-NUC7i5BNH/dp/B01N2UMKZ5
+### 6. Complete the Cutover
+
+After the old host is powered off permanently, change
+`networking.hostName` from `nixos` to `calculon`, rebuild, and update the DHCP or
+DNS reservation for `calculon.home`. Keep the replacement host's ZFS host ID
+`c1f22144` unchanged.
