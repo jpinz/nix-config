@@ -2,7 +2,8 @@
 
 Calculon is an AMD Ryzen 5 3600 system running NixOS. It is the home media
 server, download automation host, file server, and home-services host. An
-NVIDIA RTX 2060 Super is configured for hardware transcoding.
+NVIDIA GeForce GTX 1060 6GB is configured for Plex hardware transcoding using
+NVIDIA's proprietary kernel module, which is required for Pascal GPUs.
 
 ## Architecture
 
@@ -196,6 +197,12 @@ sudo smbpasswd -a julian
 
 Open Plex at `http://calculon.home:32400/web`, sign in, claim the server, and
 add the movie, TV, anime, and music directories under `/mnt/data`.
+
+Hardware-accelerated transcoding requires Plex Pass. In **Settings > Server >
+Transcoder**, enable advanced settings and select **Use hardware acceleration
+when available**. After rebuilding and rebooting, verify the driver with
+`nvidia-smi`; during a forced transcode, Plex's dashboard should show `(hw)`
+next to the video stream.
 
 Open SABnzbd at `http://calculon.home/sabnzbd`. Confirm both SOPS-configured
 Usenet servers and the complete/incomplete directories, then use its preserved

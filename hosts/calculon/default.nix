@@ -32,7 +32,8 @@
     graphics.enable = true;
     nvidia = {
       modesetting.enable = true;
-      open = true;
+      # Pascal GPUs require NVIDIA's proprietary kernel module.
+      open = false;
     };
   };
 }
