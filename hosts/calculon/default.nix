@@ -22,6 +22,9 @@
   };
 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  boot.extraModprobeConfig = ''
+    options zfs zfs_arc_max=${toString (16 * 1024 * 1024 * 1024)}
+  '';
 
   system.stateVersion = "23.05";
 
