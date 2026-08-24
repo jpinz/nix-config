@@ -19,7 +19,7 @@ let
     media = "movie"
 
     [backends.config.Radarr]
-    url = "http://calculon.home/radarr"
+    url = "http://127.0.0.1:7878/radarr"
     api_key = "''${RADARR_API_KEY}"
     quality_profile = "1080p Balanced"
     monitor_type = "movieOnly"
@@ -30,7 +30,7 @@ let
     media = "series"
 
     [backends.config.Sonarr]
-    url = "http://calculon.home/sonarr"
+    url = "http://127.0.0.1:8989/sonarr"
     api_key = "''${SONARR_API_KEY}"
     quality_profile = "1080p Balanced"
     season_folders = true
@@ -41,7 +41,7 @@ let
     media = "anime"
 
     [backends.config.Sonarr]
-    url = "http://calculon.home/sonarr-anime"
+    url = "http://127.0.0.1:8990/sonarr-anime"
     api_key = "''${SONARR_ANIME_API_KEY}"
     quality_profile = "1080p Balanced"
     series_type = "anime"
