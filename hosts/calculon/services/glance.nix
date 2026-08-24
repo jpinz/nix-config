@@ -5,8 +5,10 @@
     environmentFile = config.sops.secrets.glance_env.path;
     settings = {
       server = {
-        host = "0.0.0.0";
+        host = "127.0.0.1";
         port = 8000;
+        proxied = true;
+        base-url = "/dashboard";
       };
       branding = {
         logo-text = "Calculon";
@@ -278,6 +280,11 @@
                       title = "SABnzbd";
                       url = "http://calculon.home/sabnzbd";
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/sabnzbd.svg";
+                    }
+                    {
+                      title = "Glances";
+                      url = "http://calculon.home/monitor/";
+                      icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/glances.svg";
                     }
                     {
                       title = "Tautulli";

@@ -56,7 +56,8 @@ be opened using their path rather than their application port.
 
 | Service | Address | Purpose |
 | --- | --- | --- |
-| Glance | `/dashboard` | Home dashboard and service status |
+| Glance | `/dashboard/` | Home dashboard and service status |
+| Glances | `/monitor/` | Detailed system resource monitoring |
 | Sonarr | `/sonarr` | TV library automation |
 | Sonarr Anime | `/sonarr-anime` | Anime library automation |
 | Radarr | `/radarr` | Movie library automation |

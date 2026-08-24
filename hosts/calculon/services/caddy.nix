@@ -99,12 +99,18 @@
         file_server
       }
 
-      handle /dashboard* {
+      redir /dashboard /dashboard/ 308
+
+      handle_path /dashboard/* {
         reverse_proxy 127.0.0.1:8000
       }
 
-      handle /home* {
-        reverse_proxy 127.0.0.1:8000
+      redir /home* /dashboard/ 308
+
+      redir /monitor /monitor/ 308
+
+      handle /monitor/* {
+        reverse_proxy 127.0.0.1:61208
       }
 
       handle /grafana* {

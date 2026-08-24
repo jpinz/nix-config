@@ -19,7 +19,7 @@
     ./audiobookshelf.nix
     ./navidrome.nix
     ./plex.nix
-    ./shelfmark.nix
+    # ./shelfmark.nix
     ./tautulli.nix
 
     # Home applications
@@ -28,6 +28,7 @@
     ./homebox.nix
 
     # Monitoring and remote access
+    ./glances.nix
     ./notifiarr.nix
     ./rustdesk-server.nix
   ];
