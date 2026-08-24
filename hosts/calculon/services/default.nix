@@ -57,6 +57,8 @@
     "d /mnt/data/movies 2770 ${config.users.users.julian.name} ${config.users.groups.services.name}"
     "d /mnt/data/music 2770 ${config.users.users.julian.name} ${config.users.groups.services.name}"
     "d /mnt/data/ebooks 2770 ${config.users.users.julian.name} ${config.users.groups.services.name}"
+    "d /mnt/data/audiobooks 2770 ${config.users.users.julian.name} ${config.users.groups.services.name}"
+    "d /mnt/data/videos 2770 ${config.users.users.julian.name} ${config.users.groups.services.name}"
   ];
 
   # Open firewall ports for locally hosted services

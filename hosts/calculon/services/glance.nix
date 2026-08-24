@@ -424,16 +424,251 @@
                   type = "group";
                   style = "tabs-static";
                   widgets = [
-                    # System Status (Server Stats)
+                    # System Status (Glances)
                     {
-                      type = "server-stats";
-                      title = "Server Stats";
-                      servers = [
-                        {
-                          type = "local";
-                          name = "Calculon";
-                        }
-                      ];
+                      type = "custom-api";
+                      title = "Calculon";
+                      title-url = "http://calculon.home/monitor/";
+                      cache = "10s";
+                      url = "http://127.0.0.1:61208/monitor/api/4/cpu";
+                      subrequests = {
+                        percpu.url = "http://127.0.0.1:61208/monitor/api/4/percpu";
+                        sensors.url = "http://127.0.0.1:61208/monitor/api/4/sensors";
+                        mem.url = "http://127.0.0.1:61208/monitor/api/4/mem";
+                        memswap.url = "http://127.0.0.1:61208/monitor/api/4/memswap";
+                        fs.url = "http://127.0.0.1:61208/monitor/api/4/fs";
+                        folders.url = "http://127.0.0.1:61208/monitor/api/4/folders";
+                        load.url = "http://127.0.0.1:61208/monitor/api/4/load";
+                        uptime.url = "http://127.0.0.1:61208/monitor/api/4/uptime";
+                      };
+                      template = ''
+                        <style>
+                          .calculon-stats {
+                            display: grid;
+                            gap: 1.5rem;
+                          }
+                          .calculon-stats__meta,
+                          .calculon-stats__heading,
+                          .calculon-stats__row-label {
+                            display: flex;
+                            align-items: baseline;
+                            justify-content: space-between;
+                            gap: 0.8rem;
+                          }
+                          .calculon-stats__meta {
+                            color: var(--color-text-subdue);
+                            font-size: var(--font-size-tiny);
+                          }
+                          .calculon-stats__section {
+                            display: grid;
+                            gap: 0.8rem;
+                            padding-top: 1.2rem;
+                            border-top: 1px solid var(--color-widget-content-border);
+                          }
+                          .calculon-stats__section:first-of-type {
+                            padding-top: 0;
+                            border-top: 0;
+                          }
+                          .calculon-stats__heading {
+                            font-size: var(--font-size-h6);
+                            text-transform: uppercase;
+                          }
+                          .calculon-stats__cores {
+                            display: grid;
+                            grid-template-columns: repeat(4, minmax(0, 1fr));
+                            gap: 0.6rem;
+                          }
+                          .calculon-stats__core {
+                            min-width: 0;
+                            padding: 0.55rem;
+                            border: 1px solid var(--color-widget-content-border);
+                            border-radius: var(--border-radius);
+                          }
+                          .calculon-stats__core-label,
+                          .calculon-stats__row-label {
+                            font-size: var(--font-size-tiny);
+                          }
+                          .calculon-stats__core-label {
+                            display: flex;
+                            justify-content: space-between;
+                            gap: 0.3rem;
+                          }
+                          .calculon-stats__rows {
+                            display: grid;
+                            gap: 0.75rem;
+                          }
+                          .calculon-stats__meter {
+                            width: 100%;
+                            height: 0.45rem;
+                            margin-top: 0.35rem;
+                            overflow: hidden;
+                            background: var(--color-widget-content-border);
+                            border-radius: var(--border-radius);
+                          }
+                          .calculon-stats__meter > span {
+                            display: block;
+                            height: 100%;
+                            min-width: 1px;
+                            background: currentColor;
+                            border-radius: inherit;
+                          }
+                          .calculon-stats__folder-name {
+                            min-width: 0;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            text-transform: capitalize;
+                            white-space: nowrap;
+                          }
+                        </style>
+
+                        {{ $percpu := .Subrequest "percpu" }}
+                        {{ $sensors := .Subrequest "sensors" }}
+                        {{ $mem := .Subrequest "mem" }}
+                        {{ $swap := .Subrequest "memswap" }}
+                        {{ $fs := .Subrequest "fs" }}
+                        {{ $folders := .Subrequest "folders" }}
+                        {{ $load := .Subrequest "load" }}
+                        {{ $uptime := .Subrequest "uptime" }}
+
+                        {{ if eq .Response.StatusCode 200 }}
+                          <div class="calculon-stats">
+                            <div class="calculon-stats__meta">
+                              <span>{{ $uptime.JSON.String "" }} uptime</span>
+                              <span>load {{ printf "%.2f" ($load.JSON.Float "min5") }}</span>
+                            </div>
+
+                            <section class="calculon-stats__section">
+                              <div class="calculon-stats__heading">
+                                <span>CPU</span>
+                                <span class="color-highlight">
+                                  {{ printf "%.0f" (.JSON.Float "total") }}%
+                                  {{ range $sensors.JSON.Array "" }}
+                                    {{ if eq (.String "label") "Tctl" }} · {{ printf "%.0f" (.Float "value") }}°C{{ end }}
+                                  {{ end }}
+                                </span>
+                              </div>
+                              <div class="calculon-stats__cores">
+                                {{ range $percpu.JSON.Array "" }}
+                                  {{ $coreUsage := .Float "total" }}
+                                  <div class="calculon-stats__core">
+                                    <div class="calculon-stats__core-label">
+                                      <span>CPU{{ .Int "cpu_number" }}</span>
+                                      <span class="color-highlight">{{ printf "%.0f" $coreUsage }}%</span>
+                                    </div>
+                                    <div class="calculon-stats__meter {{ if ge $coreUsage 85.0 }}color-negative{{ else if ge $coreUsage 65.0 }}color-primary{{ else }}color-positive{{ end }}">
+                                      <span style="width: {{ printf "%.1f" $coreUsage }}%"></span>
+                                    </div>
+                                  </div>
+                                {{ end }}
+                              </div>
+                            </section>
+
+                            {{ $memTotal := $mem.JSON.Float "total" }}
+                            {{ $memUsed := $mem.JSON.Float "used" }}
+                            {{ $memUsedPercent := $mem.JSON.Float "percent" }}
+                            {{ $memAvailable := $mem.JSON.Float "available" }}
+                            {{ $memAvailablePercent := mul (div $memAvailable $memTotal) 100.0 }}
+                            {{ $memCached := $mem.JSON.Float "cached" }}
+                            {{ $memCachedPercent := mul (div $memCached $memTotal) 100.0 }}
+                            {{ $memFree := $mem.JSON.Float "free" }}
+                            {{ $memFreePercent := mul (div $memFree $memTotal) 100.0 }}
+                            {{ $swapTotal := $swap.JSON.Float "total" }}
+                            {{ $swapUsed := $swap.JSON.Float "used" }}
+                            {{ $swapPercent := $swap.JSON.Float "percent" }}
+                            <section class="calculon-stats__section">
+                              <div class="calculon-stats__heading">
+                                <span>Memory</span>
+                                <span class="color-highlight">{{ printf "%.1f" (div $memUsed 1073741824.0) }} / {{ printf "%.1f" (div $memTotal 1073741824.0) }} GiB</span>
+                              </div>
+                              <div class="calculon-stats__rows">
+                                <div>
+                                  <div class="calculon-stats__row-label"><span>Used</span><span>{{ printf "%.1f" $memUsedPercent }}%</span></div>
+                                  <div class="calculon-stats__meter {{ if ge $memUsedPercent 85.0 }}color-negative{{ else }}color-primary{{ end }}"><span style="width: {{ printf "%.1f" $memUsedPercent }}%"></span></div>
+                                </div>
+                                <div>
+                                  <div class="calculon-stats__row-label"><span>Available</span><span>{{ printf "%.1f" (div $memAvailable 1073741824.0) }} GiB</span></div>
+                                  <div class="calculon-stats__meter color-positive"><span style="width: {{ printf "%.1f" $memAvailablePercent }}%"></span></div>
+                                </div>
+                                <div>
+                                  <div class="calculon-stats__row-label"><span>Cache (reclaimable)</span><span>{{ printf "%.1f" (div $memCached 1073741824.0) }} GiB</span></div>
+                                  <div class="calculon-stats__meter color-highlight"><span style="width: {{ printf "%.1f" $memCachedPercent }}%"></span></div>
+                                </div>
+                                <div>
+                                  <div class="calculon-stats__row-label"><span>Free</span><span>{{ printf "%.1f" (div $memFree 1073741824.0) }} GiB</span></div>
+                                  <div class="calculon-stats__meter color-subdue"><span style="width: {{ printf "%.1f" $memFreePercent }}%"></span></div>
+                                </div>
+                                <div>
+                                  <div class="calculon-stats__row-label"><span>Swap</span><span>{{ printf "%.1f" (div $swapUsed 1073741824.0) }} / {{ printf "%.1f" (div $swapTotal 1073741824.0) }} GiB</span></div>
+                                  <div class="calculon-stats__meter {{ if ge $swapPercent 50.0 }}color-negative{{ else }}color-subdue{{ end }}"><span style="width: {{ printf "%.1f" $swapPercent }}%"></span></div>
+                                </div>
+                              </div>
+                            </section>
+
+                            <section class="calculon-stats__section">
+                              <div class="calculon-stats__heading"><span>Filesystems</span></div>
+                              <div class="calculon-stats__rows">
+                                {{ range $fs.JSON.Array "" }}
+                                  {{ if or (eq (.String "mnt_point") "/") (eq (.String "mnt_point") "/mnt/data") }}
+                                    {{ $diskPercent := .Float "percent" }}
+                                    {{ $diskUsed := .Float "used" }}
+                                    {{ $diskSize := .Float "size" }}
+                                    <div>
+                                      <div class="calculon-stats__row-label">
+                                        <span>{{ if eq (.String "mnt_point") "/" }}System{{ else }}Data · ZFS{{ end }}</span>
+                                        <span>
+                                          {{ if ge $diskSize 1099511627776.0 }}
+                                            {{ printf "%.1f" (div $diskUsed 1099511627776.0) }} / {{ printf "%.1f" (div $diskSize 1099511627776.0) }} TiB
+                                          {{ else }}
+                                            {{ printf "%.1f" (div $diskUsed 1073741824.0) }} / {{ printf "%.1f" (div $diskSize 1073741824.0) }} GiB
+                                          {{ end }}
+                                        </span>
+                                      </div>
+                                      <div class="calculon-stats__meter {{ if ge $diskPercent 85.0 }}color-negative{{ else if ge $diskPercent 70.0 }}color-primary{{ else }}color-positive{{ end }}"><span style="width: {{ printf "%.1f" $diskPercent }}%"></span></div>
+                                    </div>
+                                  {{ end }}
+                                {{ end }}
+                              </div>
+                            </section>
+
+                            {{ $dataSize := $fs.JSON.Float "#(mnt_point==\"/mnt/data\").size" }}
+                            {{ $folderList := $folders.JSON.Array "" }}
+                            <section class="calculon-stats__section">
+                              <div class="calculon-stats__heading"><span>Media folders</span><span class="color-subdue">30m scan</span></div>
+                              {{ if gt (len $folderList) 0 }}
+                                <div class="calculon-stats__rows">
+                                  {{ range $folderList }}
+                                    {{ $folderSize := .Float "size" }}
+                                    {{ $folderPercent := mul (div $folderSize $dataSize) 100.0 }}
+                                    <div>
+                                      <div class="calculon-stats__row-label">
+                                        <span class="calculon-stats__folder-name">{{ trimPrefix "/mnt/data/" (.String "path") }}</span>
+                                        {{ if eq (.Int "errno") 0 }}
+                                          <span>
+                                            {{ if ge $folderSize 1099511627776.0 }}
+                                              {{ printf "%.2f" (div $folderSize 1099511627776.0) }} TiB
+                                            {{ else }}
+                                              {{ printf "%.1f" (div $folderSize 1073741824.0) }} GiB
+                                            {{ end }}
+                                          </span>
+                                        {{ else }}
+                                          <span class="color-negative">Unavailable</span>
+                                        {{ end }}
+                                      </div>
+                                      {{ if eq (.Int "errno") 0 }}
+                                        <div class="calculon-stats__meter color-primary"><span style="width: {{ printf "%.2f" $folderPercent }}%"></span></div>
+                                      {{ end }}
+                                    </div>
+                                  {{ end }}
+                                </div>
+                              {{ else }}
+                                <p class="color-subdue size-h6">Initial folder scan pending</p>
+                              {{ end }}
+                            </section>
+                          </div>
+                        {{ else }}
+                          <p class="color-negative">Glances is unavailable</p>
+                        {{ end }}
+                      '';
                     }
                     # Unifi Widget
                     {
