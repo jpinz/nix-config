@@ -1,12 +1,13 @@
 # Calculon
 
-Calculon is an [Intel NUC7i5BNH][hardware] running NixOS. It is the home media
-server, download automation host, file server, and home-services host. The Intel
-i5-7260U GPU is configured for Quick Sync hardware transcoding.
+Calculon is an AMD Ryzen 5 3600 system running NixOS. It is the home media
+server, download automation host, file server, and home-services host. An
+NVIDIA RTX 2060 Super is configured for hardware transcoding.
 
 ## Architecture
 
-- Hostname: `calculon` (`calculon.home` on the LAN)
+- Hostname during migration: `nixos`; change it to `calculon` after retiring the
+  old host
 - Remote administration: SSH on port `2222`, public-key authentication only
 - Private remote access: Tailscale
 - Public access: selected routes through a Cloudflare Tunnel; ingress rules are
@@ -18,18 +19,20 @@ i5-7260U GPU is configured for Quick Sync hardware transcoding.
 
 ### Storage
 
-The Disko configuration assumes this exact device layout:
+The system SSD retains the ext4 installation created by the NixOS installer.
+Disko manages only the three data disks and assumes these exact stable device
+IDs:
 
 <!-- markdownlint-disable MD013 -->
 
-| Devices | Pool | Layout | Mount point | Purpose |
+| Devices | Pool/filesystem | Layout | Mount point | Purpose |
 | --- | --- | --- | --- | --- |
-| `/dev/sda` | `zroot` | Single-disk ZFS | `/`, `/nix`, `/home` | Operating system and service state |
-| `/dev/sdb` through `/dev/sde` | `tank` | Four-disk RAID-Z | `/mnt/data` | Media library |
+| Samsung SSD `S4PGNG0KC19095L` | ext4 | Installer-managed | `/` | Operating system and service state |
+| WDC `7SGH1MDC`, `1EHVGXHZ`, `7SGGTZ9C` | `tank` | Three-disk RAID-Z1 | `/mnt/data` | Media library |
 
 <!-- markdownlint-enable MD013 -->
 
-Both pools use Zstandard compression with access-time updates disabled. The
+`tank` uses Zstandard compression with access-time updates disabled. The
 configuration creates these shared directories with group-writable, setgid
 permissions:
 
@@ -38,7 +41,7 @@ permissions:
 /mnt/data/{tv,anime,movies,music,ebooks}
 ```
 
-`/mnt/downloads` is on the system pool; only `/mnt/data` is on `tank`. RAID-Z is
+`/mnt/downloads` is on the system SSD; only `/mnt/data` is on `tank`. RAID-Z is
 not a backup, and this configuration does not currently configure ZFS snapshots,
 replication, or an off-site backup.
 
@@ -53,7 +56,8 @@ be opened using their path rather than their application port.
 | Service | Address | Purpose |
 | --- | --- | --- |
 | Glance | `/dashboard` | Home dashboard and service status |
-| Sonarr | `/sonarr` | TV and anime library automation |
+| Sonarr | `/sonarr` | TV library automation |
+| Sonarr Anime | `/sonarr-anime` | Anime library automation |
 | Radarr | `/radarr` | Movie library automation |
 | Lidarr | `/lidarr` | Music library automation |
 | Prowlarr | `/prowlarr` | Indexer management for the Arr applications |
@@ -79,99 +83,72 @@ repository but are not currently imported and therefore are not enabled.
 
 ## Required Secrets
 
-Secrets are created directly on Calculon and must not be committed to this
-repository. Create the directories and files before starting the affected
-services. Replace every placeholder below.
-
-### Cloudflare Tunnel
-
-Obtain the tunnel token from the Cloudflare Zero Trust dashboard:
+Application secrets are encrypted in `hosts/calculon/secrets.yaml`. The file is
+encrypted to both Calculon's SSH host key and Julian's age key declared in
+`.sops.yaml`; only the encrypted file is committed. Edit it on Calculon with:
 
 ```bash
-sudo install -d -m 0755 /etc/cloudflared
-sudo install -m 0600 /dev/null /etc/cloudflared/tunnel-token
-sudoedit /etc/cloudflared/tunnel-token
-sudo systemctl restart cloudflared-tunnel
+nix-shell
+sops hosts/calculon/secrets.yaml
+sudo nixos-rebuild switch --flake .#calculon
 ```
 
-The file contains only the tunnel token, with no variable name.
-
-### Copyparty Accounts
-
-Copyparty reads one plain-text password from each file. Its service user must be
-able to read them through the shared `services` group:
-
-```bash
-sudo install -d -m 0750 -o root -g services /etc/copyparty
-sudo install -m 0640 -o root -g services /dev/null /etc/copyparty/julian-password
-sudo install -m 0640 -o root -g services /dev/null /etc/copyparty/david-password
-sudoedit /etc/copyparty/julian-password
-sudoedit /etc/copyparty/david-password
-sudo systemctl restart copyparty
-```
+Replace every `REPLACE_ME` value before enabling its service. The administrator
+identity is stored at `~/.config/sops/age/keys.txt`; keep an off-host backup of
+that file with mode `0600`. Calculon decrypts during activation with
+`/etc/ssh/ssh_host_ed25519_key`, so preserve that key across hostname changes
+and reinstallations.
 
 ### SABnzbd
 
-SABnzbd is currently in the NixOS module's legacy writable-config mode because
-this host retains `system.stateVersion = "23.05"`. Configure these credentials
-through `http://calculon.home/sabnzbd`; they persist in
-`/var/lib/sabnzbd/sabnzbd.ini`:
+SABnzbd's public settings are declared in `services/sabnzbd.nix`; credentials
+and generated API keys are provided by the `sabnzbd_ini` SOPS value. Replace
+both provider placeholders before switching the configuration:
 
-- Newshosting username and password
-- Tweaknews username and password
-- Optional SABnzbd web username and password
-- Generated API and NZB keys used by other applications
+```ini
+[misc]
+api_key = GENERATED_VALUE
+nzb_key = GENERATED_VALUE
 
-Although `services/sabnzbd.nix` declares
-`/var/lib/sabnzbd/secrets.ini`, NixOS does not merge that file while the legacy
-`services.sabnzbd.configFile` default is active. Do not rely on it during a new
-installation. To migrate to the declared settings and separate secret INI,
-first explicitly set `services.sabnzbd.configFile = null`, rebuild, and verify
-the generated configuration before removing the credentials from
-`sabnzbd.ini`.
+[servers]
+[[news.newshosting.com]]
+username = REPLACE_ME
+password = REPLACE_ME
+[[newshosting.tweaknews.eu]]
+username = REPLACE_ME
+password = REPLACE_ME
+```
+
+The NixOS module merges the existing writable runtime configuration first,
+then the declared public settings, then this secret overlay. Public and secret
+values therefore remain declarative while SABnzbd can persist operational state
+such as quota tracking. Change credentials in SOPS rather than through the web
+interface.
 
 ### Doplarr
 
 Set up Sonarr and Radarr first, then copy their API keys from **Settings >
 General > Security**. Create a Discord application and bot in the Discord
-Developer Portal, install it in the target server, and add its token here:
-
-```bash
-sudo install -d -m 0755 /etc/doplarr
-sudo install -m 0600 /dev/null /etc/doplarr/doplarr.env
-sudoedit /etc/doplarr/doplarr.env
-```
+Developer Portal, install it in the target server, and set `doplarr_env` to:
 
 ```dotenv
 DOPLARR_DISCORD_TOKEN=REPLACE_ME
 RADARR_API_KEY=REPLACE_ME
 SONARR_API_KEY=REPLACE_ME
+SONARR_ANIME_API_KEY=REPLACE_ME
 ```
 
-```bash
-sudo systemctl restart doplarr
-```
-
-Doplarr expects the `1080p Balanced` quality profile in both Arr applications
-and the `/mnt/data/tv` and `/mnt/data/anime` root folders in Sonarr.
+Doplarr expects the `1080p Balanced` quality profile in Radarr and both Sonarr
+instances. Configure `/mnt/data/tv` in Sonarr and `/mnt/data/anime` in Sonarr
+Anime.
 
 ### Notifiarr
 
 Link the Notifiarr account to Discord at <https://notifiarr.com>, add the
-server, and copy the API key from the profile page:
-
-```bash
-sudo install -d -m 0750 -o root -g root /etc/notifiarr
-sudo install -m 0600 -o root -g root /dev/null /etc/notifiarr/notifiarr.env
-sudoedit /etc/notifiarr/notifiarr.env
-```
+server, copy the API key from the profile page, and set `notifiarr_env` to:
 
 ```dotenv
 DN_API_KEY=REPLACE_ME
-```
-
-```bash
-sudo systemctl restart podman-notifiarr
 ```
 
 Optional per-application checks can be added to
@@ -180,12 +157,10 @@ state persist under `/etc/notifiarr`.
 
 ### Glance Credentials
 
-Glance currently has the Sonarr, Radarr, Prowlarr, SABnzbd, UniFi, and Immich
-API credentials embedded in `services/glance.nix`. They enter the Nix store and
-Git history, so they must not be treated as secret. Rotate those credentials
-and move them to an out-of-store environment file before sharing this
-repository or host configuration. UniFi and Immich are external dependencies;
-they are not hosted by Calculon.
+Set `glance_env` to the required Sonarr, Radarr, Prowlarr, SABnzbd, and UniFi
+values. These credentials were previously committed in `services/glance.nix`,
+so rotate the exposed values; moving them into SOPS does not remove them from
+Git history. UniFi is an external dependency and is not hosted by Calculon.
 
 ## First-Run Setup
 
@@ -208,8 +183,8 @@ tailscale status
 
 ### 2. Create Local Credentials
 
-Create the secret files documented above. A service whose required file is
-missing will fail until that file exists.
+Replace the SOPS placeholders documented above. Keep a credential-dependent
+service disabled until its values are configured.
 
 Create the separate Samba password for the existing NixOS user:
 
@@ -222,20 +197,23 @@ sudo smbpasswd -a julian
 Open Plex at `http://calculon.home:32400/web`, sign in, claim the server, and
 add the movie, TV, anime, and music directories under `/mnt/data`.
 
-Configure SABnzbd at `http://calculon.home/sabnzbd`. Confirm both Usenet
-servers and the complete/incomplete directories, then copy its API key for
-integrations.
+Open SABnzbd at `http://calculon.home/sabnzbd`. Confirm both SOPS-configured
+Usenet servers and the complete/incomplete directories, then use its preserved
+API key for integrations.
 
 Configure the Arr applications:
 
-- Sonarr: add `/mnt/data/tv` and `/mnt/data/anime` as root folders.
+- Sonarr: add `/mnt/data/tv` as its root folder.
+- Sonarr Anime: open `http://calculon.home/sonarr-anime` and add
+  `/mnt/data/anime` as its root folder.
 - Radarr: add `/mnt/data/movies` as a root folder.
 - Lidarr: add `/mnt/data/music` as a root folder.
-- Prowlarr: add indexers and connect Sonarr, Radarr, and Lidarr.
-- Sonarr and Radarr: add SABnzbd as the download client.
+- Prowlarr: add indexers and connect both Sonarr instances, Radarr, and Lidarr.
+- Both Sonarr instances and Radarr: add SABnzbd as the download client.
 - Bazarr: connect Sonarr and Radarr, then select subtitle languages and
   providers.
-- Profilarr: connect Sonarr and Radarr and sync the desired profiles.
+- Profilarr: connect both Sonarr instances and Radarr, then sync the desired
+  profiles.
 
 ### 4. Enable External Integrations
 
@@ -282,18 +260,18 @@ zpool status
 curl --fail http://calculon.home/dashboard >/dev/null
 ```
 
-## Bare-Metal Reinstallation
+## Replacement-Hardware Installation
 
 > [!CAUTION]
-> The Disko command below destroys all data on `/dev/sda` through `/dev/sde`.
-> Verify the device mapping with `lsblk` and restore requirements before
-> running it. Import an existing `tank` instead of recreating it when preserving
-> the media library.
+> The Disko command below destroys all data on the three explicitly declared
+> 8 TB data disks. It does not repartition the system SSD. Verify every stable
+> device ID and restore requirement before running it.
 
-### 1. Boot the Installer
+### 1. Install and Boot NixOS
 
-Boot a current minimal NixOS installer, connect Ethernet or configure Wi-Fi,
-and become root with `sudo -i`.
+Install a minimal NixOS system on the SSD, boot it, and enable SSH. The checked-in
+hardware configuration contains UUIDs from this installation and must be
+regenerated if the SSD is reinstalled or replaced.
 
 ### 2. Clone the Configuration
 
@@ -307,33 +285,60 @@ nix-shell
 
 ### 3. Verify the Device Map
 
-Confirm that `/dev/sda` is the system SSD and `/dev/sdb` through `/dev/sde`
-are the intended media disks:
+Confirm the model, serial number, and `/dev/disk/by-id` link for every disk:
 
 ```bash
 lsblk -o NAME,SIZE,MODEL,SERIAL,FSTYPE,MOUNTPOINTS
+ls -l /dev/disk/by-id/ata-*
 ```
 
-### 4. Partition and Mount New Disks
+### 4. Bootstrap ZFS
 
-For a completely new installation with no data to preserve, partition, format,
-and mount the declared disks:
+Before creating the pool from a stock NixOS installation, add these settings to
+`/etc/nixos/configuration.nix`:
+
+```nix
+boot.supportedFilesystems = [ "zfs" ];
+networking.hostId = "c1f22144";
+```
+
+Boot into the resulting generation and verify that the ZFS module and tools are
+available:
 
 ```bash
-nix run github:nix-community/disko -- \
+sudo nixos-rebuild boot
+sudo reboot
+sudo modprobe zfs
+command -v zpool
+```
+
+### 5. Create and Mount a New Tank
+
+After confirming that all three existing XFS filesystems are disposable,
+partition, format, and mount only the data disks declared in Disko:
+
+```bash
+sudo nix --extra-experimental-features "nix-command flakes" \
+  run github:nix-community/disko -- \
   --mode destroy,format,mount ./hosts/calculon/disko.nix
 ```
 
-### 5. Install NixOS
+### 6. Activate Calculon
 
-Install the host configuration and reboot:
+Activate the host configuration and reboot. Services requiring credentials
+remain disabled until their SOPS, environment, or password files are configured:
 
 ```bash
-nixos-install --flake .#calculon
+sudo nixos-rebuild switch --flake .#calculon
 reboot
 ```
 
 Complete the required secrets and first-run setup above. Secrets and service
 databases under `/etc` and `/var/lib` are not recreated by the flake.
 
-[hardware]: https://www.amazon.com/Intel-NUC-Mainstream-Kit-NUC7i5BNH/dp/B01N2UMKZ5
+### 7. Complete the Cutover
+
+After the old host is powered off permanently, change
+`networking.hostName` from `nixos` to `calculon`, rebuild, and update the DHCP or
+DNS reservation for `calculon.home`. Keep the replacement host's ZFS host ID
+`c1f22144` unchanged.

@@ -1,34 +1,9 @@
 {
   disko.devices = {
     disk = {
-      ssd = {
+      hdd0 = {
         type = "disk";
-        device = "/dev/sda";
-        content = {
-          type = "gpt";
-          partitions = {
-            ESP = {
-              size = "1G";
-              type = "EF00";
-              content = {
-                type = "filesystem";
-                format = "vfat";
-                mountpoint = "/boot";
-              };
-            };
-            zfs = {
-              size = "100%";
-              content = {
-                type = "zfs";
-                pool = "zroot";
-              };
-            };
-          };
-        };
-      };
-      hdd = {
-        type = "disk";
-        device = "/dev/sdb";
+        device = "/dev/disk/by-id/ata-WDC_WD80EFAX-68LHPN0_7SGH1MDC";
         content = {
           type = "gpt";
           partitions = {
@@ -44,7 +19,7 @@
       };
       hdd1 = {
         type = "disk";
-        device = "/dev/sdc";
+        device = "/dev/disk/by-id/ata-WDC_WD80EMAZ-00WJTA0_1EHVGXHZ";
         content = {
           type = "gpt";
           partitions = {
@@ -60,23 +35,7 @@
       };
       hdd2 = {
         type = "disk";
-        device = "/dev/sdd";
-        content = {
-          type = "gpt";
-          partitions = {
-            zfs = {
-              size = "100%";
-              content = {
-                type = "zfs";
-                pool = "tank";
-              };
-            };
-          };
-        };
-      };
-      hdd3 = {
-        type = "disk";
-        device = "/dev/sde";
+        device = "/dev/disk/by-id/ata-WDC_WD80EFAX-68LHPN0_7SGGTZ9C";
         content = {
           type = "gpt";
           partitions = {
@@ -92,35 +51,11 @@
       };
     };
     zpool = {
-      zroot = {
-        type = "zpool";
-        rootFsOptions = {
-          mountpoint = "none";
-          atime = "off";
-          compression = "zstd";
-        };
-        datasets = {
-          root = {
-            type = "zfs_fs";
-            options.mountpoint = "legacy";
-            mountpoint = "/";
-          };
-          nix = {
-            type = "zfs_fs";
-            options.mountpoint = "legacy";
-            mountpoint = "/nix";
-          };
-          home = {
-            type = "zfs_fs";
-            options.mountpoint = "legacy";
-            mountpoint = "/home";
-          };
-        };
-      };
       tank = {
         type = "zpool";
         mode = "raidz";
         mountpoint = null;
+        options.ashift = "12";
         rootFsOptions = {
           atime = "off";
           compression = "zstd";

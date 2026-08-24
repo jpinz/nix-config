@@ -1,10 +1,11 @@
 { inputs, pkgs, ... }:
 {
   imports = [
-    inputs.hardware.nixosModules.common-cpu-intel
+    inputs.hardware.nixosModules.common-cpu-amd
     inputs.hardware.nixosModules.common-pc-ssd
 
     ./hardware-configuration.nix
+    ./secrets.nix
 
     ../common/global
     ../common/users/julian.nix
@@ -17,7 +18,7 @@
 
   networking = {
     hostName = "calculon";
-    hostId = "a1b2c3d4";
+    hostId = "c1f22144";
   };
 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
@@ -26,12 +27,12 @@
 
   hardware.bluetooth.enable = true;
 
-  # Intel Quick Sync Video (QSV) for hardware transcoding
-  hardware.graphics = {
-    enable = true;
-    extraPackages = with pkgs; [
-      intel-media-driver # LIBVA_DRIVER_NAME=iHD (Broadwell+)
-      intel-compute-runtime # OpenCL support
-    ];
+  services.xserver.videoDrivers = [ "nvidia" ];
+  hardware = {
+    graphics.enable = true;
+    nvidia = {
+      modesetting.enable = true;
+      open = true;
+    };
   };
 }

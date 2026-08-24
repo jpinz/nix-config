@@ -1,30 +1,35 @@
 { config, ... }:
 {
   imports = [
-    ./audiobookshelf.nix
+    # Network and file services
     ./caddy.nix
-    ./cloudflared.nix
-    ./copyparty.nix
-    # ./grafana.nix
-    # ./calibre-web.nix
     ./samba.nix
-    # ./hd-idle.nix
+
+    # Media acquisition and automation
     ./bazarr.nix
-    ./glance.nix
-    ./homebox.nix
-    ./lidarr.nix
     ./doplarr.nix
-    ./navidrome.nix
-    ./notifiarr.nix
-    ./plex.nix
+    ./lidarr.nix
+    ./profilarr.nix
     ./prowlarr.nix
     ./radarr.nix
-    ./profilarr.nix
-    ./rustdesk-server.nix
     ./sabnzbd.nix
-    ./shelfmark.nix
     ./sonarr.nix
+
+    # Media libraries and playback
+    ./audiobookshelf.nix
+    ./navidrome.nix
+    ./plex.nix
+    ./shelfmark.nix
     ./tautulli.nix
+
+    # Home applications
+    ./freshrss.nix
+    ./glance.nix
+    ./homebox.nix
+
+    # Monitoring and remote access
+    ./notifiarr.nix
+    ./rustdesk-server.nix
   ];
 
   users.groups.services.members =
@@ -56,8 +61,6 @@
   # Open firewall ports for locally hosted services
   networking.firewall.allowedTCPPorts = [
     80 # caddy reverse proxy (LAN + Tailscale)
-    # 4317 # OpenTelemetry OTLP gRPC ingest (Tempo)
-    # 4318 # OpenTelemetry OTLP HTTP ingest (Tempo)
     6767 # bazarr
     6868 # profilarr
     7745 # homebox
@@ -68,5 +71,4 @@
     8888 # audiobookshelf
     32400 # plex
   ];
-  # Plex opens its required ports via services.plex.openFirewall = true
 }

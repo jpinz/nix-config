@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 {
   services.caddy = {
     enable = true;
@@ -13,6 +13,10 @@
     # Plain HTTP; avoids ACME/Let's Encrypt attempts for `.home` names.
     virtualHosts."http://:80".extraConfig = ''
       encode zstd gzip
+
+      handle /sonarr-anime* {
+        reverse_proxy 127.0.0.1:8990
+      }
 
       handle /sonarr* {
         reverse_proxy 127.0.0.1:8989
@@ -81,6 +85,18 @@
 
       handle /copyparty* {
         reverse_proxy 127.0.0.1:3923
+      }
+
+      handle /rss {
+        redir /rss/ 308
+      }
+
+      handle_path /rss/* {
+        root * ${config.services.freshrss.package}/p
+        php_fastcgi unix/${config.services.phpfpm.pools.freshrss.socket} {
+          env FRESHRSS_DATA_PATH ${config.services.freshrss.dataDir}
+        }
+        file_server
       }
 
       handle /dashboard* {
