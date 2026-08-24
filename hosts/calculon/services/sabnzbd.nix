@@ -1,8 +1,11 @@
+{ config, ... }:
 {
   services.sabnzbd = {
     enable = true;
     group = "services";
-    secretFiles = [ "/var/lib/sabnzbd/secrets.ini" ];
+    configFile = null;
+    allowConfigWrite = true;
+    secretFiles = [ config.sops.secrets.sabnzbd_ini.path ];
     settings = {
       misc = {
         complete_dir = "/mnt/downloads/complete";
@@ -11,7 +14,7 @@
         host = "127.0.0.1"; # behind Caddy (still reachable on LAN/Tailscale via :80)
         port = 8080;
         url_base = "/sabnzbd";
-        host_whitelist = "calculon.home, calculon, localhost, 127.0.0.1, 192.168.1.75";
+        host_whitelist = "calculon.home, calculon, localhost, 127.0.0.1, 192.168.1.101";
       };
       servers."news.newshosting.com" = {
         displayname = "Newshosting";

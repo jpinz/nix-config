@@ -5,6 +5,7 @@
     inputs.hardware.nixosModules.common-pc-ssd
 
     ./hardware-configuration.nix
+    ./secrets.nix
 
     ../common/global
     ../common/users/julian.nix
@@ -16,7 +17,7 @@
   ];
 
   networking = {
-    hostName = "nixos";
+    hostName = "calculon";
     hostId = "c1f22144";
   };
 

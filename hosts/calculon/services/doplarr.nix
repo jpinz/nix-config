@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   inputs,
   ...
@@ -35,32 +36,28 @@ let
     season_folders = true
     rootfolder = "/mnt/data/tv"
 
-    # Anime via Sonarr → /request anime (same instance, tagged as anime)
+    # Anime via the dedicated Sonarr instance → /request anime
     [[backends]]
     media = "anime"
 
     [backends.config.Sonarr]
-    url = "http://calculon.home/sonarr"
-    api_key = "''${SONARR_API_KEY}"
+    url = "http://calculon.home/sonarr-anime"
+    api_key = "''${SONARR_ANIME_API_KEY}"
     quality_profile = "1080p Balanced"
     series_type = "anime"
     season_folders = true
-    # Pin anime requests to the dedicated anime library so they never land in
-    # the standard /mnt/data/tv tree. Path must match a root folder configured
-    # in Sonarr (Settings -> Media Management -> Root Folders).
     rootfolder = "/mnt/data/anime"
   '';
 in
 {
   # Doplarr — Discord bot for requesting movies and TV through Radarr/Sonarr.
   #
-  # Secrets are read from an EnvironmentFile that must be created manually and
-  # kept out of the Nix store (like the cloudflared tunnel token). Create
-  # /etc/doplarr/doplarr.env with 0600 perms containing:
+  # Secrets are rendered by sops-nix from the doplarr_env value containing:
   #
   #   DOPLARR_DISCORD_TOKEN=your_discord_bot_token
   #   RADARR_API_KEY=your_radarr_api_key
   #   SONARR_API_KEY=your_sonarr_api_key
+  #   SONARR_ANIME_API_KEY=your_anime_sonarr_api_key
   systemd.services.doplarr = {
     description = "Doplarr - Discord media request bot";
     after = [ "network-online.target" ];
@@ -70,7 +67,7 @@ in
     serviceConfig = {
       Type = "exec";
       ExecStart = "${doplarr}/bin/doplarr ${configFile}";
-      EnvironmentFile = "/etc/doplarr/doplarr.env";
+      EnvironmentFile = config.sops.secrets.doplarr_env.path;
       Restart = "on-failure";
       RestartSec = 5;
       DynamicUser = true;

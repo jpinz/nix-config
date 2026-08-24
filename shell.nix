@@ -1,15 +1,12 @@
 # Shell for bootstrapping flake-enabled nix and other tooling
 {
   pkgs ?
-    # If pkgs is not defined, instanciate nixpkgs from locked commit
+    # If pkgs is not defined, instantiate the exact locked nixpkgs input.
     let
       lock = (builtins.fromJSON (builtins.readFile ./flake.lock)).nodes.nixpkgs.locked;
-      nixpkgs = fetchTarball {
-        url = "https://github.com/nixos/nixpkgs/archive/${lock.rev}.tar.gz";
-        sha256 = lock.narHash;
-      };
+      nixpkgs = builtins.fetchTree lock;
     in
-    import nixpkgs { overlays = [ ]; },
+    import nixpkgs.outPath { overlays = [ ]; },
   ...
 }:
 pkgs.mkShell {
@@ -22,5 +19,7 @@ pkgs.mkShell {
     deploy-rs
     gnupg
     age
+    sops
+    ssh-to-age
   ];
 }

@@ -1,6 +1,8 @@
+{ config, ... }:
 {
   services.glance = {
     enable = true;
+    environmentFile = config.sops.secrets.glance_env.path;
     settings = {
       server = {
         host = "0.0.0.0";
@@ -178,76 +180,6 @@
                     </div>
                   '';
                 }
-                # Tdarr Status Widget
-                # {
-                #   type = "custom-api";
-                #   title = "Tdarr";
-                #   title-url = "http://calculon.home:8265";
-                #   cache = "10s";
-                #   url = "http://localhost:8266/api/v2/get-nodes";
-                #   headers = {
-                #     Accept = "application/json";
-                #   };
-                #   subrequests = {
-                #     stats = {
-                #       url = "http://localhost:8266/api/v2/cruddb";
-                #       method = "post";
-                #       body = {
-                #         data = {
-                #           collection = "StatisticsJSONDB";
-                #           mode = "getById";
-                #           docID = "statistics";
-                #         };
-                #       };
-                #       headers = {
-                #         Content-Type = "application/json";
-                #       };
-                #     };
-                #   };
-                #   template = ''
-                #     {{ $stats := .Subrequest "stats" }}
-                #     <div class="flex gap-15" style="margin-bottom: 1em;">
-                #       <div class="flex-1">
-                #         <div class="size-h6">FILES</div>
-                #         <div class="color-highlight size-h3">{{ $stats.JSON.Int "totalFileCount" | formatNumber }}</div>
-                #       </div>
-                #       <div class="flex-1">
-                #         <div class="size-h6">TRANSCODED</div>
-                #         <div class="color-highlight size-h3">{{ $stats.JSON.Int "totalTranscodeCount" | formatNumber }}</div>
-                #       </div>
-                #       <div class="flex-1">
-                #         <div class="size-h6">HEALTH CHK</div>
-                #         <div class="color-highlight size-h3">{{ $stats.JSON.Int "totalHealthCheckCount" | formatNumber }}</div>
-                #       </div>
-                #       <div class="flex-1">
-                #         <div class="size-h6">SAVED</div>
-                #         <div class="color-highlight size-h3">{{ printf "%.1f" (div ($stats.JSON.Float "sizeDiff") 1073741824.0) }}GB</div>
-                #       </div>
-                #     </div>
-                #     {{ $hasWorkers := false }}
-                #     {{ range .JSON.Array "@values.#.workers.@values|@flatten" }}
-                #       {{ if not (.Bool "idle") }}
-                #         {{ $hasWorkers = true }}
-                #         <div style="margin-bottom: 0.5em; padding: 0.5em; background: var(--color-background); border-radius: var(--border-radius); border: 1px solid var(--color-widget-content-border);">
-                #           <div class="flex justify-between">
-                #             <span class="color-highlight text-truncate" style="max-width: 70%;">{{ findMatch "[^/]+$" (.String "file") }}</span>
-                #             <span class="color-primary">{{ printf "%.1f" (.Float "percentage") }}%</span>
-                #           </div>
-                #           <div class="flex justify-between size-h6 color-subdue">
-                #             <span style="text-transform: capitalize;">{{ .String "workerType" }}</span>
-                #             <span>{{ .String "ETA" }}</span>
-                #           </div>
-                #           <div style="margin-top: 0.3em; height: 4px; background: var(--color-widget-content-border); border-radius: 2px; overflow: hidden;">
-                #             <div style="height: 100%; width: {{ printf "%.1f" (.Float "percentage") }}%; background: var(--color-primary); border-radius: 2px;"></div>
-                #           </div>
-                #         </div>
-                #       {{ end }}
-                #     {{ end }}
-                #     {{ if not $hasWorkers }}
-                #       <p class="color-subdue" style="text-align: center;">No active workers</p>
-                #     {{ end }}
-                #   '';
-                # }
                 # Prowlarr Indexers Widget
                 {
                   type = "custom-api";
@@ -313,6 +245,11 @@
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/sonarr.svg";
                     }
                     {
+                      title = "Sonarr Anime";
+                      url = "http://calculon.home/sonarr-anime";
+                      icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/sonarr.svg";
+                    }
+                    {
                       title = "Radarr";
                       url = "http://calculon.home/radarr";
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/radarr.svg";
@@ -367,16 +304,16 @@
                       url = "http://calculon.home/calibre";
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/calibre-web.svg";
                     }
+                    {
+                      title = "FreshRSS";
+                      url = "http://calculon.home/rss";
+                      icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/freshrss.svg";
+                    }
                     # {
                     #   title = "Grafana";
                     #   url = "http://calculon.home/grafana";
                     #   icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/grafana.svg";
                     # }
-                    {
-                      title = "Immich";
-                      url = "http://192.168.1.128:2283";
-                      icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/immich.svg";
-                    }
                   ];
                 }
               ];
@@ -490,33 +427,6 @@
                           name = "Calculon";
                         }
                       ];
-                    }
-                    # Immich Stats
-                    {
-                      type = "custom-api";
-                      title = "Immich";
-                      cache = "1d";
-                      url = "\${IMMICH_URL}/api/server/statistics";
-                      headers = {
-                        x-api-key = "\${IMMICH_API_KEY}";
-                        Accept = "application/json";
-                      };
-                      template = ''
-                        <div class="flex justify-between text-center">
-                          <div>
-                              <div class="color-highlight size-h3">{{ .JSON.Int "photos" | formatNumber }}</div>
-                              <div class="size-h6">PHOTOS</div>
-                          </div>
-                          <div>
-                              <div class="color-highlight size-h3">{{ .JSON.Int "videos" | formatNumber }}</div>
-                              <div class="size-h6">VIDEOS</div>
-                          </div>
-                          <div>
-                              <div class="color-highlight size-h3">{{ div (.JSON.Int "usage" | toFloat) 1073741824 | toInt | formatNumber }}GB</div>
-                              <div class="size-h6">USAGE</div>
-                          </div>
-                        </div>
-                      '';
                     }
                     # Unifi Widget
                     {
@@ -637,18 +547,6 @@
         }
       ];
     };
-  };
-
-  # Environment variables for API keys
-  systemd.services.glance.environment = {
-    SONARR_API_KEY = "3334f2d003d148108d0084d270c8fcf9";
-    RADARR_API_KEY = "9a2534c83b4f492680a95c4d045d9b61";
-    PROWLARR_API_KEY = "ca2a381695a340d8923edc6b2e03ccef";
-    SABNZBD_API_KEY = "ad5eaed00c6342e58958cc9540142ecd";
-    UNIFI_CONSOLE_IP = "192.168.1.1";
-    UNIFI_API_KEY = "DkNpJ8CbHHrd02I-3G7X2MeiP6JtfXQN";
-    IMMICH_URL = "http://192.168.1.128:2283";
-    IMMICH_API_KEY = "WgdbN331e4zeClpAunCb4p1N37FKyCcz6n8oLzMIXM";
   };
 
   # Open port 8000 for the dashboard

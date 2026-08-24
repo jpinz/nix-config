@@ -3,10 +3,9 @@
   imports = [
     ./audiobookshelf.nix
     ./caddy.nix
-    # ./grafana.nix
-    # ./calibre-web.nix
+    ./freshrss.nix
+    ./glance.nix
     ./samba.nix
-    # ./hd-idle.nix
     ./bazarr.nix
     ./homebox.nix
     ./lidarr.nix
@@ -16,18 +15,14 @@
     ./radarr.nix
     ./profilarr.nix
     ./rustdesk-server.nix
+    ./sabnzbd.nix
     ./shelfmark.nix
     ./sonarr.nix
     ./tautulli.nix
 
     # Enable after migration once their credentials are configured.
-    # ./cloudflared.nix
-    # ./copyparty.nix
     # ./doplarr.nix
-    # ./freshrss.nix
-    # ./glance.nix
     # ./notifiarr.nix
-    # ./sabnzbd.nix
   ];
 
   users.groups.services.members =

@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 {
   # Notifiarr client — bridges this server to notifiarr.com so the media stack
   # and system health can be monitored (and controlled) from Discord.
@@ -12,14 +12,12 @@
   # *arr apps on 127.0.0.1 and report real host stats; the UI on :5454 is only
   # reachable via Caddy (/notifiarr) because the firewall never opens that port.
   #
-  # SECRET SETUP (one-time, kept out of the Nix store): create
-  # /etc/notifiarr/notifiarr.env with 0600 perms, owned by root, containing:
+  # The sops-nix notifiarr_env value contains:
   #
   #   DN_API_KEY=your_notifiarr_api_key
   #
   # Get the key at https://notifiarr.com after linking your Discord account and
-  # server (Profile page -> "Api Key"). Then nixos-rebuild switch and the client
-  # connects itself and appears in your Notifiarr dashboard.
+  # server (Profile page -> "Api Key").
   #
   # Optional per-app service checks / dashboard state live in
   # /etc/notifiarr/notifiarr.conf ([[sonarr]], [[radarr]], [[lidarr]],
@@ -47,7 +45,7 @@
       };
 
       # DN_API_KEY is supplied here so it never lands in the Nix store.
-      environmentFiles = [ "/etc/notifiarr/notifiarr.env" ];
+      environmentFiles = [ config.sops.secrets.notifiarr_env.path ];
 
       volumes = [
         "/etc/notifiarr:/config" # notifiarr.conf + generated client state

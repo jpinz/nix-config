@@ -56,7 +56,8 @@ be opened using their path rather than their application port.
 | Service | Address | Purpose |
 | --- | --- | --- |
 | Glance | `/dashboard` | Home dashboard and service status |
-| Sonarr | `/sonarr` | TV and anime library automation |
+| Sonarr | `/sonarr` | TV library automation |
+| Sonarr Anime | `/sonarr-anime` | Anime library automation |
 | Radarr | `/radarr` | Movie library automation |
 | Lidarr | `/lidarr` | Music library automation |
 | Prowlarr | `/prowlarr` | Indexer management for the Arr applications |
@@ -82,99 +83,72 @@ repository but are not currently imported and therefore are not enabled.
 
 ## Required Secrets
 
-Secrets are created directly on Calculon and must not be committed to this
-repository. Create the directories and files before starting the affected
-services. Replace every placeholder below.
-
-### Cloudflare Tunnel
-
-Obtain the tunnel token from the Cloudflare Zero Trust dashboard:
+Application secrets are encrypted in `hosts/calculon/secrets.yaml`. The file is
+encrypted to both Calculon's SSH host key and Julian's age key declared in
+`.sops.yaml`; only the encrypted file is committed. Edit it on Calculon with:
 
 ```bash
-sudo install -d -m 0755 /etc/cloudflared
-sudo install -m 0600 /dev/null /etc/cloudflared/tunnel-token
-sudoedit /etc/cloudflared/tunnel-token
-sudo systemctl restart cloudflared-tunnel
+nix-shell
+sops hosts/calculon/secrets.yaml
+sudo nixos-rebuild switch --flake .#calculon
 ```
 
-The file contains only the tunnel token, with no variable name.
-
-### Copyparty Accounts
-
-Copyparty reads one plain-text password from each file. Its service user must be
-able to read them through the shared `services` group:
-
-```bash
-sudo install -d -m 0750 -o root -g services /etc/copyparty
-sudo install -m 0640 -o root -g services /dev/null /etc/copyparty/julian-password
-sudo install -m 0640 -o root -g services /dev/null /etc/copyparty/david-password
-sudoedit /etc/copyparty/julian-password
-sudoedit /etc/copyparty/david-password
-sudo systemctl restart copyparty
-```
+Replace every `REPLACE_ME` value before enabling its service. The administrator
+identity is stored at `~/.config/sops/age/keys.txt`; keep an off-host backup of
+that file with mode `0600`. Calculon decrypts during activation with
+`/etc/ssh/ssh_host_ed25519_key`, so preserve that key across hostname changes
+and reinstallations.
 
 ### SABnzbd
 
-SABnzbd is currently in the NixOS module's legacy writable-config mode because
-this host retains `system.stateVersion = "23.05"`. Configure these credentials
-through `http://calculon.home/sabnzbd`; they persist in
-`/var/lib/sabnzbd/sabnzbd.ini`:
+SABnzbd's public settings are declared in `services/sabnzbd.nix`; credentials
+and generated API keys are provided by the `sabnzbd_ini` SOPS value. Replace
+both provider placeholders before switching the configuration:
 
-- Newshosting username and password
-- Tweaknews username and password
-- Optional SABnzbd web username and password
-- Generated API and NZB keys used by other applications
+```ini
+[misc]
+api_key = GENERATED_VALUE
+nzb_key = GENERATED_VALUE
 
-Although `services/sabnzbd.nix` declares
-`/var/lib/sabnzbd/secrets.ini`, NixOS does not merge that file while the legacy
-`services.sabnzbd.configFile` default is active. Do not rely on it during a new
-installation. To migrate to the declared settings and separate secret INI,
-first explicitly set `services.sabnzbd.configFile = null`, rebuild, and verify
-the generated configuration before removing the credentials from
-`sabnzbd.ini`.
+[servers]
+[[news.newshosting.com]]
+username = REPLACE_ME
+password = REPLACE_ME
+[[newshosting.tweaknews.eu]]
+username = REPLACE_ME
+password = REPLACE_ME
+```
+
+The NixOS module merges the existing writable runtime configuration first,
+then the declared public settings, then this secret overlay. Public and secret
+values therefore remain declarative while SABnzbd can persist operational state
+such as quota tracking. Change credentials in SOPS rather than through the web
+interface.
 
 ### Doplarr
 
 Set up Sonarr and Radarr first, then copy their API keys from **Settings >
 General > Security**. Create a Discord application and bot in the Discord
-Developer Portal, install it in the target server, and add its token here:
-
-```bash
-sudo install -d -m 0755 /etc/doplarr
-sudo install -m 0600 /dev/null /etc/doplarr/doplarr.env
-sudoedit /etc/doplarr/doplarr.env
-```
+Developer Portal, install it in the target server, and set `doplarr_env` to:
 
 ```dotenv
 DOPLARR_DISCORD_TOKEN=REPLACE_ME
 RADARR_API_KEY=REPLACE_ME
 SONARR_API_KEY=REPLACE_ME
+SONARR_ANIME_API_KEY=REPLACE_ME
 ```
 
-```bash
-sudo systemctl restart doplarr
-```
-
-Doplarr expects the `1080p Balanced` quality profile in both Arr applications
-and the `/mnt/data/tv` and `/mnt/data/anime` root folders in Sonarr.
+Doplarr expects the `1080p Balanced` quality profile in Radarr and both Sonarr
+instances. Configure `/mnt/data/tv` in Sonarr and `/mnt/data/anime` in Sonarr
+Anime.
 
 ### Notifiarr
 
 Link the Notifiarr account to Discord at <https://notifiarr.com>, add the
-server, and copy the API key from the profile page:
-
-```bash
-sudo install -d -m 0750 -o root -g root /etc/notifiarr
-sudo install -m 0600 -o root -g root /dev/null /etc/notifiarr/notifiarr.env
-sudoedit /etc/notifiarr/notifiarr.env
-```
+server, copy the API key from the profile page, and set `notifiarr_env` to:
 
 ```dotenv
 DN_API_KEY=REPLACE_ME
-```
-
-```bash
-sudo systemctl restart podman-notifiarr
 ```
 
 Optional per-application checks can be added to
@@ -183,12 +157,10 @@ state persist under `/etc/notifiarr`.
 
 ### Glance Credentials
 
-Glance currently has the Sonarr, Radarr, Prowlarr, SABnzbd, UniFi, and Immich
-API credentials embedded in `services/glance.nix`. They enter the Nix store and
-Git history, so they must not be treated as secret. Rotate those credentials
-and move them to an out-of-store environment file before sharing this
-repository or host configuration. UniFi and Immich are external dependencies;
-they are not hosted by Calculon.
+Set `glance_env` to the required Sonarr, Radarr, Prowlarr, SABnzbd, and UniFi
+values. These credentials were previously committed in `services/glance.nix`,
+so rotate the exposed values; moving them into SOPS does not remove them from
+Git history. UniFi is an external dependency and is not hosted by Calculon.
 
 ## First-Run Setup
 
@@ -211,8 +183,8 @@ tailscale status
 
 ### 2. Create Local Credentials
 
-Create the secret files documented above. A service whose required file is
-missing will fail until that file exists.
+Replace the SOPS placeholders documented above. Keep a credential-dependent
+service disabled until its values are configured.
 
 Create the separate Samba password for the existing NixOS user:
 
@@ -225,20 +197,23 @@ sudo smbpasswd -a julian
 Open Plex at `http://calculon.home:32400/web`, sign in, claim the server, and
 add the movie, TV, anime, and music directories under `/mnt/data`.
 
-Configure SABnzbd at `http://calculon.home/sabnzbd`. Confirm both Usenet
-servers and the complete/incomplete directories, then copy its API key for
-integrations.
+Open SABnzbd at `http://calculon.home/sabnzbd`. Confirm both SOPS-configured
+Usenet servers and the complete/incomplete directories, then use its preserved
+API key for integrations.
 
 Configure the Arr applications:
 
-- Sonarr: add `/mnt/data/tv` and `/mnt/data/anime` as root folders.
+- Sonarr: add `/mnt/data/tv` as its root folder.
+- Sonarr Anime: open `http://calculon.home/sonarr-anime` and add
+  `/mnt/data/anime` as its root folder.
 - Radarr: add `/mnt/data/movies` as a root folder.
 - Lidarr: add `/mnt/data/music` as a root folder.
-- Prowlarr: add indexers and connect Sonarr, Radarr, and Lidarr.
-- Sonarr and Radarr: add SABnzbd as the download client.
+- Prowlarr: add indexers and connect both Sonarr instances, Radarr, and Lidarr.
+- Both Sonarr instances and Radarr: add SABnzbd as the download client.
 - Bazarr: connect Sonarr and Radarr, then select subtitle languages and
   providers.
-- Profilarr: connect Sonarr and Radarr and sync the desired profiles.
+- Profilarr: connect both Sonarr instances and Radarr, then sync the desired
+  profiles.
 
 ### 4. Enable External Integrations
 
