@@ -3,7 +3,6 @@
   imports = [
     ./fish.nix
     ./git.nix
-    ./opencode.nix
     ./jujutsu.nix
     ./nix.nix
     ./micro.nix
