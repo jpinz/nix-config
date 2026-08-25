@@ -57,7 +57,6 @@ be opened using their path rather than their application port.
 | Service | Address | Purpose |
 | --- | --- | --- |
 | Glance | `/dashboard/` | Home dashboard and service status |
-| Glances | `/monitor/` | Detailed system resource monitoring |
 | Sonarr | `/sonarr` | TV library automation |
 | Sonarr Anime | `/sonarr-anime` | Anime library automation |
 | Radarr | `/radarr` | Movie library automation |
@@ -68,7 +67,7 @@ be opened using their path rather than their application port.
 | Profilarr | `:6868` | Arr quality profiles and custom formats |
 | Doplarr | Discord only | Discord requests routed to Sonarr and Radarr |
 | Plex | `:32400/web` | Media streaming and transcoding |
-| Tautulli | `:8181` | Plex monitoring and history |
+| Tracearr | `:8181` | Plex monitoring, history, and access management |
 | Navidrome | `/navidrome` | Music streaming from `/mnt/data/music` |
 | Audiobookshelf | `/audiobookshelf` or `:8888` | Audiobook streaming |
 | Shelfmark | `/shelfmark` or `:8084` | Ebook acquisition into `/mnt/data/ebooks` |
@@ -229,7 +228,7 @@ Populate the Doplarr environment file with the resulting Sonarr and Radarr
 keys, restart Doplarr, and verify its Discord commands.
 
 Add the Notifiarr API key, restart its container, and configure any desired
-Arr, SABnzbd, Plex, and Tautulli checks.
+Arr, SABnzbd, and Plex checks.
 
 Configure Cloudflare Tunnel ingress in the Cloudflare dashboard for only the
 routes intended to be public. The repository supplies the tunnel process but
@@ -243,7 +242,8 @@ does not declare its remote ingress policy.
 - Homebox: register the initial account. Afterwards, set
   `HBOX_OPTIONS_ALLOW_REGISTRATION = "false"` in `services/homebox.nix` and
   rebuild if public registration is no longer wanted.
-- Tautulli: complete its setup wizard and connect it to the local Plex server.
+- Tracearr: create the owner account, then connect Plex using
+  `http://host.containers.internal:32400` as the server URL.
 - Copyparty: verify both configured accounts can access `/data`.
 
 ## Rebuilding

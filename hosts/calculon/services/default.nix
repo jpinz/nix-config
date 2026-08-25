@@ -20,7 +20,7 @@
     ./navidrome.nix
     ./plex.nix
     # ./shelfmark.nix
-    ./tautulli.nix
+    ./tracearr.nix
 
     # Home applications
     ./freshrss.nix
@@ -28,7 +28,6 @@
     ./homebox.nix
 
     # Monitoring and remote access
-    ./glances.nix
     ./notifiarr.nix
     ./rustdesk-server.nix
   ];
@@ -73,7 +72,7 @@
     7745 # homebox
     8083 # calibre-web
     8084 # shelfmark
-    8181 # tautulli
+    8181 # tracearr
     8686 # lidarr
     8888 # audiobookshelf
     32400 # plex

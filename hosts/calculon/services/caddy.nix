@@ -107,12 +107,6 @@
 
       redir /home* /dashboard/ 308
 
-      redir /monitor /monitor/ 308
-
-      handle /monitor/* {
-        reverse_proxy 127.0.0.1:61208
-      }
-
       handle /grafana* {
         reverse_proxy 127.0.0.1:3000
       }

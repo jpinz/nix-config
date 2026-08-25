@@ -21,7 +21,7 @@
   #
   # Optional per-app service checks / dashboard state live in
   # /etc/notifiarr/notifiarr.conf ([[sonarr]], [[radarr]], [[lidarr]],
-  # [[prowlarr]], [sabnzbd], [plex], [tautulli] ... each with name/url/api_key).
+  # [[prowlarr]], [sabnzbd], [plex] ... each with name/url/api_key).
 
   virtualisation.podman = {
     enable = true;
