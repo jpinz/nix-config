@@ -48,7 +48,11 @@
     # whose files are group-owned by `services`.
     ++ [ config.users.users.julian.name ];
 
+  users.groups.users.members = config.users.groups.services.members;
+
   systemd.tmpfiles.rules = [
+    "d /mnt/archive 2770 ${config.users.users.julian.name} ${config.users.groups.services.name}"
+
     "d /mnt/downloads/incomplete 2770 ${config.users.users.julian.name} ${config.users.groups.services.name}"
     "d /mnt/downloads/complete 2770 ${config.users.users.julian.name} ${config.users.groups.services.name}"
 
