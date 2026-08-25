@@ -1,4 +1,4 @@
-{ inputs, pkgs, ... }:
+{ config, inputs, pkgs, ... }:
 {
   imports = [
     inputs.hardware.nixosModules.common-cpu-amd
@@ -35,8 +35,9 @@
     graphics.enable = true;
     nvidia = {
       modesetting.enable = true;
-      # Pascal GPUs require NVIDIA's proprietary kernel module.
+      # Pascal GPUs require the proprietary 580 legacy driver.
       open = false;
+      package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
     };
   };
 }
