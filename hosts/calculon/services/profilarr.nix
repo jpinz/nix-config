@@ -10,8 +10,8 @@
 
     containers = {
       profilarr = {
-        # Profilarr v2.0.9, pinned for reproducible deployments.
-        image = "ghcr.io/dictionarry-hub/profilarr@sha256:7a9b5112ff227320d17c65ab643a5d875713e6235991ef04a8e482ec51427902";
+        # Profilarr v2.2.0, pinned for reproducible deployments.
+        image = "ghcr.io/dictionarry-hub/profilarr@sha256:ddcdd0f340043c2ec0a85ca74b9a6be9be42b1c0288c75fc36a26a43f695860b";
         autoStart = true;
         dependsOn = [ "profilarr-parser" ];
 
@@ -35,8 +35,8 @@
       };
 
       profilarr-parser = {
-        # Parser v2.0.9, built from the same revision as Profilarr above.
-        image = "ghcr.io/dictionarry-hub/profilarr-parser@sha256:16b22ef6485e135cc660cd511697c637d44649753d02397c9374e1317cfaaf0e";
+        # Parser v2.2.0, built from the same revision as Profilarr above.
+        image = "ghcr.io/dictionarry-hub/profilarr-parser@sha256:3cd3f8c4979ee66304a518462cc6c5b59825bae6b25e7dfa51b30178b9265df7";
         autoStart = true;
         extraOptions = [ "--network=host" ];
       };
