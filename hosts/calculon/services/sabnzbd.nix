@@ -13,7 +13,7 @@
         complete_dir = "/mnt/downloads/complete";
         direct_write = true;
         download_dir = "/mnt/downloads/incomplete";
-        pause_on_post_processing = true;
+        # pause_on_post_processing = true;
         permissions = "0770";
         host = "127.0.0.1"; # behind Caddy (still reachable on LAN/Tailscale via :80)
         port = 8080;
