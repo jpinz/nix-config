@@ -21,6 +21,7 @@
     ./plex.nix
     # ./shelfmark.nix
     ./tracearr.nix
+    ./tunarr.nix
 
     # Home applications
     ./freshrss.nix
