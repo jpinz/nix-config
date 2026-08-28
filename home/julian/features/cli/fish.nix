@@ -31,6 +31,13 @@
 
     functions = {
       fish_greeting = "";
+      sops = ''
+        if test "$TERM_PROGRAM" = "vscode"
+          env EDITOR="code --wait" nix develop -c sops hosts/calculon/secrets.yaml $argv
+        else
+          nix develop -c sops hosts/calculon/secrets.yaml $argv
+        end
+      '';
     };
 
     interactiveShellInit = lib.mkIf config.programs.zellij.enable ''
