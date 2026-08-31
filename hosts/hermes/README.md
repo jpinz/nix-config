@@ -2,10 +2,10 @@
 
 ## GitHub Actions runner
 
-Hermes hosts a repository-scoped runner for
-`CardMystic/cardmystic-platform`. Before the first deployment, use an
-administrator's authenticated GitHub CLI to create a one-time repository
-registration token and store it on Hermes:
+Hermes hosts an Ubuntu-based, repository-scoped runner container for
+`CardMystic/cardmystic-platform`. Before its first start, use an administrator's
+authenticated GitHub CLI to create a one-time repository registration token and
+store it on Hermes:
 
 ```console
 sudo install -d -m 0700 /var/lib/github-runner-token
@@ -24,8 +24,9 @@ systemctl status github-runner-cardmystic-platform
 ```
 
 The registration token expires after one hour, but the registered runner keeps
-working across restarts. Generate a fresh token before deploying changes to its
-URL, name, labels, or other registration settings.
+working across container and host restarts because its state is stored under
+`/var/lib/github-actions-runner`. Generate a fresh token before deleting that
+state or changing its URL, name, labels, or other registration settings.
 
 Jobs can target Hermes with:
 
@@ -34,4 +35,4 @@ runs-on: [self-hosted, linux, x64, hermes]
 ```
 
 Only workflows from the private repository should use this runner because job
-steps execute directly on Hermes.
+steps can control Hermes's Docker daemon through the mounted Docker socket.
