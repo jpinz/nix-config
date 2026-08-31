@@ -1,6 +1,7 @@
 { ... }:
 {
   imports = [
+    ./github-actions-runner.nix
     ./minecraft-project-infinity.nix
   ];
 
