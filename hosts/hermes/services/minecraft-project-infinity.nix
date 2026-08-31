@@ -55,8 +55,21 @@ in
       -Dlog4j2.formatMsgNoLookups=true
       EOF
 
+      cat > ops.json <<'EOF'
+      [
+        {
+          "uuid": "7f7f569f-0e45-4166-bf5d-dac13b238024",
+          "name": "jmantino",
+          "level": 4,
+          "bypassesPlayerLimit": false
+        }
+      ]
+      EOF
+
       echo 'eula=true' > eula.txt
       sed -i 's/^allow-flight=.*/allow-flight=true/' server.properties
+      sed -i '/^spawn-protection=/d' server.properties
+      echo 'spawn-protection=0' >> server.properties
     '';
 
     serviceConfig = {
