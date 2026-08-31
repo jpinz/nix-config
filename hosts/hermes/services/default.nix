@@ -1,10 +1,7 @@
 { ... }:
 {
   imports = [
-    ./hermes-agent.nix
-    ./hermes-dashboard.nix
     ./minecraft-project-infinity.nix
-    ./ollama.nix
   ];
 
   users.groups.hermes = { };
