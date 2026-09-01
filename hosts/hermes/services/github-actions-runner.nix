@@ -1,10 +1,10 @@
 { pkgs, ... }:
 let
-  containerName = "github-runner-cardmystic-platform";
-  imageName = "localhost/cardmystic-actions-runner:2.336.0";
-  runnerRoot = "/var/lib/github-actions-runner/cardmystic-platform";
-  tokenFile = "/var/lib/github-runner-token/cardmystic-platform";
-  runtimeTokenFile = "/run/github-actions-runner/cardmystic-platform.token";
+  containerName = "github-runner-cardmystic";
+  imageName = "localhost/cardmystic-actions-runner:2.336.0-4";
+  runnerRoot = "/var/lib/github-actions-runner/cardmystic";
+  tokenFile = "/var/lib/github-runner-token/cardmystic";
+  runtimeTokenFile = "/run/github-actions-runner/cardmystic.token";
 
   buildImage = pkgs.writeShellScript "build-cardmystic-actions-runner-image" ''
     exec ${pkgs.docker}/bin/docker build \
@@ -39,7 +39,7 @@ let
       --env DOTNET_INSTALL_DIR=${runnerRoot}/dotnet \
       --env RUNNER_LABELS=hermes \
       --env RUNNER_NAME=hermes \
-      --env RUNNER_REPOSITORY_URL=https://github.com/CardMystic/cardmystic-platform \
+      --env RUNNER_URL=https://github.com/CardMystic \
       --env RUNNER_ROOT=${runnerRoot} \
       --env RUNNER_WORK_DIRECTORY=_work \
       --volume /var/run/docker.sock:/var/run/docker.sock \
