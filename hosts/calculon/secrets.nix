@@ -5,6 +5,7 @@
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
     secrets = {
+      cloudflare_tunnel_token.restartUnits = [ "cloudflared-audiobookshelf.service" ];
       doplarr_env = { };
       freshrss_404media_token = { };
       freshrss_password = {

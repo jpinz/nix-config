@@ -288,7 +288,7 @@
                     }
                     {
                       title = "Audiobookshelf";
-                      url = "http://calculon.home/audiobookshelf";
+                      url = "http://calculon.home/audiobooks";
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/audiobookshelf.svg";
                     }
                     {

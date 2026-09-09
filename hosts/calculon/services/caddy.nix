@@ -67,12 +67,11 @@
       }
 
       handle /audiobooks* {
-        uri replace /audiobooks /audiobookshelf
         reverse_proxy 127.0.0.1:8888
       }
 
       handle /audiobookshelf* {
-        reverse_proxy 127.0.0.1:8888
+        redir /audiobooks 308
       }
 
       handle /navidrome* {
@@ -85,6 +84,10 @@
 
       handle /copyparty* {
         reverse_proxy 127.0.0.1:3923
+      }
+
+      handle /kapowarr* {
+        reverse_proxy 127.0.0.1:5656
       }
 
       handle /rss {
@@ -107,16 +110,13 @@
 
       redir /home* /dashboard/ 308
 
-      handle /grafana* {
-        reverse_proxy 127.0.0.1:3000
-      }
-
       handle /notifiarr* {
         reverse_proxy 127.0.0.1:5454
       }
 
       respond "ok" 200
     '';
+
   };
 
   # Keep the reverse-proxy reachable on LAN + tailnet, but not from the public internet.
@@ -127,6 +127,7 @@
     iptables -I INPUT 1 -p tcp --dport 80 -s 192.168.0.0/16 -j ACCEPT
     iptables -I INPUT 1 -p tcp --dport 80 -s 10.0.0.0/8 -j ACCEPT
     iptables -I INPUT 1 -p tcp --dport 80 -s 172.16.0.0/12 -j ACCEPT
+    iptables -I INPUT 1 -p tcp --dport 80 -s 127.0.0.0/8 -j ACCEPT
     iptables -I INPUT 1 -p tcp --dport 443 -j DROP
     iptables -I INPUT 1 -p tcp --dport 443 -s 100.64.0.0/10 -j ACCEPT
   '';
@@ -134,6 +135,7 @@
   networking.firewall.extraStopCommands = ''
     iptables -D INPUT -p tcp --dport 443 -s 100.64.0.0/10 -j ACCEPT 2>/dev/null || true
     iptables -D INPUT -p tcp --dport 443 -j DROP 2>/dev/null || true
+    iptables -D INPUT -p tcp --dport 80 -s 127.0.0.0/8 -j ACCEPT 2>/dev/null || true
     iptables -D INPUT -p tcp --dport 80 -s 172.16.0.0/12 -j ACCEPT 2>/dev/null || true
     iptables -D INPUT -p tcp --dport 80 -s 10.0.0.0/8 -j ACCEPT 2>/dev/null || true
     iptables -D INPUT -p tcp --dport 80 -s 192.168.0.0/16 -j ACCEPT 2>/dev/null || true

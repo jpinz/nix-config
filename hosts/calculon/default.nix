@@ -1,4 +1,9 @@
-{ config, inputs, pkgs, ... }:
+{
+  config,
+  inputs,
+  pkgs,
+  ...
+}:
 {
   imports = [
     inputs.hardware.nixosModules.common-cpu-amd
@@ -11,6 +16,7 @@
     ../common/users/julian.nix
 
     ../common/optional/systemd-boot.nix
+    ../common/optional/docker.nix
     ../common/optional/vscode-server.nix
 
     ./services
@@ -40,13 +46,13 @@
     fsType = "nfs";
     options = [
       "_netdev"
+      "bg"
       "nofail"
       "noauto"
       "rw"
       "nfsvers=4.1"
       "x-systemd.automount"
       "x-systemd.idle-timeout=10min"
-      "x-systemd.mount-timeout=30s"
     ];
   };
 

@@ -3,6 +3,7 @@
   imports = [
     # Network and file services
     ./caddy.nix
+    ./cloudflare-tunnel.nix
     ./samba.nix
 
     # Media acquisition and automation
@@ -21,12 +22,13 @@
     ./plex.nix
     # ./shelfmark.nix
     ./tracearr.nix
-    ./tunarr.nix
+    # ./tunarr.nix
 
     # Home applications
     ./freshrss.nix
     ./glance.nix
     ./homebox.nix
+    # ./cardmystic-platform.nix
 
     # Monitoring and remote access
     ./notifiarr.nix
@@ -48,6 +50,9 @@
     # whose files are group-owned by `services`.
     ++ [ config.users.users.julian.name ];
 
+  # Containerized services use this numeric GID for shared media access.
+  users.groups.services.gid = 987;
+
   users.groups.users.members = config.users.groups.services.members;
 
   systemd.tmpfiles.rules = [
@@ -55,6 +60,7 @@
 
     "d /mnt/downloads/incomplete 2770 ${config.users.users.julian.name} ${config.users.groups.services.name}"
     "d /mnt/downloads/complete 2770 ${config.users.users.julian.name} ${config.users.groups.services.name}"
+    "d /mnt/downloads/kapowarr 2770 ${config.users.users.julian.name} ${config.users.groups.services.name}"
 
     "d /mnt/data/tv 2770 ${config.users.users.julian.name} ${config.users.groups.services.name}"
     "d /mnt/data/anime 2770 ${config.users.users.julian.name} ${config.users.groups.services.name}"
@@ -63,6 +69,7 @@
     "d /mnt/data/ebooks 2770 ${config.users.users.julian.name} ${config.users.groups.services.name}"
     "d /mnt/data/audiobooks 2770 ${config.users.users.julian.name} ${config.users.groups.services.name}"
     "d /mnt/data/videos 2770 ${config.users.users.julian.name} ${config.users.groups.services.name}"
+    "d /mnt/data/comics 2770 ${config.users.users.julian.name} ${config.users.groups.services.name}"
   ];
 
   # Open firewall ports for locally hosted services
@@ -75,7 +82,6 @@
     8084 # shelfmark
     8181 # tracearr
     8686 # lidarr
-    8888 # audiobookshelf
     32400 # plex
   ];
 }
