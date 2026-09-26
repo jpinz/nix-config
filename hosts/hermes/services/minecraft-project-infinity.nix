@@ -1,12 +1,12 @@
 { pkgs, ... }:
 
 let
-  version = "0.0.51.2";
+  version = "0.0.51.3";
   dataDir = "/var/lib/minecraft-project-infinity";
 
   serverFiles = pkgs.fetchurl {
-    url = "https://mediafilez.forgecdn.net/files/8626/997/Serverfiles_Project_Infinity_0_1_0.0.51.2.zip";
-    hash = "sha256-xF4fFvg5iQQLNxQNqnlHsqRSr6Hu/qwvS51EduomZ0A=";
+    url = "https://mediafilez.forgecdn.net/files/8665/10/Serverfiles_Project_Infinity_0_1_0.0.51.3_HOTFIX.zip";
+    hash = "sha256-nzpKb8cdm8oi610vCVsd8L7bxLt7bGIJ9KbazLTy0k0=";
   };
 
   forgeInstaller = pkgs.fetchurl {
@@ -20,6 +20,7 @@ in
     group = "minecraft-project-infinity";
     home = dataDir;
   };
+  users.users.julian.extraGroups = [ "minecraft-project-infinity" ];
   users.groups.minecraft-project-infinity = { };
 
   systemd.services.minecraft-project-infinity = {
