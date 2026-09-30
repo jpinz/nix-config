@@ -8,8 +8,7 @@
   virtualisation.oci-containers = {
     backend = "podman";
     containers.tracearr = {
-      # Tracearr v2.4.1 supervised, pinned for reproducible deployments.
-      image = "ghcr.io/connorgallopo/tracearr@sha256:689af46c10c34ccd0487be71a713323574a8cfd60214d89fee6ddb5f60555eae";
+      image = "ghcr.io/connorgallopo/tracearr:supervised";
       autoStart = true;
 
       environment = {
