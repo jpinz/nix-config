@@ -9,6 +9,7 @@
     # Media acquisition and automation
     ./bazarr.nix
     ./doplarr.nix
+    ./kometa.nix
     ./lidarr.nix
     ./profilarr.nix
     ./prowlarr.nix

@@ -17,6 +17,9 @@
       freshrss_platformer_token = { };
       notifiarr_env = { };
       glance_env.restartUnits = [ "glance.service" ];
+      kometa_mdblist_api_key.restartUnits = [ "podman-kometa.service" ];
+      kometa_plex_token.restartUnits = [ "podman-kometa.service" ];
+      kometa_tmdb_api_key.restartUnits = [ "podman-kometa.service" ];
       sabnzbd_ini = {
         owner = config.services.sabnzbd.user;
         group = config.services.sabnzbd.group;
