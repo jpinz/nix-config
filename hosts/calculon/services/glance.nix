@@ -242,6 +242,11 @@
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/homebox.svg";
                     }
                     {
+                      title = "Dawarich";
+                      url = "http://calculon.home:3000";
+                      icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/dawarich.svg";
+                    }
+                    {
                       title = "Sonarr";
                       url = "http://calculon.home/sonarr";
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/sonarr.svg";
@@ -285,6 +290,11 @@
                       title = "Tracearr";
                       url = "http://calculon.home:8181";
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/tracearr.svg";
+                    }
+                    {
+                      title = "RomM";
+                      url = "http://calculon.home:8085";
+                      icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/romm.svg";
                     }
                     {
                       title = "Audiobookshelf";

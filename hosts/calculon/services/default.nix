@@ -21,11 +21,13 @@
     ./audiobookshelf.nix
     ./navidrome.nix
     ./plex.nix
+    ./romm.nix
     # ./shelfmark.nix
     ./tracearr.nix
     # ./tunarr.nix
 
     # Home applications
+    ./dawarich.nix
     ./freshrss.nix
     ./glance.nix
     ./homebox.nix
@@ -81,6 +83,7 @@
     7745 # homebox
     8083 # calibre-web
     8084 # shelfmark
+    8085 # romm
     8181 # tracearr
     8686 # lidarr
     32400 # plex
