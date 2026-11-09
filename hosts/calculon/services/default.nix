@@ -18,16 +18,16 @@
     ./sonarr.nix
 
     # Media libraries and playback
-    ./audiobookshelf.nix
+    # ./audiobookshelf.nix
+    # ./calibre-web.nix
     ./navidrome.nix
     ./plex.nix
     ./romm.nix
     # ./shelfmark.nix
     ./tracearr.nix
-    # ./tunarr.nix
+    ./tunarr.nix
 
     # Home applications
-    ./dawarich.nix
     ./freshrss.nix
     ./glance.nix
     ./homebox.nix

@@ -242,11 +242,6 @@
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/homebox.svg";
                     }
                     {
-                      title = "Dawarich";
-                      url = "http://calculon.home:3000";
-                      icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/dawarich.svg";
-                    }
-                    {
                       title = "Sonarr";
                       url = "http://calculon.home/sonarr";
                       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/sonarr.svg";
